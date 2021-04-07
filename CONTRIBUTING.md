@@ -4,9 +4,6 @@
 
 These guidelines will help you send a pull request.
 
-Please note that this project is not intended to be used outside my own projects so new features are unlikely to be
-accepted.
-
 If you're submitting an issue instead, please skip this document.
 
 If your pull request is related to a typo or the documentation being unclear, please click on the relevant page's `Edit`
@@ -28,17 +25,13 @@ Run:
 npm install
 ```
 
-Make sure everything is correctly setup with:
+To prepare the code for distribution, run:
 
 ```bash
-npm test
+npm run prepare
 ```
+
+You'll need to commit the `dist/` directory to version control.
 
 After submitting the pull request, please make sure the Continuous Integration checks are passing.
 
-## Releasing
-
-1. Merge the release PR
-2. Switch to the default branch `git checkout main`
-3. Pull latest changes `git pull`
-4. Publish the package `npm publish`
