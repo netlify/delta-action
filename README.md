@@ -52,10 +52,6 @@ The action supports the following inputs:
        token: ${{ secrets.GITHUB_TOKEN }}
    ```
 
-## Development
-
-To prepare the code for distribution, run `npm run prepare` and commit the `dist/` directory.
-
 ## Contributors
 
 Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for instructions on how to set up and work on this repository. Thanks
