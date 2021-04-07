@@ -8,7 +8,7 @@
     "!src/**/*.test.js"
   ],
   "scripts": {
-    "prepublishOnly": "npm ci && npm test",
+    "prepare": "esbuild src/index.js --bundle --outdir=dist --platform=node --sourcemap",
     "test": "run-s format test:dev",
     "format": "run-s format:check-fix:*",
     "format:ci": "run-s format:check:*",
@@ -27,6 +27,9 @@
     "eslint": "--ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{js,md,html}\" \"*.{js,md,html}\" \".*.{js,md,html}\"",
     "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{js,md,yml,json,html}\" \"*.{js,yml,json,html}\" \".*.{js,yml,json,html}\" \"!**/package-lock.json\" \"!package-lock.json\""
   },
+  "eslintIgnore": [
+    "dist/*"
+  ],
   "ava": {
     "verbose": true
   },
@@ -46,12 +49,18 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "humanize-duration": "^3.25.1",
+    "regex-escape": "^3.4.10"
+  },
   "devDependencies": {
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
     "@netlify/eslint-config-node": "^2.6.1",
     "ava": "^2.4.0",
+    "esbuild": "^0.11.5",
     "husky": "^4.3.8",
     "nyc": "^15.0.0"
   },
