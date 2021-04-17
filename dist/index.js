@@ -4574,1273 +4574,6 @@ var require_github = __commonJS((exports2) => {
   exports2.getOctokit = getOctokit;
 });
 
-// node_modules/humanize-duration/humanize-duration.js
-var require_humanize_duration = __commonJS((exports2, module2) => {
-  (function() {
-    var greek = {
-      y: function(c) {
-        return c === 1 ? "\u03C7\u03C1\u03CC\u03BD\u03BF\u03C2" : "\u03C7\u03C1\u03CC\u03BD\u03B9\u03B1";
-      },
-      mo: function(c) {
-        return c === 1 ? "\u03BC\u03AE\u03BD\u03B1\u03C2" : "\u03BC\u03AE\u03BD\u03B5\u03C2";
-      },
-      w: function(c) {
-        return c === 1 ? "\u03B5\u03B2\u03B4\u03BF\u03BC\u03AC\u03B4\u03B1" : "\u03B5\u03B2\u03B4\u03BF\u03BC\u03AC\u03B4\u03B5\u03C2";
-      },
-      d: function(c) {
-        return c === 1 ? "\u03BC\u03AD\u03C1\u03B1" : "\u03BC\u03AD\u03C1\u03B5\u03C2";
-      },
-      h: function(c) {
-        return c === 1 ? "\u03CE\u03C1\u03B1" : "\u03CE\u03C1\u03B5\u03C2";
-      },
-      m: function(c) {
-        return c === 1 ? "\u03BB\u03B5\u03C0\u03C4\u03CC" : "\u03BB\u03B5\u03C0\u03C4\u03AC";
-      },
-      s: function(c) {
-        return c === 1 ? "\u03B4\u03B5\u03C5\u03C4\u03B5\u03C1\u03CC\u03BB\u03B5\u03C0\u03C4\u03BF" : "\u03B4\u03B5\u03C5\u03C4\u03B5\u03C1\u03CC\u03BB\u03B5\u03C0\u03C4\u03B1";
-      },
-      ms: function(c) {
-        return c === 1 ? "\u03C7\u03B9\u03BB\u03B9\u03BF\u03C3\u03C4\u03CC \u03C4\u03BF\u03C5 \u03B4\u03B5\u03C5\u03C4\u03B5\u03C1\u03BF\u03BB\u03AD\u03C0\u03C4\u03BF\u03C5" : "\u03C7\u03B9\u03BB\u03B9\u03BF\u03C3\u03C4\u03AC \u03C4\u03BF\u03C5 \u03B4\u03B5\u03C5\u03C4\u03B5\u03C1\u03BF\u03BB\u03AD\u03C0\u03C4\u03BF\u03C5";
-      },
-      decimal: ","
-    };
-    var LANGUAGES = {
-      ar: {
-        y: function(c) {
-          return c === 1 ? "\u0633\u0646\u0629" : "\u0633\u0646\u0648\u0627\u062A";
-        },
-        mo: function(c) {
-          return c === 1 ? "\u0634\u0647\u0631" : "\u0623\u0634\u0647\u0631";
-        },
-        w: function(c) {
-          return c === 1 ? "\u0623\u0633\u0628\u0648\u0639" : "\u0623\u0633\u0627\u0628\u064A\u0639";
-        },
-        d: function(c) {
-          return c === 1 ? "\u064A\u0648\u0645" : "\u0623\u064A\u0627\u0645";
-        },
-        h: function(c) {
-          return c === 1 ? "\u0633\u0627\u0639\u0629" : "\u0633\u0627\u0639\u0627\u062A";
-        },
-        m: function(c) {
-          return c > 2 && c < 11 ? "\u062F\u0642\u0627\u0626\u0642" : "\u062F\u0642\u064A\u0642\u0629";
-        },
-        s: function(c) {
-          return c === 1 ? "\u062B\u0627\u0646\u064A\u0629" : "\u062B\u0648\u0627\u0646\u064A";
-        },
-        ms: function(c) {
-          return c === 1 ? "\u062C\u0632\u0621 \u0645\u0646 \u0627\u0644\u062B\u0627\u0646\u064A\u0629" : "\u0623\u062C\u0632\u0627\u0621 \u0645\u0646 \u0627\u0644\u062B\u0627\u0646\u064A\u0629";
-        },
-        decimal: ","
-      },
-      bg: {
-        y: function(c) {
-          return ["\u0433\u043E\u0434\u0438\u043D\u0438", "\u0433\u043E\u0434\u0438\u043D\u0430", "\u0433\u043E\u0434\u0438\u043D\u0438"][getSlavicForm(c)];
-        },
-        mo: function(c) {
-          return ["\u043C\u0435\u0441\u0435\u0446\u0430", "\u043C\u0435\u0441\u0435\u0446", "\u043C\u0435\u0441\u0435\u0446\u0430"][getSlavicForm(c)];
-        },
-        w: function(c) {
-          return ["\u0441\u0435\u0434\u043C\u0438\u0446\u0438", "\u0441\u0435\u0434\u043C\u0438\u0446\u0430", "\u0441\u0435\u0434\u043C\u0438\u0446\u0438"][getSlavicForm(c)];
-        },
-        d: function(c) {
-          return ["\u0434\u043D\u0438", "\u0434\u0435\u043D", "\u0434\u043D\u0438"][getSlavicForm(c)];
-        },
-        h: function(c) {
-          return ["\u0447\u0430\u0441\u0430", "\u0447\u0430\u0441", "\u0447\u0430\u0441\u0430"][getSlavicForm(c)];
-        },
-        m: function(c) {
-          return ["\u043C\u0438\u043D\u0443\u0442\u0438", "\u043C\u0438\u043D\u0443\u0442\u0430", "\u043C\u0438\u043D\u0443\u0442\u0438"][getSlavicForm(c)];
-        },
-        s: function(c) {
-          return ["\u0441\u0435\u043A\u0443\u043D\u0434\u0438", "\u0441\u0435\u043A\u0443\u043D\u0434\u0430", "\u0441\u0435\u043A\u0443\u043D\u0434\u0438"][getSlavicForm(c)];
-        },
-        ms: function(c) {
-          return ["\u043C\u0438\u043B\u0438\u0441\u0435\u043A\u0443\u043D\u0434\u0438", "\u043C\u0438\u043B\u0438\u0441\u0435\u043A\u0443\u043D\u0434\u0430", "\u043C\u0438\u043B\u0438\u0441\u0435\u043A\u0443\u043D\u0434\u0438"][getSlavicForm(c)];
-        },
-        decimal: ","
-      },
-      ca: {
-        y: function(c) {
-          return "any" + (c === 1 ? "" : "s");
-        },
-        mo: function(c) {
-          return "mes" + (c === 1 ? "" : "os");
-        },
-        w: function(c) {
-          return "setman" + (c === 1 ? "a" : "es");
-        },
-        d: function(c) {
-          return "di" + (c === 1 ? "a" : "es");
-        },
-        h: function(c) {
-          return "hor" + (c === 1 ? "a" : "es");
-        },
-        m: function(c) {
-          return "minut" + (c === 1 ? "" : "s");
-        },
-        s: function(c) {
-          return "segon" + (c === 1 ? "" : "s");
-        },
-        ms: function(c) {
-          return "milisegon" + (c === 1 ? "" : "s");
-        },
-        decimal: ","
-      },
-      cs: {
-        y: function(c) {
-          return ["rok", "roku", "roky", "let"][getCzechOrSlovakForm(c)];
-        },
-        mo: function(c) {
-          return ["m\u011Bs\xEDc", "m\u011Bs\xEDce", "m\u011Bs\xEDce", "m\u011Bs\xEDc\u016F"][getCzechOrSlovakForm(c)];
-        },
-        w: function(c) {
-          return ["t\xFDden", "t\xFDdne", "t\xFDdny", "t\xFDdn\u016F"][getCzechOrSlovakForm(c)];
-        },
-        d: function(c) {
-          return ["den", "dne", "dny", "dn\xED"][getCzechOrSlovakForm(c)];
-        },
-        h: function(c) {
-          return ["hodina", "hodiny", "hodiny", "hodin"][getCzechOrSlovakForm(c)];
-        },
-        m: function(c) {
-          return ["minuta", "minuty", "minuty", "minut"][getCzechOrSlovakForm(c)];
-        },
-        s: function(c) {
-          return ["sekunda", "sekundy", "sekundy", "sekund"][getCzechOrSlovakForm(c)];
-        },
-        ms: function(c) {
-          return ["milisekunda", "milisekundy", "milisekundy", "milisekund"][getCzechOrSlovakForm(c)];
-        },
-        decimal: ","
-      },
-      da: {
-        y: "\xE5r",
-        mo: function(c) {
-          return "m\xE5ned" + (c === 1 ? "" : "er");
-        },
-        w: function(c) {
-          return "uge" + (c === 1 ? "" : "r");
-        },
-        d: function(c) {
-          return "dag" + (c === 1 ? "" : "e");
-        },
-        h: function(c) {
-          return "time" + (c === 1 ? "" : "r");
-        },
-        m: function(c) {
-          return "minut" + (c === 1 ? "" : "ter");
-        },
-        s: function(c) {
-          return "sekund" + (c === 1 ? "" : "er");
-        },
-        ms: function(c) {
-          return "millisekund" + (c === 1 ? "" : "er");
-        },
-        decimal: ","
-      },
-      de: {
-        y: function(c) {
-          return "Jahr" + (c === 1 ? "" : "e");
-        },
-        mo: function(c) {
-          return "Monat" + (c === 1 ? "" : "e");
-        },
-        w: function(c) {
-          return "Woche" + (c === 1 ? "" : "n");
-        },
-        d: function(c) {
-          return "Tag" + (c === 1 ? "" : "e");
-        },
-        h: function(c) {
-          return "Stunde" + (c === 1 ? "" : "n");
-        },
-        m: function(c) {
-          return "Minute" + (c === 1 ? "" : "n");
-        },
-        s: function(c) {
-          return "Sekunde" + (c === 1 ? "" : "n");
-        },
-        ms: function(c) {
-          return "Millisekunde" + (c === 1 ? "" : "n");
-        },
-        decimal: ","
-      },
-      el: greek,
-      en: {
-        y: function(c) {
-          return "year" + (c === 1 ? "" : "s");
-        },
-        mo: function(c) {
-          return "month" + (c === 1 ? "" : "s");
-        },
-        w: function(c) {
-          return "week" + (c === 1 ? "" : "s");
-        },
-        d: function(c) {
-          return "day" + (c === 1 ? "" : "s");
-        },
-        h: function(c) {
-          return "hour" + (c === 1 ? "" : "s");
-        },
-        m: function(c) {
-          return "minute" + (c === 1 ? "" : "s");
-        },
-        s: function(c) {
-          return "second" + (c === 1 ? "" : "s");
-        },
-        ms: function(c) {
-          return "millisecond" + (c === 1 ? "" : "s");
-        },
-        decimal: "."
-      },
-      es: {
-        y: function(c) {
-          return "a\xF1o" + (c === 1 ? "" : "s");
-        },
-        mo: function(c) {
-          return "mes" + (c === 1 ? "" : "es");
-        },
-        w: function(c) {
-          return "semana" + (c === 1 ? "" : "s");
-        },
-        d: function(c) {
-          return "d\xEDa" + (c === 1 ? "" : "s");
-        },
-        h: function(c) {
-          return "hora" + (c === 1 ? "" : "s");
-        },
-        m: function(c) {
-          return "minuto" + (c === 1 ? "" : "s");
-        },
-        s: function(c) {
-          return "segundo" + (c === 1 ? "" : "s");
-        },
-        ms: function(c) {
-          return "milisegundo" + (c === 1 ? "" : "s");
-        },
-        decimal: ","
-      },
-      et: {
-        y: function(c) {
-          return "aasta" + (c === 1 ? "" : "t");
-        },
-        mo: function(c) {
-          return "kuu" + (c === 1 ? "" : "d");
-        },
-        w: function(c) {
-          return "n\xE4dal" + (c === 1 ? "" : "at");
-        },
-        d: function(c) {
-          return "p\xE4ev" + (c === 1 ? "" : "a");
-        },
-        h: function(c) {
-          return "tund" + (c === 1 ? "" : "i");
-        },
-        m: function(c) {
-          return "minut" + (c === 1 ? "" : "it");
-        },
-        s: function(c) {
-          return "sekund" + (c === 1 ? "" : "it");
-        },
-        ms: function(c) {
-          return "millisekund" + (c === 1 ? "" : "it");
-        },
-        decimal: ","
-      },
-      fa: {
-        y: "\u0633\u0627\u0644",
-        mo: "\u0645\u0627\u0647",
-        w: "\u0647\u0641\u062A\u0647",
-        d: "\u0631\u0648\u0632",
-        h: "\u0633\u0627\u0639\u062A",
-        m: "\u062F\u0642\u06CC\u0642\u0647",
-        s: "\u062B\u0627\u0646\u06CC\u0647",
-        ms: "\u0645\u06CC\u0644\u06CC \u062B\u0627\u0646\u06CC\u0647",
-        decimal: "."
-      },
-      fi: {
-        y: function(c) {
-          return c === 1 ? "vuosi" : "vuotta";
-        },
-        mo: function(c) {
-          return c === 1 ? "kuukausi" : "kuukautta";
-        },
-        w: function(c) {
-          return "viikko" + (c === 1 ? "" : "a");
-        },
-        d: function(c) {
-          return "p\xE4iv\xE4" + (c === 1 ? "" : "\xE4");
-        },
-        h: function(c) {
-          return "tunti" + (c === 1 ? "" : "a");
-        },
-        m: function(c) {
-          return "minuutti" + (c === 1 ? "" : "a");
-        },
-        s: function(c) {
-          return "sekunti" + (c === 1 ? "" : "a");
-        },
-        ms: function(c) {
-          return "millisekunti" + (c === 1 ? "" : "a");
-        },
-        decimal: ","
-      },
-      fo: {
-        y: "\xE1r",
-        mo: function(c) {
-          return c === 1 ? "m\xE1na\xF0ur" : "m\xE1na\xF0ir";
-        },
-        w: function(c) {
-          return c === 1 ? "vika" : "vikur";
-        },
-        d: function(c) {
-          return c === 1 ? "dagur" : "dagar";
-        },
-        h: function(c) {
-          return c === 1 ? "t\xEDmi" : "t\xEDmar";
-        },
-        m: function(c) {
-          return c === 1 ? "minuttur" : "minuttir";
-        },
-        s: "sekund",
-        ms: "millisekund",
-        decimal: ","
-      },
-      fr: {
-        y: function(c) {
-          return "an" + (c >= 2 ? "s" : "");
-        },
-        mo: "mois",
-        w: function(c) {
-          return "semaine" + (c >= 2 ? "s" : "");
-        },
-        d: function(c) {
-          return "jour" + (c >= 2 ? "s" : "");
-        },
-        h: function(c) {
-          return "heure" + (c >= 2 ? "s" : "");
-        },
-        m: function(c) {
-          return "minute" + (c >= 2 ? "s" : "");
-        },
-        s: function(c) {
-          return "seconde" + (c >= 2 ? "s" : "");
-        },
-        ms: function(c) {
-          return "milliseconde" + (c >= 2 ? "s" : "");
-        },
-        decimal: ","
-      },
-      gr: greek,
-      he: {
-        y: function(c) {
-          return c === 1 ? "\u05E9\u05E0\u05D4" : "\u05E9\u05E0\u05D9\u05DD";
-        },
-        mo: function(c) {
-          return c === 1 ? "\u05D7\u05D5\u05D3\u05E9" : "\u05D7\u05D5\u05D3\u05E9\u05D9\u05DD";
-        },
-        w: function(c) {
-          return c === 1 ? "\u05E9\u05D1\u05D5\u05E2" : "\u05E9\u05D1\u05D5\u05E2\u05D5\u05EA";
-        },
-        d: function(c) {
-          return c === 1 ? "\u05D9\u05D5\u05DD" : "\u05D9\u05DE\u05D9\u05DD";
-        },
-        h: function(c) {
-          return c === 1 ? "\u05E9\u05E2\u05D4" : "\u05E9\u05E2\u05D5\u05EA";
-        },
-        m: function(c) {
-          return c === 1 ? "\u05D3\u05E7\u05D4" : "\u05D3\u05E7\u05D5\u05EA";
-        },
-        s: function(c) {
-          return c === 1 ? "\u05E9\u05E0\u05D9\u05D4" : "\u05E9\u05E0\u05D9\u05D5\u05EA";
-        },
-        ms: function(c) {
-          return c === 1 ? "\u05DE\u05D9\u05DC\u05D9\u05E9\u05E0\u05D9\u05D9\u05D4" : "\u05DE\u05D9\u05DC\u05D9\u05E9\u05E0\u05D9\u05D5\u05EA";
-        },
-        decimal: "."
-      },
-      hr: {
-        y: function(c) {
-          if (c % 10 === 2 || c % 10 === 3 || c % 10 === 4) {
-            return "godine";
-          }
-          return "godina";
-        },
-        mo: function(c) {
-          if (c === 1) {
-            return "mjesec";
-          } else if (c === 2 || c === 3 || c === 4) {
-            return "mjeseca";
-          }
-          return "mjeseci";
-        },
-        w: function(c) {
-          if (c % 10 === 1 && c !== 11) {
-            return "tjedan";
-          }
-          return "tjedna";
-        },
-        d: function(c) {
-          return c === 1 ? "dan" : "dana";
-        },
-        h: function(c) {
-          if (c === 1) {
-            return "sat";
-          } else if (c === 2 || c === 3 || c === 4) {
-            return "sata";
-          }
-          return "sati";
-        },
-        m: function(c) {
-          var mod10 = c % 10;
-          if ((mod10 === 2 || mod10 === 3 || mod10 === 4) && (c < 10 || c > 14)) {
-            return "minute";
-          }
-          return "minuta";
-        },
-        s: function(c) {
-          var mod10 = c % 10;
-          if (mod10 === 5 || Math.floor(c) === c && c >= 10 && c <= 19) {
-            return "sekundi";
-          } else if (mod10 === 1) {
-            return "sekunda";
-          } else if (mod10 === 2 || mod10 === 3 || mod10 === 4) {
-            return "sekunde";
-          }
-          return "sekundi";
-        },
-        ms: function(c) {
-          if (c === 1) {
-            return "milisekunda";
-          } else if (c % 10 === 2 || c % 10 === 3 || c % 10 === 4) {
-            return "milisekunde";
-          }
-          return "milisekundi";
-        },
-        decimal: ","
-      },
-      hi: {
-        y: "\u0938\u093E\u0932",
-        mo: function(c) {
-          return c === 1 ? "\u092E\u0939\u0940\u0928\u093E" : "\u092E\u0939\u0940\u0928\u0947";
-        },
-        w: function(c) {
-          return c === 1 ? "\u0939\u095E\u094D\u0924\u093E" : "\u0939\u092B\u094D\u0924\u0947";
-        },
-        d: "\u0926\u093F\u0928",
-        h: function(c) {
-          return c === 1 ? "\u0918\u0902\u091F\u093E" : "\u0918\u0902\u091F\u0947";
-        },
-        m: "\u092E\u093F\u0928\u091F",
-        s: "\u0938\u0947\u0915\u0902\u0921",
-        ms: "\u092E\u093F\u0932\u0940\u0938\u0947\u0915\u0902\u0921",
-        decimal: "."
-      },
-      hu: {
-        y: "\xE9v",
-        mo: "h\xF3nap",
-        w: "h\xE9t",
-        d: "nap",
-        h: "\xF3ra",
-        m: "perc",
-        s: "m\xE1sodperc",
-        ms: "ezredm\xE1sodperc",
-        decimal: ","
-      },
-      id: {
-        y: "tahun",
-        mo: "bulan",
-        w: "minggu",
-        d: "hari",
-        h: "jam",
-        m: "menit",
-        s: "detik",
-        ms: "milidetik",
-        decimal: "."
-      },
-      is: {
-        y: "\xE1r",
-        mo: function(c) {
-          return "m\xE1nu\xF0" + (c === 1 ? "ur" : "ir");
-        },
-        w: function(c) {
-          return "vik" + (c === 1 ? "a" : "ur");
-        },
-        d: function(c) {
-          return "dag" + (c === 1 ? "ur" : "ar");
-        },
-        h: function(c) {
-          return "klukkut\xEDm" + (c === 1 ? "i" : "ar");
-        },
-        m: function(c) {
-          return "m\xEDn\xFAt" + (c === 1 ? "a" : "ur");
-        },
-        s: function(c) {
-          return "sek\xFAnd" + (c === 1 ? "a" : "ur");
-        },
-        ms: function(c) {
-          return "millisek\xFAnd" + (c === 1 ? "a" : "ur");
-        },
-        decimal: "."
-      },
-      it: {
-        y: function(c) {
-          return "ann" + (c === 1 ? "o" : "i");
-        },
-        mo: function(c) {
-          return "mes" + (c === 1 ? "e" : "i");
-        },
-        w: function(c) {
-          return "settiman" + (c === 1 ? "a" : "e");
-        },
-        d: function(c) {
-          return "giorn" + (c === 1 ? "o" : "i");
-        },
-        h: function(c) {
-          return "or" + (c === 1 ? "a" : "e");
-        },
-        m: function(c) {
-          return "minut" + (c === 1 ? "o" : "i");
-        },
-        s: function(c) {
-          return "second" + (c === 1 ? "o" : "i");
-        },
-        ms: function(c) {
-          return "millisecond" + (c === 1 ? "o" : "i");
-        },
-        decimal: ","
-      },
-      ja: {
-        y: "\u5E74",
-        mo: "\u6708",
-        w: "\u9031",
-        d: "\u65E5",
-        h: "\u6642\u9593",
-        m: "\u5206",
-        s: "\u79D2",
-        ms: "\u30DF\u30EA\u79D2",
-        decimal: "."
-      },
-      ko: {
-        y: "\uB144",
-        mo: "\uAC1C\uC6D4",
-        w: "\uC8FC\uC77C",
-        d: "\uC77C",
-        h: "\uC2DC\uAC04",
-        m: "\uBD84",
-        s: "\uCD08",
-        ms: "\uBC00\uB9AC \uCD08",
-        decimal: "."
-      },
-      lo: {
-        y: "\u0E9B\u0EB5",
-        mo: "\u0EC0\u0E94\u0EB7\u0EAD\u0E99",
-        w: "\u0EAD\u0EB2\u0E97\u0EB4\u0E94",
-        d: "\u0EA1\u0EB7\u0EC9",
-        h: "\u0E8A\u0EBB\u0EC8\u0EA7\u0EC2\u0EA1\u0E87",
-        m: "\u0E99\u0EB2\u0E97\u0EB5",
-        s: "\u0EA7\u0EB4\u0E99\u0EB2\u0E97\u0EB5",
-        ms: "\u0EA1\u0EB4\u0E99\u0EA5\u0EB4\u0EA7\u0EB4\u0E99\u0EB2\u0E97\u0EB5",
-        decimal: ","
-      },
-      lt: {
-        y: function(c) {
-          return c % 10 === 0 || c % 100 >= 10 && c % 100 <= 20 ? "met\u0173" : "metai";
-        },
-        mo: function(c) {
-          return ["m\u0117nuo", "m\u0117nesiai", "m\u0117nesi\u0173"][getLithuanianForm(c)];
-        },
-        w: function(c) {
-          return ["savait\u0117", "savait\u0117s", "savai\u010Di\u0173"][getLithuanianForm(c)];
-        },
-        d: function(c) {
-          return ["diena", "dienos", "dien\u0173"][getLithuanianForm(c)];
-        },
-        h: function(c) {
-          return ["valanda", "valandos", "valand\u0173"][getLithuanianForm(c)];
-        },
-        m: function(c) {
-          return ["minut\u0117", "minut\u0117s", "minu\u010Di\u0173"][getLithuanianForm(c)];
-        },
-        s: function(c) {
-          return ["sekund\u0117", "sekund\u0117s", "sekund\u017Ei\u0173"][getLithuanianForm(c)];
-        },
-        ms: function(c) {
-          return ["milisekund\u0117", "milisekund\u0117s", "milisekund\u017Ei\u0173"][getLithuanianForm(c)];
-        },
-        decimal: ","
-      },
-      lv: {
-        y: function(c) {
-          return getLatvianForm(c) ? "gads" : "gadi";
-        },
-        mo: function(c) {
-          return getLatvianForm(c) ? "m\u0113nesis" : "m\u0113ne\u0161i";
-        },
-        w: function(c) {
-          return getLatvianForm(c) ? "ned\u0113\u013Ca" : "ned\u0113\u013Cas";
-        },
-        d: function(c) {
-          return getLatvianForm(c) ? "diena" : "dienas";
-        },
-        h: function(c) {
-          return getLatvianForm(c) ? "stunda" : "stundas";
-        },
-        m: function(c) {
-          return getLatvianForm(c) ? "min\u016Bte" : "min\u016Btes";
-        },
-        s: function(c) {
-          return getLatvianForm(c) ? "sekunde" : "sekundes";
-        },
-        ms: function(c) {
-          return getLatvianForm(c) ? "milisekunde" : "milisekundes";
-        },
-        decimal: ","
-      },
-      ms: {
-        y: "tahun",
-        mo: "bulan",
-        w: "minggu",
-        d: "hari",
-        h: "jam",
-        m: "minit",
-        s: "saat",
-        ms: "milisaat",
-        decimal: "."
-      },
-      nl: {
-        y: "jaar",
-        mo: function(c) {
-          return c === 1 ? "maand" : "maanden";
-        },
-        w: function(c) {
-          return c === 1 ? "week" : "weken";
-        },
-        d: function(c) {
-          return c === 1 ? "dag" : "dagen";
-        },
-        h: "uur",
-        m: function(c) {
-          return c === 1 ? "minuut" : "minuten";
-        },
-        s: function(c) {
-          return c === 1 ? "seconde" : "seconden";
-        },
-        ms: function(c) {
-          return c === 1 ? "milliseconde" : "milliseconden";
-        },
-        decimal: ","
-      },
-      no: {
-        y: "\xE5r",
-        mo: function(c) {
-          return "m\xE5ned" + (c === 1 ? "" : "er");
-        },
-        w: function(c) {
-          return "uke" + (c === 1 ? "" : "r");
-        },
-        d: function(c) {
-          return "dag" + (c === 1 ? "" : "er");
-        },
-        h: function(c) {
-          return "time" + (c === 1 ? "" : "r");
-        },
-        m: function(c) {
-          return "minutt" + (c === 1 ? "" : "er");
-        },
-        s: function(c) {
-          return "sekund" + (c === 1 ? "" : "er");
-        },
-        ms: function(c) {
-          return "millisekund" + (c === 1 ? "" : "er");
-        },
-        decimal: ","
-      },
-      pl: {
-        y: function(c) {
-          return ["rok", "roku", "lata", "lat"][getPolishForm(c)];
-        },
-        mo: function(c) {
-          return ["miesi\u0105c", "miesi\u0105ca", "miesi\u0105ce", "miesi\u0119cy"][getPolishForm(c)];
-        },
-        w: function(c) {
-          return ["tydzie\u0144", "tygodnia", "tygodnie", "tygodni"][getPolishForm(c)];
-        },
-        d: function(c) {
-          return ["dzie\u0144", "dnia", "dni", "dni"][getPolishForm(c)];
-        },
-        h: function(c) {
-          return ["godzina", "godziny", "godziny", "godzin"][getPolishForm(c)];
-        },
-        m: function(c) {
-          return ["minuta", "minuty", "minuty", "minut"][getPolishForm(c)];
-        },
-        s: function(c) {
-          return ["sekunda", "sekundy", "sekundy", "sekund"][getPolishForm(c)];
-        },
-        ms: function(c) {
-          return ["milisekunda", "milisekundy", "milisekundy", "milisekund"][getPolishForm(c)];
-        },
-        decimal: ","
-      },
-      pt: {
-        y: function(c) {
-          return "ano" + (c === 1 ? "" : "s");
-        },
-        mo: function(c) {
-          return c === 1 ? "m\xEAs" : "meses";
-        },
-        w: function(c) {
-          return "semana" + (c === 1 ? "" : "s");
-        },
-        d: function(c) {
-          return "dia" + (c === 1 ? "" : "s");
-        },
-        h: function(c) {
-          return "hora" + (c === 1 ? "" : "s");
-        },
-        m: function(c) {
-          return "minuto" + (c === 1 ? "" : "s");
-        },
-        s: function(c) {
-          return "segundo" + (c === 1 ? "" : "s");
-        },
-        ms: function(c) {
-          return "milissegundo" + (c === 1 ? "" : "s");
-        },
-        decimal: ","
-      },
-      ro: {
-        y: function(c) {
-          return c === 1 ? "an" : "ani";
-        },
-        mo: function(c) {
-          return c === 1 ? "lun\u0103" : "luni";
-        },
-        w: function(c) {
-          return c === 1 ? "s\u0103pt\u0103m\xE2n\u0103" : "s\u0103pt\u0103m\xE2ni";
-        },
-        d: function(c) {
-          return c === 1 ? "zi" : "zile";
-        },
-        h: function(c) {
-          return c === 1 ? "or\u0103" : "ore";
-        },
-        m: function(c) {
-          return c === 1 ? "minut" : "minute";
-        },
-        s: function(c) {
-          return c === 1 ? "secund\u0103" : "secunde";
-        },
-        ms: function(c) {
-          return c === 1 ? "milisecund\u0103" : "milisecunde";
-        },
-        decimal: ","
-      },
-      ru: {
-        y: function(c) {
-          return ["\u043B\u0435\u0442", "\u0433\u043E\u0434", "\u0433\u043E\u0434\u0430"][getSlavicForm(c)];
-        },
-        mo: function(c) {
-          return ["\u043C\u0435\u0441\u044F\u0446\u0435\u0432", "\u043C\u0435\u0441\u044F\u0446", "\u043C\u0435\u0441\u044F\u0446\u0430"][getSlavicForm(c)];
-        },
-        w: function(c) {
-          return ["\u043D\u0435\u0434\u0435\u043B\u044C", "\u043D\u0435\u0434\u0435\u043B\u044F", "\u043D\u0435\u0434\u0435\u043B\u0438"][getSlavicForm(c)];
-        },
-        d: function(c) {
-          return ["\u0434\u043D\u0435\u0439", "\u0434\u0435\u043D\u044C", "\u0434\u043D\u044F"][getSlavicForm(c)];
-        },
-        h: function(c) {
-          return ["\u0447\u0430\u0441\u043E\u0432", "\u0447\u0430\u0441", "\u0447\u0430\u0441\u0430"][getSlavicForm(c)];
-        },
-        m: function(c) {
-          return ["\u043C\u0438\u043D\u0443\u0442", "\u043C\u0438\u043D\u0443\u0442\u0430", "\u043C\u0438\u043D\u0443\u0442\u044B"][getSlavicForm(c)];
-        },
-        s: function(c) {
-          return ["\u0441\u0435\u043A\u0443\u043D\u0434", "\u0441\u0435\u043A\u0443\u043D\u0434\u0430", "\u0441\u0435\u043A\u0443\u043D\u0434\u044B"][getSlavicForm(c)];
-        },
-        ms: function(c) {
-          return ["\u043C\u0438\u043B\u043B\u0438\u0441\u0435\u043A\u0443\u043D\u0434", "\u043C\u0438\u043B\u043B\u0438\u0441\u0435\u043A\u0443\u043D\u0434\u0430", "\u043C\u0438\u043B\u043B\u0438\u0441\u0435\u043A\u0443\u043D\u0434\u044B"][getSlavicForm(c)];
-        },
-        decimal: ","
-      },
-      uk: {
-        y: function(c) {
-          return ["\u0440\u043E\u043A\u0456\u0432", "\u0440\u0456\u043A", "\u0440\u043E\u043A\u0438"][getSlavicForm(c)];
-        },
-        mo: function(c) {
-          return ["\u043C\u0456\u0441\u044F\u0446\u0456\u0432", "\u043C\u0456\u0441\u044F\u0446\u044C", "\u043C\u0456\u0441\u044F\u0446\u0456"][getSlavicForm(c)];
-        },
-        w: function(c) {
-          return ["\u0442\u0438\u0436\u043D\u0456\u0432", "\u0442\u0438\u0436\u0434\u0435\u043D\u044C", "\u0442\u0438\u0436\u043D\u0456"][getSlavicForm(c)];
-        },
-        d: function(c) {
-          return ["\u0434\u043D\u0456\u0432", "\u0434\u0435\u043D\u044C", "\u0434\u043D\u0456"][getSlavicForm(c)];
-        },
-        h: function(c) {
-          return ["\u0433\u043E\u0434\u0438\u043D", "\u0433\u043E\u0434\u0438\u043D\u0430", "\u0433\u043E\u0434\u0438\u043D\u0438"][getSlavicForm(c)];
-        },
-        m: function(c) {
-          return ["\u0445\u0432\u0438\u043B\u0438\u043D", "\u0445\u0432\u0438\u043B\u0438\u043D\u0430", "\u0445\u0432\u0438\u043B\u0438\u043D\u0438"][getSlavicForm(c)];
-        },
-        s: function(c) {
-          return ["\u0441\u0435\u043A\u0443\u043D\u0434", "\u0441\u0435\u043A\u0443\u043D\u0434\u0430", "\u0441\u0435\u043A\u0443\u043D\u0434\u0438"][getSlavicForm(c)];
-        },
-        ms: function(c) {
-          return ["\u043C\u0456\u043B\u0456\u0441\u0435\u043A\u0443\u043D\u0434", "\u043C\u0456\u043B\u0456\u0441\u0435\u043A\u0443\u043D\u0434\u0430", "\u043C\u0456\u043B\u0456\u0441\u0435\u043A\u0443\u043D\u0434\u0438"][getSlavicForm(c)];
-        },
-        decimal: ","
-      },
-      ur: {
-        y: "\u0633\u0627\u0644",
-        mo: function(c) {
-          return c === 1 ? "\u0645\u06C1\u06CC\u0646\u06C1" : "\u0645\u06C1\u06CC\u0646\u06D2";
-        },
-        w: function(c) {
-          return c === 1 ? "\u06C1\u0641\u062A\u06C1" : "\u06C1\u0641\u062A\u06D2";
-        },
-        d: "\u062F\u0646",
-        h: function(c) {
-          return c === 1 ? "\u06AF\u06BE\u0646\u0679\u06C1" : "\u06AF\u06BE\u0646\u0679\u06D2";
-        },
-        m: "\u0645\u0646\u0679",
-        s: "\u0633\u06CC\u06A9\u0646\u0688",
-        ms: "\u0645\u0644\u06CC \u0633\u06CC\u06A9\u0646\u0688",
-        decimal: "."
-      },
-      sk: {
-        y: function(c) {
-          return ["rok", "roky", "roky", "rokov"][getCzechOrSlovakForm(c)];
-        },
-        mo: function(c) {
-          return ["mesiac", "mesiace", "mesiace", "mesiacov"][getCzechOrSlovakForm(c)];
-        },
-        w: function(c) {
-          return ["t\xFD\u017Ede\u0148", "t\xFD\u017Edne", "t\xFD\u017Edne", "t\xFD\u017Ed\u0148ov"][getCzechOrSlovakForm(c)];
-        },
-        d: function(c) {
-          return ["de\u0148", "dni", "dni", "dn\xED"][getCzechOrSlovakForm(c)];
-        },
-        h: function(c) {
-          return ["hodina", "hodiny", "hodiny", "hod\xEDn"][getCzechOrSlovakForm(c)];
-        },
-        m: function(c) {
-          return ["min\xFAta", "min\xFAty", "min\xFAty", "min\xFAt"][getCzechOrSlovakForm(c)];
-        },
-        s: function(c) {
-          return ["sekunda", "sekundy", "sekundy", "sek\xFAnd"][getCzechOrSlovakForm(c)];
-        },
-        ms: function(c) {
-          return ["milisekunda", "milisekundy", "milisekundy", "milisek\xFAnd"][getCzechOrSlovakForm(c)];
-        },
-        decimal: ","
-      },
-      sl: {
-        y: function(c) {
-          if (c % 10 === 1) {
-            return "leto";
-          } else if (c % 100 === 2) {
-            return "leti";
-          } else if (c % 100 === 3 || c % 100 === 4 || Math.floor(c) !== c && c % 100 <= 5) {
-            return "leta";
-          } else {
-            return "let";
-          }
-        },
-        mo: function(c) {
-          if (c % 10 === 1) {
-            return "mesec";
-          } else if (c % 100 === 2 || Math.floor(c) !== c && c % 100 <= 5) {
-            return "meseca";
-          } else if (c % 10 === 3 || c % 10 === 4) {
-            return "mesece";
-          } else {
-            return "mesecev";
-          }
-        },
-        w: function(c) {
-          if (c % 10 === 1) {
-            return "teden";
-          } else if (c % 10 === 2 || Math.floor(c) !== c && c % 100 <= 4) {
-            return "tedna";
-          } else if (c % 10 === 3 || c % 10 === 4) {
-            return "tedne";
-          } else {
-            return "tednov";
-          }
-        },
-        d: function(c) {
-          return c % 100 === 1 ? "dan" : "dni";
-        },
-        h: function(c) {
-          if (c % 10 === 1) {
-            return "ura";
-          } else if (c % 100 === 2) {
-            return "uri";
-          } else if (c % 10 === 3 || c % 10 === 4 || Math.floor(c) !== c) {
-            return "ure";
-          } else {
-            return "ur";
-          }
-        },
-        m: function(c) {
-          if (c % 10 === 1) {
-            return "minuta";
-          } else if (c % 10 === 2) {
-            return "minuti";
-          } else if (c % 10 === 3 || c % 10 === 4 || Math.floor(c) !== c && c % 100 <= 4) {
-            return "minute";
-          } else {
-            return "minut";
-          }
-        },
-        s: function(c) {
-          if (c % 10 === 1) {
-            return "sekunda";
-          } else if (c % 100 === 2) {
-            return "sekundi";
-          } else if (c % 100 === 3 || c % 100 === 4 || Math.floor(c) !== c) {
-            return "sekunde";
-          } else {
-            return "sekund";
-          }
-        },
-        ms: function(c) {
-          if (c % 10 === 1) {
-            return "milisekunda";
-          } else if (c % 100 === 2) {
-            return "milisekundi";
-          } else if (c % 100 === 3 || c % 100 === 4 || Math.floor(c) !== c) {
-            return "milisekunde";
-          } else {
-            return "milisekund";
-          }
-        },
-        decimal: ","
-      },
-      sv: {
-        y: "\xE5r",
-        mo: function(c) {
-          return "m\xE5nad" + (c === 1 ? "" : "er");
-        },
-        w: function(c) {
-          return "veck" + (c === 1 ? "a" : "or");
-        },
-        d: function(c) {
-          return "dag" + (c === 1 ? "" : "ar");
-        },
-        h: function(c) {
-          return "timm" + (c === 1 ? "e" : "ar");
-        },
-        m: function(c) {
-          return "minut" + (c === 1 ? "" : "er");
-        },
-        s: function(c) {
-          return "sekund" + (c === 1 ? "" : "er");
-        },
-        ms: function(c) {
-          return "millisekund" + (c === 1 ? "" : "er");
-        },
-        decimal: ","
-      },
-      sw: {
-        y: function(c) {
-          return c === 1 ? "mwaka" : "miaka";
-        },
-        mo: function(c) {
-          return c === 1 ? "mwezi" : "miezi";
-        },
-        w: "wiki",
-        d: function(c) {
-          return c === 1 ? "siku" : "masiku";
-        },
-        h: function(c) {
-          return c === 1 ? "saa" : "masaa";
-        },
-        m: "dakika",
-        s: "sekunde",
-        ms: "milisekunde",
-        decimal: "."
-      },
-      tr: {
-        y: "y\u0131l",
-        mo: "ay",
-        w: "hafta",
-        d: "g\xFCn",
-        h: "saat",
-        m: "dakika",
-        s: "saniye",
-        ms: "milisaniye",
-        decimal: ","
-      },
-      th: {
-        y: "\u0E1B\u0E35",
-        mo: "\u0E40\u0E14\u0E37\u0E2D\u0E19",
-        w: "\u0E2D\u0E32\u0E17\u0E34\u0E15\u0E22\u0E4C",
-        d: "\u0E27\u0E31\u0E19",
-        h: "\u0E0A\u0E31\u0E48\u0E27\u0E42\u0E21\u0E07",
-        m: "\u0E19\u0E32\u0E17\u0E35",
-        s: "\u0E27\u0E34\u0E19\u0E32\u0E17\u0E35",
-        ms: "\u0E21\u0E34\u0E25\u0E25\u0E34\u0E27\u0E34\u0E19\u0E32\u0E17\u0E35",
-        decimal: "."
-      },
-      vi: {
-        y: "n\u0103m",
-        mo: "th\xE1ng",
-        w: "tu\u1EA7n",
-        d: "ng\xE0y",
-        h: "gi\u1EDD",
-        m: "ph\xFAt",
-        s: "gi\xE2y",
-        ms: "mili gi\xE2y",
-        decimal: ","
-      },
-      zh_CN: {
-        y: "\u5E74",
-        mo: "\u4E2A\u6708",
-        w: "\u5468",
-        d: "\u5929",
-        h: "\u5C0F\u65F6",
-        m: "\u5206\u949F",
-        s: "\u79D2",
-        ms: "\u6BEB\u79D2",
-        decimal: "."
-      },
-      zh_TW: {
-        y: "\u5E74",
-        mo: "\u500B\u6708",
-        w: "\u5468",
-        d: "\u5929",
-        h: "\u5C0F\u6642",
-        m: "\u5206\u9418",
-        s: "\u79D2",
-        ms: "\u6BEB\u79D2",
-        decimal: "."
-      }
-    };
-    function humanizer(passedOptions) {
-      var result = function humanizer2(ms, humanizerOptions) {
-        var options = assign({}, result, humanizerOptions || {});
-        return doHumanization(ms, options);
-      };
-      return assign(result, {
-        language: "en",
-        delimiter: ", ",
-        spacer: " ",
-        conjunction: "",
-        serialComma: true,
-        units: ["y", "mo", "w", "d", "h", "m", "s"],
-        languages: {},
-        round: false,
-        unitMeasures: {
-          y: 315576e5,
-          mo: 26298e5,
-          w: 6048e5,
-          d: 864e5,
-          h: 36e5,
-          m: 6e4,
-          s: 1e3,
-          ms: 1
-        }
-      }, passedOptions);
-    }
-    var humanizeDuration = humanizer({});
-    function getDictionary(options) {
-      var languagesFromOptions = [options.language];
-      if (has(options, "fallbacks")) {
-        if (isArray(options.fallbacks) && options.fallbacks.length) {
-          languagesFromOptions = languagesFromOptions.concat(options.fallbacks);
-        } else {
-          throw new Error("fallbacks must be an array with at least one element");
-        }
-      }
-      for (var i = 0; i < languagesFromOptions.length; i++) {
-        var languageToTry = languagesFromOptions[i];
-        if (has(options.languages, languageToTry)) {
-          return options.languages[languageToTry];
-        } else if (has(LANGUAGES, languageToTry)) {
-          return LANGUAGES[languageToTry];
-        }
-      }
-      throw new Error("No language found.");
-    }
-    function doHumanization(ms, options) {
-      var i, len, piece;
-      ms = Math.abs(ms);
-      var dictionary = getDictionary(options);
-      var pieces = [];
-      var unitName, unitMS, unitCount;
-      for (i = 0, len = options.units.length; i < len; i++) {
-        unitName = options.units[i];
-        unitMS = options.unitMeasures[unitName];
-        if (i + 1 === len) {
-          if (has(options, "maxDecimalPoints")) {
-            var expValue = Math.pow(10, options.maxDecimalPoints);
-            var unitCountFloat = ms / unitMS;
-            unitCount = parseFloat((Math.floor(expValue * unitCountFloat) / expValue).toFixed(options.maxDecimalPoints));
-          } else {
-            unitCount = ms / unitMS;
-          }
-        } else {
-          unitCount = Math.floor(ms / unitMS);
-        }
-        pieces.push({
-          unitCount,
-          unitName
-        });
-        ms -= unitCount * unitMS;
-      }
-      var firstOccupiedUnitIndex = 0;
-      for (i = 0; i < pieces.length; i++) {
-        if (pieces[i].unitCount) {
-          firstOccupiedUnitIndex = i;
-          break;
-        }
-      }
-      if (options.round) {
-        var ratioToLargerUnit, previousPiece;
-        for (i = pieces.length - 1; i >= 0; i--) {
-          piece = pieces[i];
-          piece.unitCount = Math.round(piece.unitCount);
-          if (i === 0) {
-            break;
-          }
-          previousPiece = pieces[i - 1];
-          ratioToLargerUnit = options.unitMeasures[previousPiece.unitName] / options.unitMeasures[piece.unitName];
-          if (piece.unitCount % ratioToLargerUnit === 0 || options.largest && options.largest - 1 < i - firstOccupiedUnitIndex) {
-            previousPiece.unitCount += piece.unitCount / ratioToLargerUnit;
-            piece.unitCount = 0;
-          }
-        }
-      }
-      var result = [];
-      for (i = 0, pieces.length; i < len; i++) {
-        piece = pieces[i];
-        if (piece.unitCount) {
-          result.push(render(piece.unitCount, piece.unitName, dictionary, options));
-        }
-        if (result.length === options.largest) {
-          break;
-        }
-      }
-      if (result.length) {
-        if (!options.conjunction || result.length === 1) {
-          return result.join(options.delimiter);
-        } else if (result.length === 2) {
-          return result.join(options.conjunction);
-        } else if (result.length > 2) {
-          return result.slice(0, -1).join(options.delimiter) + (options.serialComma ? "," : "") + options.conjunction + result.slice(-1);
-        }
-      } else {
-        return render(0, options.units[options.units.length - 1], dictionary, options);
-      }
-    }
-    function render(count, type, dictionary, options) {
-      var decimal;
-      if (has(options, "decimal")) {
-        decimal = options.decimal;
-      } else if (has(dictionary, "decimal")) {
-        decimal = dictionary.decimal;
-      } else {
-        decimal = ".";
-      }
-      var countStr = count.toString().replace(".", decimal);
-      var dictionaryValue = dictionary[type];
-      var word;
-      if (typeof dictionaryValue === "function") {
-        word = dictionaryValue(count);
-      } else {
-        word = dictionaryValue;
-      }
-      return countStr + options.spacer + word;
-    }
-    function assign(destination) {
-      var source;
-      for (var i = 1; i < arguments.length; i++) {
-        source = arguments[i];
-        for (var prop in source) {
-          if (has(source, prop)) {
-            destination[prop] = source[prop];
-          }
-        }
-      }
-      return destination;
-    }
-    function getPolishForm(c) {
-      if (c === 1) {
-        return 0;
-      } else if (Math.floor(c) !== c) {
-        return 1;
-      } else if (c % 10 >= 2 && c % 10 <= 4 && !(c % 100 > 10 && c % 100 < 20)) {
-        return 2;
-      } else {
-        return 3;
-      }
-    }
-    function getSlavicForm(c) {
-      if (Math.floor(c) !== c) {
-        return 2;
-      } else if (c % 100 >= 5 && c % 100 <= 20 || c % 10 >= 5 && c % 10 <= 9 || c % 10 === 0) {
-        return 0;
-      } else if (c % 10 === 1) {
-        return 1;
-      } else if (c > 1) {
-        return 2;
-      } else {
-        return 0;
-      }
-    }
-    function getCzechOrSlovakForm(c) {
-      if (c === 1) {
-        return 0;
-      } else if (Math.floor(c) !== c) {
-        return 1;
-      } else if (c % 10 >= 2 && c % 10 <= 4 && c % 100 < 10) {
-        return 2;
-      } else {
-        return 3;
-      }
-    }
-    function getLithuanianForm(c) {
-      if (c === 1 || c % 10 === 1 && c % 100 > 20) {
-        return 0;
-      } else if (Math.floor(c) !== c || c % 10 >= 2 && c % 100 > 20 || c % 10 >= 2 && c % 100 < 10) {
-        return 1;
-      } else {
-        return 2;
-      }
-    }
-    function getLatvianForm(c) {
-      return c % 10 === 1 && c % 100 !== 11;
-    }
-    var isArray = Array.isArray || function(arg) {
-      return Object.prototype.toString.call(arg) === "[object Array]";
-    };
-    function has(obj, key) {
-      return Object.prototype.hasOwnProperty.call(obj, key);
-    }
-    humanizeDuration.getSupportedLanguages = function getSupportedLanguages() {
-      var result = [];
-      for (var language in LANGUAGES) {
-        if (has(LANGUAGES, language) && language !== "gr") {
-          result.push(language);
-        }
-      }
-      return result;
-    };
-    humanizeDuration.humanizer = humanizer;
-    if (typeof define === "function" && define.amd) {
-      define(function() {
-        return humanizeDuration;
-      });
-    } else if (typeof module2 !== "undefined" && module2.exports) {
-      module2.exports = humanizeDuration;
-    } else {
-      this.humanizeDuration = humanizeDuration;
-    }
-  })();
-});
-
 // node_modules/regex-escape/lib/index.js
 var require_lib2 = __commonJS((exports2, module2) => {
   "use strict";
@@ -5854,13 +4587,233 @@ var require_lib2 = __commonJS((exports2, module2) => {
   module2.exports = RegexEscape;
 });
 
+// node_modules/pretty-bytes/index.js
+var require_pretty_bytes = __commonJS((exports2, module2) => {
+  "use strict";
+  var BYTE_UNITS = [
+    "B",
+    "kB",
+    "MB",
+    "GB",
+    "TB",
+    "PB",
+    "EB",
+    "ZB",
+    "YB"
+  ];
+  var BIBYTE_UNITS = [
+    "B",
+    "kiB",
+    "MiB",
+    "GiB",
+    "TiB",
+    "PiB",
+    "EiB",
+    "ZiB",
+    "YiB"
+  ];
+  var BIT_UNITS = [
+    "b",
+    "kbit",
+    "Mbit",
+    "Gbit",
+    "Tbit",
+    "Pbit",
+    "Ebit",
+    "Zbit",
+    "Ybit"
+  ];
+  var BIBIT_UNITS = [
+    "b",
+    "kibit",
+    "Mibit",
+    "Gibit",
+    "Tibit",
+    "Pibit",
+    "Eibit",
+    "Zibit",
+    "Yibit"
+  ];
+  var toLocaleString = (number, locale, options) => {
+    let result = number;
+    if (typeof locale === "string" || Array.isArray(locale)) {
+      result = number.toLocaleString(locale, options);
+    } else if (locale === true || options !== void 0) {
+      result = number.toLocaleString(void 0, options);
+    }
+    return result;
+  };
+  module2.exports = (number, options) => {
+    if (!Number.isFinite(number)) {
+      throw new TypeError(`Expected a finite number, got ${typeof number}: ${number}`);
+    }
+    options = Object.assign({bits: false, binary: false}, options);
+    const UNITS = options.bits ? options.binary ? BIBIT_UNITS : BIT_UNITS : options.binary ? BIBYTE_UNITS : BYTE_UNITS;
+    if (options.signed && number === 0) {
+      return ` 0 ${UNITS[0]}`;
+    }
+    const isNegative = number < 0;
+    const prefix = isNegative ? "-" : options.signed ? "+" : "";
+    if (isNegative) {
+      number = -number;
+    }
+    let localeOptions;
+    if (options.minimumFractionDigits !== void 0) {
+      localeOptions = {minimumFractionDigits: options.minimumFractionDigits};
+    }
+    if (options.maximumFractionDigits !== void 0) {
+      localeOptions = Object.assign({maximumFractionDigits: options.maximumFractionDigits}, localeOptions);
+    }
+    if (number < 1) {
+      const numberString2 = toLocaleString(number, options.locale, localeOptions);
+      return prefix + numberString2 + " " + UNITS[0];
+    }
+    const exponent = Math.min(Math.floor(options.binary ? Math.log(number) / Math.log(1024) : Math.log10(number) / 3), UNITS.length - 1);
+    number /= Math.pow(options.binary ? 1024 : 1e3, exponent);
+    if (!localeOptions) {
+      number = number.toPrecision(3);
+    }
+    const numberString = toLocaleString(Number(number), options.locale, localeOptions);
+    const unit = UNITS[exponent];
+    return prefix + numberString + " " + unit;
+  };
+});
+
+// node_modules/parse-ms/index.js
+var require_parse_ms = __commonJS((exports2, module2) => {
+  "use strict";
+  module2.exports = (milliseconds) => {
+    if (typeof milliseconds !== "number") {
+      throw new TypeError("Expected a number");
+    }
+    const roundTowardsZero = milliseconds > 0 ? Math.floor : Math.ceil;
+    return {
+      days: roundTowardsZero(milliseconds / 864e5),
+      hours: roundTowardsZero(milliseconds / 36e5) % 24,
+      minutes: roundTowardsZero(milliseconds / 6e4) % 60,
+      seconds: roundTowardsZero(milliseconds / 1e3) % 60,
+      milliseconds: roundTowardsZero(milliseconds) % 1e3,
+      microseconds: roundTowardsZero(milliseconds * 1e3) % 1e3,
+      nanoseconds: roundTowardsZero(milliseconds * 1e6) % 1e3
+    };
+  };
+});
+
+// node_modules/pretty-ms/index.js
+var require_pretty_ms = __commonJS((exports2, module2) => {
+  "use strict";
+  var parseMilliseconds = require_parse_ms();
+  var pluralize = (word, count) => count === 1 ? word : word + "s";
+  module2.exports = (milliseconds, options = {}) => {
+    if (!Number.isFinite(milliseconds)) {
+      throw new TypeError("Expected a finite number");
+    }
+    if (options.colonNotation) {
+      options.compact = false;
+      options.formatSubMilliseconds = false;
+      options.separateMilliseconds = false;
+      options.verbose = false;
+    }
+    if (options.compact) {
+      options.secondsDecimalDigits = 0;
+      options.millisecondsDecimalDigits = 0;
+    }
+    const result = [];
+    const add = (value, long, short, valueString) => {
+      if ((result.length === 0 || !options.colonNotation) && value === 0 && !(options.colonNotation && short === "m")) {
+        return;
+      }
+      valueString = (valueString || value || "0").toString();
+      let prefix;
+      let suffix;
+      if (options.colonNotation) {
+        prefix = result.length > 0 ? ":" : "";
+        suffix = "";
+        const wholeDigits = valueString.includes(".") ? valueString.split(".")[0].length : valueString.length;
+        const minLength = result.length > 0 ? 2 : 1;
+        valueString = "0".repeat(Math.max(0, minLength - wholeDigits)) + valueString;
+      } else {
+        prefix = "";
+        suffix = options.verbose ? " " + pluralize(long, value) : short;
+      }
+      result.push(prefix + valueString + suffix);
+    };
+    const secondsDecimalDigits = typeof options.secondsDecimalDigits === "number" ? options.secondsDecimalDigits : 1;
+    if (secondsDecimalDigits < 1) {
+      const difference = 1e3 - milliseconds % 1e3;
+      if (difference < 500) {
+        milliseconds += difference;
+      }
+    }
+    const parsed = parseMilliseconds(milliseconds);
+    add(Math.trunc(parsed.days / 365), "year", "y");
+    add(parsed.days % 365, "day", "d");
+    add(parsed.hours, "hour", "h");
+    add(parsed.minutes, "minute", "m");
+    if (options.separateMilliseconds || options.formatSubMilliseconds || milliseconds < 1e3) {
+      add(parsed.seconds, "second", "s");
+      if (options.formatSubMilliseconds) {
+        add(parsed.milliseconds, "millisecond", "ms");
+        add(parsed.microseconds, "microsecond", "\xB5s");
+        add(parsed.nanoseconds, "nanosecond", "ns");
+      } else {
+        const millisecondsAndBelow = parsed.milliseconds + parsed.microseconds / 1e3 + parsed.nanoseconds / 1e6;
+        const millisecondsDecimalDigits = typeof options.millisecondsDecimalDigits === "number" ? options.millisecondsDecimalDigits : 0;
+        const millisecondsString = millisecondsDecimalDigits ? millisecondsAndBelow.toFixed(millisecondsDecimalDigits) : Math.ceil(millisecondsAndBelow);
+        add(parseFloat(millisecondsString, 10), "millisecond", "ms", millisecondsString);
+      }
+    } else {
+      const seconds = milliseconds / 1e3 % 60;
+      const secondsDecimalDigits2 = typeof options.secondsDecimalDigits === "number" ? options.secondsDecimalDigits : 1;
+      const secondsFixed = seconds.toFixed(secondsDecimalDigits2);
+      const secondsString = options.keepDecimalsOnWholeSeconds ? secondsFixed : secondsFixed.replace(/\.0+$/, "");
+      add(parseFloat(secondsString, 10), "second", "s", secondsString);
+    }
+    if (result.length === 0) {
+      return "0" + (options.verbose ? " milliseconds" : "ms");
+    }
+    if (options.compact) {
+      return "~" + result[0];
+    }
+    if (typeof options.unitCount === "number") {
+      return "~" + result.slice(0, Math.max(options.unitCount, 1)).join(" ");
+    }
+    return options.colonNotation ? result.join("") : result.join(" ");
+  };
+});
+
+// src/lib/units.js
+var require_units = __commonJS((exports2, module2) => {
+  var prettyBytes = require_pretty_bytes();
+  var prettyMilliseconds = require_pretty_ms();
+  var formatValue = (value, unit) => {
+    const normalizedUnit = unit && unit.toLowerCase();
+    switch (normalizedUnit) {
+      case "b":
+      case "byte":
+      case "bytes":
+        return prettyBytes(value);
+      case "ms":
+      case "millisecond":
+      case "milliseconds":
+        return prettyMilliseconds(value);
+      case "s":
+      case "seconds":
+        return prettyMilliseconds(value * 1e3);
+      default:
+        return value.toLocaleString();
+    }
+  };
+  module2.exports = {formatValue};
+});
+
 // src/lib/comment.js
 var require_comment = __commonJS((exports2, module2) => {
-  var humanizeDuration = require_humanize_duration();
   var regexEscape = require_lib2();
+  var {formatValue} = require_units();
   var createComment2 = ({baseSha, metrics, job, previousMetrics = {}, title}) => {
     const metadata = `<!--delta:${job}@${JSON.stringify(metrics)}-->`;
-    const metricsList = Object.entries(metrics).map(([name, value]) => getMetricLine(name, value, previousMetrics[name])).join("\n");
+    const metricsList = metrics.map((metric) => getMetricLine(metric, previousMetrics[metric.name])).join("\n");
     const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}
 
 ` : "";
@@ -5873,10 +4826,10 @@ ${metadata}`;
     const deltaComment = comments.map(({body}) => parseComment(body, job)).find(Boolean);
     return deltaComment;
   };
-  var getMetricLine = (name, value, previousValue) => {
+  var getMetricLine = ({displayName, name, units, value}, previousValue) => {
     const comparison = getMetricLineComparison(value, previousValue);
-    const formattedValue = humanizeDuration(value, {maxDecimalPoints: 3});
-    return `- **${name}**: ${formattedValue}${comparison ? ` ${comparison}` : ""}`;
+    const formattedValue = formatValue(value, units);
+    return `- **${displayName || name}**: ${formattedValue}${comparison ? ` ${comparison}` : ""}`;
   };
   var getMetricLineComparison = (value, previousValue) => {
     if (previousValue === void 0) {
@@ -5910,22 +4863,49 @@ ${metadata}`;
 
 // src/lib/delta_file.js
 var require_delta_file = __commonJS((exports2, module2) => {
-  var {readFile} = require("fs");
-  var {join} = require("path");
+  var {readdir, readFile} = require("fs");
   var {promisify} = require("util");
   var core2 = require_core();
+  var pReadDir = promisify(readdir);
   var pReadFile = promisify(readFile);
-  var readDeltaFile2 = async (rootPath, inputFile) => {
+  var readDeltaFile2 = async (filePath) => {
     try {
-      const filePath = join(rootPath, inputFile);
-      const file = await pReadFile(filePath, "utf8");
-      return JSON.parse(file);
+      const data = await pReadFile(filePath, "utf8");
+      const match = data.match(/(\d+(?:\.\d+)?)\s*(\w*)\s*(?:\(([\s\S]*)\))?/);
+      if (!match) {
+        return null;
+      }
+      return {
+        value: Number(match[1]),
+        units: match[2],
+        displayName: match[3]
+      };
+    } catch (_) {
+      return null;
+    }
+  };
+  var readDeltaFiles = async (rootPath) => {
+    try {
+      const items = await pReadDir(rootPath);
+      const metricFiles = items.map((fileName) => ({fileName, metricMatch: fileName.match(/^\.delta\.(.+)$/)})).filter(({metricMatch}) => Boolean(metricMatch)).map(({fileName, metricMatch}) => ({fileName, metricName: metricMatch[1]}));
+      const metrics = metricFiles.map(async ({fileName, metricName}) => {
+        const data = await readDeltaFile2(fileName);
+        if (!data) {
+          return;
+        }
+        return {
+          ...data,
+          name: metricName
+        };
+      });
+      const metricsData = await Promise.all(metrics);
+      return metricsData.filter(Boolean);
     } catch (error) {
-      core2.debug(`Could not read delta file: ${error.message}`);
+      core2.debug(`Could not read delta files: ${error.message}`);
       return {};
     }
   };
-  module2.exports = {readDeltaFile: readDeltaFile2};
+  module2.exports = {readDeltaFiles};
 });
 
 // src/lib/github.js
