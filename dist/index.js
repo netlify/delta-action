@@ -4873,7 +4873,7 @@ var require_delta_file = __commonJS((exports2, module2) => {
   var core2 = require_core();
   var pReadDir = promisify(readdir);
   var pReadFile = promisify(readFile);
-  var readDeltaFile2 = async (filePath) => {
+  var readDeltaFile = async (filePath) => {
     try {
       const data = await pReadFile(filePath, "utf8");
       const match = data.match(/(\d+(?:\.\d+)?)\s*(\w*)\s*(?:\(([\s\S]*)\))?/);
@@ -4889,12 +4889,12 @@ var require_delta_file = __commonJS((exports2, module2) => {
       return null;
     }
   };
-  var readDeltaFiles = async (rootPath) => {
+  var readDeltaFiles2 = async (rootPath) => {
     try {
       const items = await pReadDir(rootPath);
       const metricFiles = items.map((fileName) => ({fileName, metricMatch: fileName.match(/^\.delta\.(.+)$/)})).filter(({metricMatch}) => Boolean(metricMatch)).map(({fileName, metricMatch}) => ({fileName, metricName: metricMatch[1]}));
       const metrics = metricFiles.map(async ({fileName, metricName}) => {
-        const data = await readDeltaFile2(fileName);
+        const data = await readDeltaFile(fileName);
         if (!data) {
           return;
         }
@@ -4910,7 +4910,7 @@ var require_delta_file = __commonJS((exports2, module2) => {
       return {};
     }
   };
-  module2.exports = {readDeltaFiles};
+  module2.exports = {readDeltaFiles: readDeltaFiles2};
 });
 
 // src/lib/github.js
@@ -4943,7 +4943,6 @@ var require_inputs = __commonJS((exports2, module2) => {
   var core2 = require_core();
   var getInputs2 = () => {
     const {
-      DELTA_FILENAME: envInputFile,
       GITHUB_DEV_BASE_BRANCH: envBaseBranch,
       GITHUB_JOB: job,
       GITHUB_REF: ref,
@@ -4953,7 +4952,6 @@ var require_inputs = __commonJS((exports2, module2) => {
       GITHUB_WORKSPACE: rootPath = process2.cwd()
     } = process2.env;
     const baseBranch = envBaseBranch || core2.getInput("base_branch");
-    const inputFile = envInputFile || core2.getInput("filename");
     const title = core2.getInput("title");
     const [owner, repo] = repository.split("/");
     const token = envToken || core2.getInput("token");
@@ -4961,7 +4959,6 @@ var require_inputs = __commonJS((exports2, module2) => {
     return {
       baseBranch,
       commitSha,
-      inputFile,
       job,
       owner,
       prNumber,
@@ -4979,7 +4976,7 @@ var require_inputs = __commonJS((exports2, module2) => {
 var core = require_core();
 var github = require_github();
 var {createComment, findDeltaComment, getMetricsComment} = require_comment();
-var {readDeltaFile} = require_delta_file();
+var {readDeltaFiles} = require_delta_file();
 var {getCommentsFromMainBranch} = require_github2();
 var {getInputs} = require_inputs();
 var processHeadBranch = async ({commitSha, headMetrics, job, octokit, owner, repo, title}) => {
@@ -5027,8 +5024,8 @@ var processPullRequest = async ({headMetrics, job, octokit, owner, prNumber, rep
   }
 };
 var run = async function() {
-  const {baseBranch, commitSha, inputFile, job, owner, prNumber, ref, repo, rootPath, title, token} = getInputs();
-  const {metrics: headMetrics = []} = await readDeltaFile(rootPath, inputFile);
+  const {baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token} = getInputs();
+  const {metrics: headMetrics = []} = await readDeltaFiles(rootPath);
   const isHeadBranch = ref === `refs/heads/${baseBranch}`;
   core.debug(`Running job ${job} on ref ${ref}`);
   if (headMetrics.length === 0) {

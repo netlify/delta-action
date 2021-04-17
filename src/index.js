@@ -2,7 +2,7 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 
 const { createComment, findDeltaComment, getMetricsComment } = require('./lib/comment')
-const { readDeltaFile } = require('./lib/delta_file')
+const { readDeltaFiles } = require('./lib/delta_file')
 const { getCommentsFromMainBranch } = require('./lib/github')
 const { getInputs } = require('./lib/inputs')
 
@@ -59,8 +59,8 @@ const processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, 
 }
 
 const run = async function () {
-  const { baseBranch, commitSha, inputFile, job, owner, prNumber, ref, repo, rootPath, title, token } = getInputs()
-  const { metrics: headMetrics = [] } = await readDeltaFile(rootPath, inputFile)
+  const { baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token } = getInputs()
+  const { metrics: headMetrics = [] } = await readDeltaFiles(rootPath)
   const isHeadBranch = ref === `refs/heads/${baseBranch}`
 
   core.debug(`Running job ${job} on ref ${ref}`)
