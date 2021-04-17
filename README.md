@@ -1,27 +1,35 @@
 # Delta Action
 
-A GitHub Action for capturing benchmark data and comparing them against a baseline.
+A GitHub Action for reporting benchmark data and comparing it against a baseline.
+
+<img width="750" alt="Screenshot of a benchmark report comment" src="https://user-images.githubusercontent.com/4162329/115129623-8acac500-9fdf-11eb-9bfc-822a415cb436.png">
 
 ## The basics
 
-This action doesn't actually run any benchmarks for you. It simply reads them from a file, which you need to create
-yourself using your benchmarking tool of choice, and prints the results in GitHub comments. It also automatically
-compares the metrics against a baseline, giving you information about the variation of the results.
+This action reads benchmark metrics on GitHub pull requests and commits, and reports them by adding a comment with any metrics found. It also compares then against the latest commit on the main branch, treating it as the baseline.
 
-The format of this file is a JSON string containing an object with a `metrics` key. Each key in that object will be a
-metric captured and compared by the action, with the values being a duration in milliseconds.
+The action looks for benchmark data in files on the repository root. These should be named in the format `.delta.<metric name>` — e.g. `.delta.install_time` will create a metric called `install_time`.
 
-_Example input file:_
+These files should contain:
 
-```json
-{
-  "metrics": {
-    "mytask1": 10,
-    "mytask2": 20,
-    "mytask3": 30
-  }
-}
+- A number representing the value of the metric
+- The units of the metric (optional)
+- A human-friendly name of the metric (optional)
+
+_Example: `.delta.install_time`_
 ```
+350ms (Installation time)
+```
+
+The units will determine how the values will be formatted in the benchmark reports. Supported units are:
+
+- Time-based (formatted with [`pretty-ms`](https://www.npmjs.com/package/pretty-ms))
+  - `ms` / `milliseconds`
+  - `s` / `seconds`
+- Bytes (formatted with [`pretty-bytes`](https://www.npmjs.com/package/pretty-bytes))
+  - `b` / `bytes`
+  - `kb` / `kilobytes`
+- Unitless (formatted with [`Number.prototype.toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString))
 
 ## Configuration
 
@@ -30,17 +38,16 @@ The action supports the following inputs:
 | Name          | Description                              | Default              |
 | ------------- | ---------------------------------------- | -------------------- |
 | `base_branch` | Name of the base branch                  | `main`               |
-| `filename`    | Name of the input file                   | `.delta-action.json` |
 | `title`       | Title/heading to include in the comments | Delta results        |
 | `token`       | GitHub access token                      |                      |
 
 ## Usage
 
-1. Add a benchmark step to your workflow that creates a `.delta-action.json` file with the format described above
+1. Add a benchmark step to your workflow that creates a `.delta.<metric>` file with the format described above
 
 ```yaml
 - name: Run benchmark
-  run: node some-benchmark-script.js > .delta-action.json
+  run: echo 123ms > .delta.install_time.json
 ```
 
 2. Add the action to the workflow
