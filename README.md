@@ -47,7 +47,7 @@ The action supports the following inputs:
 
 ```yaml
 - name: Run benchmark
-  run: echo 123ms > .delta.install_time.json
+  run: echo 123ms > .delta.install_time
 ```
 
 2. Add the action to the workflow
