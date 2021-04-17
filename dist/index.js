@@ -4786,6 +4786,7 @@ var require_pretty_ms = __commonJS((exports2, module2) => {
 var require_units = __commonJS((exports2, module2) => {
   var prettyBytes = require_pretty_bytes();
   var prettyMilliseconds = require_pretty_ms();
+  var KILO = 1e3;
   var formatValue = (value, unit) => {
     const normalizedUnit = unit && unit.toLowerCase();
     switch (normalizedUnit) {
@@ -4793,13 +4794,17 @@ var require_units = __commonJS((exports2, module2) => {
       case "byte":
       case "bytes":
         return prettyBytes(value);
+      case "kb":
+      case "kilobyte":
+      case "kilobytes":
+        return prettyBytes(value * KILO);
       case "ms":
       case "millisecond":
       case "milliseconds":
         return prettyMilliseconds(value);
       case "s":
       case "seconds":
-        return prettyMilliseconds(value * 1e3);
+        return prettyMilliseconds(value * KILO);
       default:
         return value.toLocaleString();
     }

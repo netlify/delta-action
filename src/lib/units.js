@@ -1,6 +1,8 @@
 const prettyBytes = require('pretty-bytes')
 const prettyMilliseconds = require('pretty-ms')
 
+const KILO = 1e3
+
 // eslint-disable-next-line complexity
 const formatValue = (value, unit) => {
   const normalizedUnit = unit && unit.toLowerCase()
@@ -11,6 +13,11 @@ const formatValue = (value, unit) => {
     case 'bytes':
       return prettyBytes(value)
 
+    case 'kb':
+    case 'kilobyte':
+    case 'kilobytes':
+      return prettyBytes(value * KILO)
+
     case 'ms':
     case 'millisecond':
     case 'milliseconds':
@@ -18,8 +25,7 @@ const formatValue = (value, unit) => {
 
     case 's':
     case 'seconds':
-      // eslint-disable-next-line no-magic-numbers
-      return prettyMilliseconds(value * 1000)
+      return prettyMilliseconds(value * KILO)
 
     default:
       return value.toLocaleString()
