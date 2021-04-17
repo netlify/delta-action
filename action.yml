@@ -4,9 +4,6 @@ inputs:
   base_branch:
     default: main
     description: 'Name of the base branch'
-  filename:
-    default: .delta-action.json
-    description: 'Name of the input file'
   title:
     default: Delta results
     description: 'Title used in the comments'
