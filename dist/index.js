@@ -4907,7 +4907,7 @@ var require_delta_file = __commonJS((exports2, module2) => {
       return metricsData.filter(Boolean);
     } catch (error) {
       core2.debug(`Could not read delta files: ${error.message}`);
-      return {};
+      return [];
     }
   };
   module2.exports = {readDeltaFiles: readDeltaFiles2};
@@ -5025,7 +5025,7 @@ var processPullRequest = async ({headMetrics, job, octokit, owner, prNumber, rep
 };
 var run = async function() {
   const {baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token} = getInputs();
-  const {metrics: headMetrics = []} = await readDeltaFiles(rootPath);
+  const headMetrics = await readDeltaFiles(rootPath);
   const isHeadBranch = ref === `refs/heads/${baseBranch}`;
   core.debug(`Running job ${job} on ref ${ref}`);
   if (headMetrics.length === 0) {

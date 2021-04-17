@@ -60,7 +60,7 @@ const processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, 
 
 const run = async function () {
   const { baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token } = getInputs()
-  const { metrics: headMetrics = [] } = await readDeltaFiles(rootPath)
+  const headMetrics = await readDeltaFiles(rootPath)
   const isHeadBranch = ref === `refs/heads/${baseBranch}`
 
   core.debug(`Running job ${job} on ref ${ref}`)

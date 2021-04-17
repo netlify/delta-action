@@ -50,7 +50,7 @@ const readDeltaFiles = async (rootPath) => {
   } catch (error) {
     core.debug(`Could not read delta files: ${error.message}`)
 
-    return {}
+    return []
   }
 }
 
