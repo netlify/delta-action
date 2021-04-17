@@ -52,7 +52,8 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
-    "humanize-duration": "^3.25.1",
+    "pretty-bytes": "^5.6.0",
+    "pretty-ms": "^5.1.0",
     "regex-escape": "^3.4.10"
   },
   "devDependencies": {

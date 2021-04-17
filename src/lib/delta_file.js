@@ -1,22 +1,57 @@
-const { readFile } = require('fs')
-const { join } = require('path')
+const { readdir, readFile } = require('fs')
 const { promisify } = require('util')
 
 const core = require('@actions/core')
 
+const pReadDir = promisify(readdir)
 const pReadFile = promisify(readFile)
 
-const readDeltaFile = async (rootPath, inputFile) => {
+const readDeltaFile = async (filePath) => {
   try {
-    const filePath = join(rootPath, inputFile)
-    const file = await pReadFile(filePath, 'utf8')
+    const data = await pReadFile(filePath, 'utf8')
+    const match = data.match(/(\d+(?:\.\d+)?)\s*(\w*)\s*(?:\(([\s\S]*)\))?/)
 
-    return JSON.parse(file)
+    if (!match) {
+      return null
+    }
+
+    return {
+      value: Number(match[1]),
+      units: match[2],
+      displayName: match[3],
+    }
+  } catch (_) {
+    return null
+  }
+}
+
+const readDeltaFiles = async (rootPath) => {
+  try {
+    const items = await pReadDir(rootPath)
+    const metricFiles = items
+      .map((fileName) => ({ fileName, metricMatch: fileName.match(/^\.delta\.(.+)$/) }))
+      .filter(({ metricMatch }) => Boolean(metricMatch))
+      .map(({ fileName, metricMatch }) => ({ fileName, metricName: metricMatch[1] }))
+    const metrics = metricFiles.map(async ({ fileName, metricName }) => {
+      const data = await readDeltaFile(fileName)
+
+      if (!data) {
+        return
+      }
+
+      return {
+        ...data,
+        name: metricName,
+      }
+    })
+    const metricsData = await Promise.all(metrics)
+
+    return metricsData.filter(Boolean)
   } catch (error) {
-    core.debug(`Could not read delta file: ${error.message}`)
+    core.debug(`Could not read delta files: ${error.message}`)
 
     return {}
   }
 }
 
-module.exports = { readDeltaFile }
+module.exports = { readDeltaFiles }

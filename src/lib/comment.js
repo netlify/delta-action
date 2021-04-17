@@ -1,11 +1,10 @@
-const humanizeDuration = require('humanize-duration')
 const regexEscape = require('regex-escape')
+
+const { formatValue } = require('./units')
 
 const createComment = ({ baseSha, metrics, job, previousMetrics = {}, title }) => {
   const metadata = `<!--delta:${job}@${JSON.stringify(metrics)}-->`
-  const metricsList = Object.entries(metrics)
-    .map(([name, value]) => getMetricLine(name, value, previousMetrics[name]))
-    .join('\n')
+  const metricsList = metrics.map((metric) => getMetricLine(metric, previousMetrics[metric.name])).join('\n')
   const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}\n\n` : ''
 
   return `## ${title}\n\n${baseShaLine}${metricsList}\n${metadata}`
@@ -17,11 +16,11 @@ const getMetricsComment = ({ comments, job }) => {
   return deltaComment
 }
 
-const getMetricLine = (name, value, previousValue) => {
+const getMetricLine = ({ displayName, name, units, value }, previousValue) => {
   const comparison = getMetricLineComparison(value, previousValue)
-  const formattedValue = humanizeDuration(value, { maxDecimalPoints: 3 })
+  const formattedValue = formatValue(value, units)
 
-  return `- **${name}**: ${formattedValue}${comparison ? ` ${comparison}` : ''}`
+  return `- **${displayName || name}**: ${formattedValue}${comparison ? ` ${comparison}` : ''}`
 }
 
 const getMetricLineComparison = (value, previousValue) => {
