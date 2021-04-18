@@ -23,10 +23,10 @@ _Example: `.delta.install_time`_
 
 The units will determine how the values will be formatted in the benchmark reports. Supported units are:
 
-- Time-based (formatted with [`pretty-ms`](https://www.npmjs.com/package/pretty-ms))
+- Time (formatted with [`pretty-ms`](https://www.npmjs.com/package/pretty-ms))
   - `ms` / `milliseconds`
   - `s` / `seconds`
-- Bytes (formatted with [`pretty-bytes`](https://www.npmjs.com/package/pretty-bytes))
+- Storage (formatted with [`pretty-bytes`](https://www.npmjs.com/package/pretty-bytes))
   - `b` / `bytes`
   - `kb` / `kilobytes`
 - Unitless (formatted with [`Number.prototype.toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString))
