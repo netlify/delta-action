@@ -206,6 +206,7 @@ var require_core = __commonJS((exports2) => {
   }
   exports2.getInput = getInput;
   function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand("set-output", {name}, value);
   }
   exports2.setOutput = setOutput;
@@ -1258,7 +1259,7 @@ var require_before_after_hook = __commonJS((exports2, module2) => {
   module2.exports.Collection = Hook.Collection;
 });
 
-// node_modules/@octokit/endpoint/node_modules/is-plain-object/dist/is-plain-object.js
+// node_modules/is-plain-object/dist/is-plain-object.js
 var require_is_plain_object = __commonJS((exports2) => {
   "use strict";
   Object.defineProperty(exports2, "__esModule", {value: true});
@@ -1584,37 +1585,6 @@ var require_dist_node2 = __commonJS((exports2) => {
   };
   var endpoint = withDefaults(null, DEFAULTS);
   exports2.endpoint = endpoint;
-});
-
-// node_modules/@octokit/request/node_modules/is-plain-object/dist/is-plain-object.js
-var require_is_plain_object2 = __commonJS((exports2) => {
-  "use strict";
-  Object.defineProperty(exports2, "__esModule", {value: true});
-  /*!
-   * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
-   *
-   * Copyright (c) 2014-2017, Jon Schlinkert.
-   * Released under the MIT License.
-   */
-  function isObject(o) {
-    return Object.prototype.toString.call(o) === "[object Object]";
-  }
-  function isPlainObject(o) {
-    var ctor, prot;
-    if (isObject(o) === false)
-      return false;
-    ctor = o.constructor;
-    if (ctor === void 0)
-      return true;
-    prot = ctor.prototype;
-    if (isObject(prot) === false)
-      return false;
-    if (prot.hasOwnProperty("isPrototypeOf") === false) {
-      return false;
-    }
-    return true;
-  }
-  exports2.isPlainObject = isPlainObject;
 });
 
 // node_modules/node-fetch/lib/index.js
@@ -2795,10 +2765,10 @@ var require_dist_node5 = __commonJS((exports2) => {
   }
   var endpoint = require_dist_node2();
   var universalUserAgent = require_dist_node();
-  var isPlainObject = require_is_plain_object2();
+  var isPlainObject = require_is_plain_object();
   var nodeFetch = _interopDefault(require_lib());
   var requestError = require_dist_node4();
-  var VERSION = "5.4.14";
+  var VERSION = "5.4.15";
   function getBufferResponse(response) {
     return response.arrayBuffer();
   }
@@ -4703,7 +4673,8 @@ var require_parse_ms = __commonJS((exports2, module2) => {
 var require_pretty_ms = __commonJS((exports2, module2) => {
   "use strict";
   var parseMilliseconds = require_parse_ms();
-  var pluralize = (word, count) => count === 1 ? word : word + "s";
+  var pluralize = (word, count) => count === 1 ? word : `${word}s`;
+  var SECOND_ROUNDING_EPSILON = 1e-7;
   module2.exports = (milliseconds, options = {}) => {
     if (!Number.isFinite(milliseconds)) {
       throw new TypeError("Expected a finite number");
@@ -4719,6 +4690,11 @@ var require_pretty_ms = __commonJS((exports2, module2) => {
       options.millisecondsDecimalDigits = 0;
     }
     const result = [];
+    const floorDecimals = (value, decimalDigits) => {
+      const flooredInterimValue = Math.floor(value * 10 ** decimalDigits + SECOND_ROUNDING_EPSILON);
+      const flooredValue = Math.round(flooredInterimValue) / 10 ** decimalDigits;
+      return flooredValue.toFixed(decimalDigits);
+    };
     const add = (value, long, short, valueString) => {
       if ((result.length === 0 || !options.colonNotation) && value === 0 && !(options.colonNotation && short === "m")) {
         return;
@@ -4738,19 +4714,12 @@ var require_pretty_ms = __commonJS((exports2, module2) => {
       }
       result.push(prefix + valueString + suffix);
     };
-    const secondsDecimalDigits = typeof options.secondsDecimalDigits === "number" ? options.secondsDecimalDigits : 1;
-    if (secondsDecimalDigits < 1) {
-      const difference = 1e3 - milliseconds % 1e3;
-      if (difference < 500) {
-        milliseconds += difference;
-      }
-    }
     const parsed = parseMilliseconds(milliseconds);
     add(Math.trunc(parsed.days / 365), "year", "y");
     add(parsed.days % 365, "day", "d");
     add(parsed.hours, "hour", "h");
     add(parsed.minutes, "minute", "m");
-    if (options.separateMilliseconds || options.formatSubMilliseconds || milliseconds < 1e3) {
+    if (options.separateMilliseconds || options.formatSubMilliseconds || !options.colonNotation && milliseconds < 1e3) {
       add(parsed.seconds, "second", "s");
       if (options.formatSubMilliseconds) {
         add(parsed.milliseconds, "millisecond", "ms");
@@ -4759,24 +4728,26 @@ var require_pretty_ms = __commonJS((exports2, module2) => {
       } else {
         const millisecondsAndBelow = parsed.milliseconds + parsed.microseconds / 1e3 + parsed.nanoseconds / 1e6;
         const millisecondsDecimalDigits = typeof options.millisecondsDecimalDigits === "number" ? options.millisecondsDecimalDigits : 0;
-        const millisecondsString = millisecondsDecimalDigits ? millisecondsAndBelow.toFixed(millisecondsDecimalDigits) : Math.ceil(millisecondsAndBelow);
-        add(parseFloat(millisecondsString, 10), "millisecond", "ms", millisecondsString);
+        const roundedMiliseconds = millisecondsAndBelow >= 1 ? Math.round(millisecondsAndBelow) : Math.ceil(millisecondsAndBelow);
+        const millisecondsString = millisecondsDecimalDigits ? millisecondsAndBelow.toFixed(millisecondsDecimalDigits) : roundedMiliseconds;
+        add(Number.parseFloat(millisecondsString, 10), "millisecond", "ms", millisecondsString);
       }
     } else {
       const seconds = milliseconds / 1e3 % 60;
-      const secondsDecimalDigits2 = typeof options.secondsDecimalDigits === "number" ? options.secondsDecimalDigits : 1;
-      const secondsFixed = seconds.toFixed(secondsDecimalDigits2);
+      const secondsDecimalDigits = typeof options.secondsDecimalDigits === "number" ? options.secondsDecimalDigits : 1;
+      const secondsFixed = floorDecimals(seconds, secondsDecimalDigits);
       const secondsString = options.keepDecimalsOnWholeSeconds ? secondsFixed : secondsFixed.replace(/\.0+$/, "");
-      add(parseFloat(secondsString, 10), "second", "s", secondsString);
+      add(Number.parseFloat(secondsString, 10), "second", "s", secondsString);
     }
     if (result.length === 0) {
       return "0" + (options.verbose ? " milliseconds" : "ms");
     }
     if (options.compact) {
-      return "~" + result[0];
+      return result[0];
     }
     if (typeof options.unitCount === "number") {
-      return "~" + result.slice(0, Math.max(options.unitCount, 1)).join(" ");
+      const separator = options.colonNotation ? "" : " ";
+      return result.slice(0, Math.max(options.unitCount, 1)).join(separator);
     }
     return options.colonNotation ? result.join("") : result.join(" ");
   };
