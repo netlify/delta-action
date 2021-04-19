@@ -4,10 +4,12 @@ on:
     branches:
       - release-*
 jobs:
-  swagger-bump:
+  prepare-dist:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
       - uses: actions/setup-node@v2
         with:
           node-version: 15.x
