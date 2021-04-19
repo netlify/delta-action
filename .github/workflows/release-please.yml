@@ -15,6 +15,6 @@ jobs:
       - uses: GoogleCloudPlatform/release-please-action@v2
         with:
           # token: ${{ steps.get-token.outputs.token }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           release-type: node
           package-name: '@netlify/delta-action'
