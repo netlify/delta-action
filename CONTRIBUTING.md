@@ -14,7 +14,7 @@ This project was made with ❤️. The simplest way to give back is by starring 
 Everyone is welcome regardless of personal background. We enforce a [Code of conduct](CODE_OF_CONDUCT.md) in order to
 promote a positive and inclusive environment.
 
-# Development process
+## Development process
 
 First fork and clone the repository. If you're not sure how to do this, please watch
 [these videos](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github).
@@ -31,7 +31,8 @@ To prepare the code for distribution, run:
 npm run prepare
 ```
 
-You'll need to commit the `dist/` directory to version control.
-
 After submitting the pull request, please make sure the Continuous Integration checks are passing.
 
+## Releasing
+
+Merge the release PR
