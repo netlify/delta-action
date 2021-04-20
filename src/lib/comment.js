@@ -3,7 +3,8 @@ const regexEscape = require('regex-escape')
 const { formatValue } = require('./units')
 
 const createComment = ({ baseSha, metrics, job, previousMetrics = {}, title }) => {
-  const metadata = `<!--delta:${job}@${JSON.stringify(metrics)}-->`
+  const metricValues = metrics.reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {})
+  const metadata = `<!--delta:${job}@${JSON.stringify(metricValues)}-->`
   const metricsList = metrics.map((metric) => getMetricLine(metric, previousMetrics[metric.name])).join('\n')
   const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}\n\n` : ''
 
