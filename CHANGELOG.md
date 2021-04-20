@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/netlify/delta-action/compare/v1.0.1...v1.0.2) (2021-04-20)
+
+
+### Bug Fixes
+
+* use correct format in comment metadata ([#18](https://www.github.com/netlify/delta-action/issues/18)) ([badb5f6](https://www.github.com/netlify/delta-action/commit/badb5f6f531a9681e14c46d8a06ec68eb41b23bf))
+
 ### [1.0.1](https://www.github.com/netlify/delta-action/compare/v1.0.0...v1.0.1) (2021-04-19)
 
 
