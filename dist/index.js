@@ -4788,7 +4788,8 @@ var require_comment = __commonJS((exports2, module2) => {
   var regexEscape = require_lib2();
   var {formatValue} = require_units();
   var createComment2 = ({baseSha, metrics, job, previousMetrics = {}, title}) => {
-    const metadata = `<!--delta:${job}@${JSON.stringify(metrics)}-->`;
+    const metricValues = metrics.reduce((acc, {name, value}) => ({...acc, [name]: value}), {});
+    const metadata = `<!--delta:${job}@${JSON.stringify(metricValues)}-->`;
     const metricsList = metrics.map((metric) => getMetricLine(metric, previousMetrics[metric.name])).join("\n");
     const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}
 
