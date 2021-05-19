@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.3](https://www.github.com/netlify/delta-action/compare/v1.0.2...v1.0.3) (2021-05-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/github to v5 ([#39](https://www.github.com/netlify/delta-action/issues/39)) ([e941254](https://www.github.com/netlify/delta-action/commit/e94125470d497623109de7aa2a70d3e6e245a4cd))
+
 ### [1.0.2](https://www.github.com/netlify/delta-action/compare/v1.0.1...v1.0.2) (2021-04-20)
 
 
