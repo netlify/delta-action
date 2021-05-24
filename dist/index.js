@@ -1,12 +1,13 @@
 var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[Object.keys(cb)[0]])((mod = {exports: {}}).exports, mod), mod.exports;
+  return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
 
 // node_modules/@actions/core/lib/utils.js
 var require_utils = __commonJS({
   "node_modules/@actions/core/lib/utils.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.toCommandValue = void 0;
     function toCommandValue(input) {
       if (input === null || input === void 0) {
         return "";
@@ -23,19 +24,36 @@ var require_utils = __commonJS({
 var require_command = __commonJS({
   "node_modules/@actions/core/lib/command.js"(exports2) {
     "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
       if (mod && mod.__esModule)
         return mod;
       var result = {};
       if (mod != null) {
         for (var k in mod)
-          if (Object.hasOwnProperty.call(mod, k))
-            result[k] = mod[k];
+          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
       }
-      result["default"] = mod;
+      __setModuleDefault(result, mod);
       return result;
     };
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.issue = exports2.issueCommand = void 0;
     var os = __importStar(require("os"));
     var utils_1 = require_utils();
     function issueCommand(command, properties, message) {
@@ -93,19 +111,36 @@ var require_command = __commonJS({
 var require_file_command = __commonJS({
   "node_modules/@actions/core/lib/file-command.js"(exports2) {
     "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
       if (mod && mod.__esModule)
         return mod;
       var result = {};
       if (mod != null) {
         for (var k in mod)
-          if (Object.hasOwnProperty.call(mod, k))
-            result[k] = mod[k];
+          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
       }
-      result["default"] = mod;
+      __setModuleDefault(result, mod);
       return result;
     };
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.issueCommand = void 0;
     var fs = __importStar(require("fs"));
     var os = __importStar(require("os"));
     var utils_1 = require_utils();
@@ -129,6 +164,34 @@ var require_file_command = __commonJS({
 var require_core = __commonJS({
   "node_modules/@actions/core/lib/core.js"(exports2) {
     "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports2 && exports2.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
     var __awaiter = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
@@ -156,19 +219,8 @@ var require_core = __commonJS({
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
     };
-    var __importStar = exports2 && exports2.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
-      var result = {};
-      if (mod != null) {
-        for (var k in mod)
-          if (Object.hasOwnProperty.call(mod, k))
-            result[k] = mod[k];
-      }
-      result["default"] = mod;
-      return result;
-    };
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getState = exports2.saveState = exports2.group = exports2.endGroup = exports2.startGroup = exports2.info = exports2.warning = exports2.error = exports2.debug = exports2.isDebug = exports2.setFailed = exports2.setCommandEcho = exports2.setOutput = exports2.getBooleanInput = exports2.getInput = exports2.addPath = exports2.setSecret = exports2.exportVariable = exports2.ExitCode = void 0;
     var command_1 = require_command();
     var file_command_1 = require_file_command();
     var utils_1 = require_utils();
@@ -188,7 +240,7 @@ var require_core = __commonJS({
         const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
         file_command_1.issueCommand("ENV", commandValue);
       } else {
-        command_1.issueCommand("set-env", {name}, convertedVal);
+        command_1.issueCommand("set-env", { name }, convertedVal);
       }
     }
     exports2.exportVariable = exportVariable;
@@ -211,12 +263,27 @@ var require_core = __commonJS({
       if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
       }
+      if (options && options.trimWhitespace === false) {
+        return val;
+      }
       return val.trim();
     }
     exports2.getInput = getInput;
+    function getBooleanInput(name, options) {
+      const trueValue = ["true", "True", "TRUE"];
+      const falseValue = ["false", "False", "FALSE"];
+      const val = getInput(name, options);
+      if (trueValue.includes(val))
+        return true;
+      if (falseValue.includes(val))
+        return false;
+      throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}
+Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
+    }
+    exports2.getBooleanInput = getBooleanInput;
     function setOutput(name, value) {
       process.stdout.write(os.EOL);
-      command_1.issueCommand("set-output", {name}, value);
+      command_1.issueCommand("set-output", { name }, value);
     }
     exports2.setOutput = setOutput;
     function setCommandEcho(enabled) {
@@ -270,7 +337,7 @@ var require_core = __commonJS({
     }
     exports2.group = group;
     function saveState(name, value) {
-      command_1.issueCommand("save-state", {name}, value);
+      command_1.issueCommand("save-state", { name }, value);
     }
     exports2.saveState = saveState;
     function getState(name) {
@@ -284,7 +351,7 @@ var require_core = __commonJS({
 var require_context = __commonJS({
   "node_modules/@actions/github/lib/context.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.Context = void 0;
     var fs_1 = require("fs");
     var os_1 = require("os");
@@ -294,7 +361,7 @@ var require_context = __commonJS({
         this.payload = {};
         if (process.env.GITHUB_EVENT_PATH) {
           if (fs_1.existsSync(process.env.GITHUB_EVENT_PATH)) {
-            this.payload = JSON.parse(fs_1.readFileSync(process.env.GITHUB_EVENT_PATH, {encoding: "utf8"}));
+            this.payload = JSON.parse(fs_1.readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: "utf8" }));
           } else {
             const path = process.env.GITHUB_EVENT_PATH;
             process.stdout.write(`GITHUB_EVENT_PATH ${path} does not exist${os_1.EOL}`);
@@ -315,12 +382,12 @@ var require_context = __commonJS({
       }
       get issue() {
         const payload = this.payload;
-        return Object.assign(Object.assign({}, this.repo), {number: (payload.issue || payload.pull_request || payload).number});
+        return Object.assign(Object.assign({}, this.repo), { number: (payload.issue || payload.pull_request || payload).number });
       }
       get repo() {
         if (process.env.GITHUB_REPOSITORY) {
           const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
-          return {owner, repo};
+          return { owner, repo };
         }
         if (this.payload.repository) {
           return {
@@ -339,7 +406,7 @@ var require_context = __commonJS({
 var require_proxy = __commonJS({
   "node_modules/@actions/http-client/proxy.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     function getProxyUrl(reqUrl) {
       let usingSsl = reqUrl.protocol === "https:";
       let proxyUrl;
@@ -452,7 +519,7 @@ var require_tunnel = __commonJS({
     util.inherits(TunnelingAgent, events.EventEmitter);
     TunnelingAgent.prototype.addRequest = function addRequest(req, host, port, localAddress) {
       var self = this;
-      var options = mergeOptions({request: req}, self.options, toOptions(host, port, localAddress));
+      var options = mergeOptions({ request: req }, self.options, toOptions(host, port, localAddress));
       if (self.sockets.length >= this.maxSockets) {
         self.requests.push(options);
         return;
@@ -623,7 +690,7 @@ var require_tunnel2 = __commonJS({
 var require_http_client = __commonJS({
   "node_modules/@actions/http-client/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     var http = require("http");
     var https = require("https");
     var pm = require_proxy();
@@ -1007,7 +1074,7 @@ var require_http_client = __commonJS({
           this._proxyAgent = agent;
         }
         if (this._keepAlive && !agent) {
-          const options = {keepAlive: this._keepAlive, maxSockets};
+          const options = { keepAlive: this._keepAlive, maxSockets };
           agent = usingSsl ? new https.Agent(options) : new http.Agent(options);
           this._agent = agent;
         }
@@ -1090,16 +1157,16 @@ var require_utils2 = __commonJS({
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
-      Object.defineProperty(o, k2, {enumerable: true, get: function() {
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
-      }});
+      } });
     } : function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
-      Object.defineProperty(o, "default", {enumerable: true, value: v});
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
     });
@@ -1115,7 +1182,7 @@ var require_utils2 = __commonJS({
       __setModuleDefault(result, mod);
       return result;
     };
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getApiBaseUrl = exports2.getProxyAgent = exports2.getAuthString = void 0;
     var httpClient = __importStar(require_http_client());
     function getAuthString(token, options) {
@@ -1143,7 +1210,7 @@ var require_utils2 = __commonJS({
 var require_dist_node = __commonJS({
   "node_modules/universal-user-agent/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     function getUserAgent() {
       if (typeof navigator === "object" && "userAgent" in navigator) {
         return navigator.userAgent;
@@ -1254,7 +1321,7 @@ var require_before_after_hook = __commonJS({
     var bindable = bind.bind(bind);
     function bindApi(hook, state, name) {
       var removeHookRef = bindable(removeHook, null).apply(null, name ? [state, name] : [state]);
-      hook.api = {remove: removeHookRef};
+      hook.api = { remove: removeHookRef };
       hook.remove = removeHookRef;
       ["before", "error", "after", "wrap"].forEach(function(kind) {
         var args = name ? [state, kind, name] : [state, kind];
@@ -1299,7 +1366,7 @@ var require_before_after_hook = __commonJS({
 var require_is_plain_object = __commonJS({
   "node_modules/is-plain-object/dist/is-plain-object.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     function isObject(o) {
       return Object.prototype.toString.call(o) === "[object Object]";
     }
@@ -1326,7 +1393,7 @@ var require_is_plain_object = __commonJS({
 var require_dist_node2 = __commonJS({
   "node_modules/@octokit/endpoint/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     var isPlainObject = require_is_plain_object();
     var universalUserAgent = require_dist_node();
     function lowercaseKeys(object) {
@@ -1625,7 +1692,7 @@ var require_dist_node2 = __commonJS({
 var require_lib = __commonJS({
   "node_modules/node-fetch/lib/index.js"(exports2, module2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     function _interopDefault(ex) {
       return ex && typeof ex === "object" && "default" in ex ? ex["default"] : ex;
     }
@@ -1718,15 +1785,15 @@ var require_lib = __commonJS({
         const span = Math.max(relativeEnd - relativeStart, 0);
         const buffer = this[BUFFER];
         const slicedBuffer = buffer.slice(relativeStart, relativeStart + span);
-        const blob = new Blob([], {type: arguments[2]});
+        const blob = new Blob([], { type: arguments[2] });
         blob[BUFFER] = slicedBuffer;
         return blob;
       }
     };
     Object.defineProperties(Blob.prototype, {
-      size: {enumerable: true},
-      type: {enumerable: true},
-      slice: {enumerable: true}
+      size: { enumerable: true },
+      type: { enumerable: true },
+      slice: { enumerable: true }
     });
     Object.defineProperty(Blob.prototype, Symbol.toStringTag, {
       value: "Blob",
@@ -1838,12 +1905,12 @@ var require_lib = __commonJS({
       }
     };
     Object.defineProperties(Body.prototype, {
-      body: {enumerable: true},
-      bodyUsed: {enumerable: true},
-      arrayBuffer: {enumerable: true},
-      blob: {enumerable: true},
-      json: {enumerable: true},
-      text: {enumerable: true}
+      body: { enumerable: true },
+      bodyUsed: { enumerable: true },
+      arrayBuffer: { enumerable: true },
+      blob: { enumerable: true },
+      json: { enumerable: true },
+      text: { enumerable: true }
     });
     Body.mixIn = function(proto) {
       for (const name of Object.getOwnPropertyNames(Body.prototype)) {
@@ -2179,15 +2246,15 @@ var require_lib = __commonJS({
       configurable: true
     });
     Object.defineProperties(Headers.prototype, {
-      get: {enumerable: true},
-      forEach: {enumerable: true},
-      set: {enumerable: true},
-      append: {enumerable: true},
-      has: {enumerable: true},
-      delete: {enumerable: true},
-      keys: {enumerable: true},
-      values: {enumerable: true},
-      entries: {enumerable: true}
+      get: { enumerable: true },
+      forEach: { enumerable: true },
+      set: { enumerable: true },
+      append: { enumerable: true },
+      has: { enumerable: true },
+      delete: { enumerable: true },
+      keys: { enumerable: true },
+      values: { enumerable: true },
+      entries: { enumerable: true }
     });
     function getHeaders(headers) {
       let kind = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "key+value";
@@ -2239,7 +2306,7 @@ var require_lib = __commonJS({
       configurable: true
     });
     function exportNodeCompatibleHeaders(headers) {
-      const obj = Object.assign({__proto__: null}, headers[MAP]);
+      const obj = Object.assign({ __proto__: null }, headers[MAP]);
       const hostHeaderKey = find(headers[MAP], "Host");
       if (hostHeaderKey !== void 0) {
         obj[hostHeaderKey] = obj[hostHeaderKey][0];
@@ -2323,13 +2390,13 @@ var require_lib = __commonJS({
     };
     Body.mixIn(Response.prototype);
     Object.defineProperties(Response.prototype, {
-      url: {enumerable: true},
-      status: {enumerable: true},
-      ok: {enumerable: true},
-      redirected: {enumerable: true},
-      statusText: {enumerable: true},
-      headers: {enumerable: true},
-      clone: {enumerable: true}
+      url: { enumerable: true },
+      status: { enumerable: true },
+      ok: { enumerable: true },
+      redirected: { enumerable: true },
+      statusText: { enumerable: true },
+      headers: { enumerable: true },
+      clone: { enumerable: true }
     });
     Object.defineProperty(Response.prototype, Symbol.toStringTag, {
       value: "Response",
@@ -2424,12 +2491,12 @@ var require_lib = __commonJS({
       configurable: true
     });
     Object.defineProperties(Request.prototype, {
-      method: {enumerable: true},
-      url: {enumerable: true},
-      headers: {enumerable: true},
-      redirect: {enumerable: true},
-      clone: {enumerable: true},
-      signal: {enumerable: true}
+      method: { enumerable: true },
+      url: { enumerable: true },
+      headers: { enumerable: true },
+      redirect: { enumerable: true },
+      clone: { enumerable: true },
+      signal: { enumerable: true }
     });
     function getNodeRequestOptions(request) {
       const parsedURL = request[INTERNALS$2].parsedURL;
@@ -2657,7 +2724,7 @@ var require_lib = __commonJS({
     };
     fetch.Promise = global.Promise;
     module2.exports = exports2 = fetch;
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.default = exports2;
     exports2.Headers = Headers;
     exports2.Request = Request;
@@ -2670,7 +2737,7 @@ var require_lib = __commonJS({
 var require_dist_node3 = __commonJS({
   "node_modules/deprecation/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     var Deprecation = class extends Error {
       constructor(message) {
         super(message);
@@ -2764,7 +2831,7 @@ var require_once = __commonJS({
 var require_dist_node4 = __commonJS({
   "node_modules/@octokit/request-error/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     function _interopDefault(ex) {
       return ex && typeof ex === "object" && "default" in ex ? ex["default"] : ex;
     }
@@ -2804,7 +2871,7 @@ var require_dist_node4 = __commonJS({
 var require_dist_node5 = __commonJS({
   "node_modules/@octokit/request/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     function _interopDefault(ex) {
       return ex && typeof ex === "object" && "default" in ex ? ex["default"] : ex;
     }
@@ -2929,7 +2996,7 @@ var require_dist_node5 = __commonJS({
 var require_dist_node6 = __commonJS({
   "node_modules/@octokit/graphql/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     var request = require_dist_node5();
     var universalUserAgent = require_dist_node();
     var VERSION = "4.6.1";
@@ -3026,7 +3093,7 @@ var require_dist_node6 = __commonJS({
 var require_dist_node7 = __commonJS({
   "node_modules/@octokit/auth-token/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     async function auth(token) {
       const tokenType = token.split(/\./).length === 3 ? "app" : /^v\d+\./.test(token) ? "installation" : "oauth";
       return {
@@ -3066,7 +3133,7 @@ var require_dist_node7 = __commonJS({
 var require_dist_node8 = __commonJS({
   "node_modules/@octokit/core/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     var universalUserAgent = require_dist_node();
     var beforeAfterHook = require_before_after_hook();
     var request = require_dist_node5();
@@ -3201,7 +3268,7 @@ var require_dist_node8 = __commonJS({
 var require_dist_node9 = __commonJS({
   "node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     function _defineProperty(obj, key, value) {
       if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -4409,7 +4476,7 @@ var require_dist_node9 = __commonJS({
 var require_dist_node10 = __commonJS({
   "node_modules/@octokit/plugin-paginate-rest/dist-node/index.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     var VERSION = "2.13.3";
     function normalizePaginatedListResponse(response) {
       const responseNeedsNormalization = "total_count" in response.data && !("url" in response.data);
@@ -4516,16 +4583,16 @@ var require_utils3 = __commonJS({
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
-      Object.defineProperty(o, k2, {enumerable: true, get: function() {
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
-      }});
+      } });
     } : function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
-      Object.defineProperty(o, "default", {enumerable: true, value: v});
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
     });
@@ -4541,7 +4608,7 @@ var require_utils3 = __commonJS({
       __setModuleDefault(result, mod);
       return result;
     };
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getOctokitOptions = exports2.GitHub = exports2.context = void 0;
     var Context = __importStar(require_context());
     var Utils = __importStar(require_utils2());
@@ -4576,16 +4643,16 @@ var require_github = __commonJS({
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
-      Object.defineProperty(o, k2, {enumerable: true, get: function() {
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
-      }});
+      } });
     } : function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
       o[k2] = m[k];
     });
     var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
-      Object.defineProperty(o, "default", {enumerable: true, value: v});
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
     } : function(o, v) {
       o["default"] = v;
     });
@@ -4601,7 +4668,7 @@ var require_github = __commonJS({
       __setModuleDefault(result, mod);
       return result;
     };
-    Object.defineProperty(exports2, "__esModule", {value: true});
+    Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getOctokit = exports2.context = void 0;
     var Context = __importStar(require_context());
     var utils_1 = require_utils3();
@@ -4689,7 +4756,7 @@ var require_pretty_bytes = __commonJS({
       if (!Number.isFinite(number)) {
         throw new TypeError(`Expected a finite number, got ${typeof number}: ${number}`);
       }
-      options = Object.assign({bits: false, binary: false}, options);
+      options = Object.assign({ bits: false, binary: false }, options);
       const UNITS = options.bits ? options.binary ? BIBIT_UNITS : BIT_UNITS : options.binary ? BIBYTE_UNITS : BYTE_UNITS;
       if (options.signed && number === 0) {
         return ` 0 ${UNITS[0]}`;
@@ -4701,10 +4768,10 @@ var require_pretty_bytes = __commonJS({
       }
       let localeOptions;
       if (options.minimumFractionDigits !== void 0) {
-        localeOptions = {minimumFractionDigits: options.minimumFractionDigits};
+        localeOptions = { minimumFractionDigits: options.minimumFractionDigits };
       }
       if (options.maximumFractionDigits !== void 0) {
-        localeOptions = Object.assign({maximumFractionDigits: options.maximumFractionDigits}, localeOptions);
+        localeOptions = Object.assign({ maximumFractionDigits: options.maximumFractionDigits }, localeOptions);
       }
       if (number < 1) {
         const numberString2 = toLocaleString(number, options.locale, localeOptions);
@@ -4858,7 +4925,7 @@ var require_units = __commonJS({
           return value.toLocaleString();
       }
     };
-    module2.exports = {formatValue};
+    module2.exports = { formatValue };
   }
 });
 
@@ -4866,9 +4933,9 @@ var require_units = __commonJS({
 var require_comment = __commonJS({
   "src/lib/comment.js"(exports2, module2) {
     var regexEscape = require_lib2();
-    var {formatValue} = require_units();
-    var createComment2 = ({baseSha, metrics, job, previousMetrics = {}, title}) => {
-      const metricValues = metrics.reduce((acc, {name, value}) => ({...acc, [name]: value}), {});
+    var { formatValue } = require_units();
+    var createComment2 = ({ baseSha, metrics, job, previousMetrics = {}, title }) => {
+      const metricValues = metrics.reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {});
       const metadata = `<!--delta:${job}@${JSON.stringify(metricValues)}-->`;
       const metricsList = metrics.map((metric) => getMetricLine(metric, previousMetrics[metric.name])).join("\n");
       const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}
@@ -4879,11 +4946,11 @@ var require_comment = __commonJS({
 ${baseShaLine}${metricsList}
 ${metadata}`;
     };
-    var getMetricsComment2 = ({comments, job}) => {
-      const deltaComment = comments.map(({body}) => parseComment(body, job)).find(Boolean);
+    var getMetricsComment2 = ({ comments, job }) => {
+      const deltaComment = comments.map(({ body }) => parseComment(body, job)).find(Boolean);
       return deltaComment;
     };
-    var getMetricLine = ({displayName, name, units, value}, previousValue) => {
+    var getMetricLine = ({ displayName, name, units, value }, previousValue) => {
       const comparison = getMetricLineComparison(value, previousValue);
       const formattedValue = formatValue(value, units);
       return `- **${displayName || name}**: ${formattedValue}${comparison ? ` ${comparison}` : ""}`;
@@ -4915,15 +4982,15 @@ ${metadata}`;
       } catch (_) {
       }
     };
-    module2.exports = {createComment: createComment2, findDeltaComment: findDeltaComment2, getMetricsComment: getMetricsComment2};
+    module2.exports = { createComment: createComment2, findDeltaComment: findDeltaComment2, getMetricsComment: getMetricsComment2 };
   }
 });
 
 // src/lib/delta_file.js
 var require_delta_file = __commonJS({
   "src/lib/delta_file.js"(exports2, module2) {
-    var {readdir, readFile} = require("fs");
-    var {promisify} = require("util");
+    var { readdir, readFile } = require("fs");
+    var { promisify } = require("util");
     var core2 = require_core();
     var pReadDir = promisify(readdir);
     var pReadFile = promisify(readFile);
@@ -4946,8 +5013,8 @@ var require_delta_file = __commonJS({
     var readDeltaFiles2 = async (rootPath) => {
       try {
         const items = await pReadDir(rootPath);
-        const metricFiles = items.map((fileName) => ({fileName, metricMatch: fileName.match(/^\.delta\.(.+)$/)})).filter(({metricMatch}) => Boolean(metricMatch)).map(({fileName, metricMatch}) => ({fileName, metricName: metricMatch[1]}));
-        const metrics = metricFiles.map(async ({fileName, metricName}) => {
+        const metricFiles = items.map((fileName) => ({ fileName, metricMatch: fileName.match(/^\.delta\.(.+)$/) })).filter(({ metricMatch }) => Boolean(metricMatch)).map(({ fileName, metricMatch }) => ({ fileName, metricName: metricMatch[1] }));
+        const metrics = metricFiles.map(async ({ fileName, metricName }) => {
           const data = await readDeltaFile(fileName);
           if (!data) {
             return;
@@ -4964,7 +5031,7 @@ var require_delta_file = __commonJS({
         return [];
       }
     };
-    module2.exports = {readDeltaFiles: readDeltaFiles2};
+    module2.exports = { readDeltaFiles: readDeltaFiles2 };
   }
 });
 
@@ -4977,20 +5044,20 @@ var require_github2 = __commonJS({
         return match[1];
       }
     };
-    var getCommentsFromMainBranch2 = async ({octokit, owner, repo}) => {
-      const {data: commits} = await octokit.rest.repos.listCommits({
+    var getCommentsFromMainBranch2 = async ({ octokit, owner, repo }) => {
+      const { data: commits } = await octokit.rest.repos.listCommits({
         owner,
         repo
       });
       const baseSha = commits[0].sha;
-      const {data: comments} = await octokit.rest.repos.listCommentsForCommit({
+      const { data: comments } = await octokit.rest.repos.listCommentsForCommit({
         owner,
         repo,
         commit_sha: baseSha
       });
-      return {baseSha, comments};
+      return { baseSha, comments };
     };
-    module2.exports = {getBranchNameFromRef, getCommentsFromMainBranch: getCommentsFromMainBranch2};
+    module2.exports = { getBranchNameFromRef, getCommentsFromMainBranch: getCommentsFromMainBranch2 };
   }
 });
 
@@ -5027,19 +5094,19 @@ var require_inputs = __commonJS({
         token
       };
     };
-    module2.exports = {getInputs: getInputs2};
+    module2.exports = { getInputs: getInputs2 };
   }
 });
 
 // src/index.js
 var core = require_core();
 var github = require_github();
-var {createComment, findDeltaComment, getMetricsComment} = require_comment();
-var {readDeltaFiles} = require_delta_file();
-var {getCommentsFromMainBranch} = require_github2();
-var {getInputs} = require_inputs();
-var processHeadBranch = async ({commitSha, headMetrics, job, octokit, owner, repo, title}) => {
-  const comment = createComment({job, metrics: headMetrics, title});
+var { createComment, findDeltaComment, getMetricsComment } = require_comment();
+var { readDeltaFiles } = require_delta_file();
+var { getCommentsFromMainBranch } = require_github2();
+var { getInputs } = require_inputs();
+var processHeadBranch = async ({ commitSha, headMetrics, job, octokit, owner, repo, title }) => {
+  const comment = createComment({ job, metrics: headMetrics, title });
   await octokit.rest.repos.createCommitComment({
     owner,
     repo,
@@ -5047,9 +5114,9 @@ var processHeadBranch = async ({commitSha, headMetrics, job, octokit, owner, rep
     body: comment
   });
 };
-var processPullRequest = async ({headMetrics, job, octokit, owner, prNumber, repo, title}) => {
-  const {baseSha, comments} = await getCommentsFromMainBranch({octokit, owner, repo});
-  const baseMetrics = getMetricsComment({comments, job});
+var processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, repo, title }) => {
+  const { baseSha, comments } = await getCommentsFromMainBranch({ octokit, owner, repo });
+  const baseMetrics = getMetricsComment({ comments, job });
   core.debug(`Base metrics: ${JSON.stringify(baseMetrics)}`);
   const comment = createComment({
     baseSha,
@@ -5083,7 +5150,7 @@ var processPullRequest = async ({headMetrics, job, octokit, owner, prNumber, rep
   }
 };
 var run = async function() {
-  const {baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token} = getInputs();
+  const { baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token } = getInputs();
   const headMetrics = await readDeltaFiles(rootPath);
   const isHeadBranch = ref === `refs/heads/${baseBranch}`;
   core.debug(`Running job ${job} on ref ${ref}`);
@@ -5094,10 +5161,10 @@ var run = async function() {
   core.debug(`Found metrics: ${JSON.stringify(headMetrics)}`);
   const octokit = github.getOctokit(token);
   if (isHeadBranch) {
-    await processHeadBranch({commitSha, headMetrics, job, octokit, owner, repo, title});
+    await processHeadBranch({ commitSha, headMetrics, job, octokit, owner, repo, title });
     return;
   }
-  await processPullRequest({headMetrics, job, octokit, owner, prNumber, repo, title});
+  await processPullRequest({ headMetrics, job, octokit, owner, prNumber, repo, title });
 };
 try {
   run();
