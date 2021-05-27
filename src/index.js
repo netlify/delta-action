@@ -1,13 +1,19 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 
-const { createComment, findDeltaComment, getMetricsComment } = require('./lib/comment')
+const {
+  createHeadBranchComment,
+  createPullRequestComment,
+  findDeltaComment,
+  getMetricsComment,
+} = require('./lib/comment')
 const { readDeltaFiles } = require('./lib/delta_file')
 const { getCommentsFromMainBranch } = require('./lib/github')
 const { getInputs } = require('./lib/inputs')
 
 const processHeadBranch = async ({ commitSha, headMetrics, job, octokit, owner, repo, title }) => {
-  const comment = createComment({ job, metrics: headMetrics, title })
+  const previousCommit = await getCommentsFromMainBranch({ commitIndex: 1, octokit, owner, repo })
+  const comment = createHeadBranchComment({ commitSha, job, metrics: headMetrics, previousCommit, title })
 
   await octokit.rest.repos.createCommitComment({
     owner,
@@ -23,7 +29,7 @@ const processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, 
 
   core.debug(`Base metrics: ${JSON.stringify(baseMetrics)}`)
 
-  const comment = createComment({
+  const comment = createPullRequestComment({
     baseSha,
     job,
     metrics: headMetrics,
