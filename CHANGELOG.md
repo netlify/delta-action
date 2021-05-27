@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/netlify/delta-action/compare/v1.0.4...v1.1.0) (2021-05-27)
+
+
+### Features
+
+* add historic data to metadata comments ([#52](https://www.github.com/netlify/delta-action/issues/52)) ([24ab1e6](https://www.github.com/netlify/delta-action/commit/24ab1e6953362abcd3fe59d44d1807942415c61d))
+
 ### [1.0.4](https://www.github.com/netlify/delta-action/compare/v1.0.3...v1.0.4) (2021-05-24)
 
 
