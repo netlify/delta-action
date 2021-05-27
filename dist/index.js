@@ -2999,7 +2999,7 @@ var require_dist_node6 = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     var request = require_dist_node5();
     var universalUserAgent = require_dist_node();
-    var VERSION = "4.6.1";
+    var VERSION = "4.6.2";
     var GraphqlError = class extends Error {
       constructor(request2, response) {
         const message = response.data.errors[0].message;
@@ -3269,27 +3269,15 @@ var require_dist_node9 = __commonJS({
   "node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    function _defineProperty(obj, key, value) {
-      if (key in obj) {
-        Object.defineProperty(obj, key, {
-          value,
-          enumerable: true,
-          configurable: true,
-          writable: true
-        });
-      } else {
-        obj[key] = value;
-      }
-      return obj;
-    }
     function ownKeys(object, enumerableOnly) {
       var keys = Object.keys(object);
       if (Object.getOwnPropertySymbols) {
         var symbols = Object.getOwnPropertySymbols(object);
-        if (enumerableOnly)
+        if (enumerableOnly) {
           symbols = symbols.filter(function(sym) {
             return Object.getOwnPropertyDescriptor(object, sym).enumerable;
           });
+        }
         keys.push.apply(keys, symbols);
       }
       return keys;
@@ -3311,9 +3299,23 @@ var require_dist_node9 = __commonJS({
       }
       return target;
     }
+    function _defineProperty(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var Endpoints = {
       actions: {
         addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
+        approveWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve"],
         cancelWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel"],
         createOrUpdateEnvironmentSecret: ["PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"],
         createOrUpdateOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}"],
@@ -3427,6 +3429,11 @@ var require_dist_node9 = __commonJS({
             previews: ["corsair"]
           }
         }],
+        createContentAttachmentForRepo: ["POST /repos/{owner}/{repo}/content_references/{content_reference_id}/attachments", {
+          mediaType: {
+            previews: ["corsair"]
+          }
+        }],
         createFromManifest: ["POST /app-manifests/{code}/conversions"],
         createInstallationAccessToken: ["POST /app/installations/{installation_id}/access_tokens"],
         deleteAuthorization: ["DELETE /applications/{client_id}/grant"],
@@ -3489,8 +3496,11 @@ var require_dist_node9 = __commonJS({
         }],
         getAnalysis: ["GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"],
         getSarif: ["GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"],
+        listAlertInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"],
         listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
-        listAlertsInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"],
+        listAlertsInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances", {}, {
+          renamed: ["codeScanning", "listAlertInstances"]
+        }],
         listRecentAnalyses: ["GET /repos/{owner}/{repo}/code-scanning/analyses"],
         updateAlert: ["PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"],
         uploadSarif: ["POST /repos/{owner}/{repo}/code-scanning/sarifs"]
@@ -3972,6 +3982,11 @@ var require_dist_node9 = __commonJS({
             previews: ["squirrel-girl"]
           }
         }],
+        createForRelease: ["POST /repos/{owner}/{repo}/releases/{release_id}/reactions", {
+          mediaType: {
+            previews: ["squirrel-girl"]
+          }
+        }],
         createForTeamDiscussionCommentInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions", {
           mediaType: {
             previews: ["squirrel-girl"]
@@ -4072,6 +4087,7 @@ var require_dist_node9 = __commonJS({
           }
         }],
         compareCommits: ["GET /repos/{owner}/{repo}/compare/{base}...{head}"],
+        compareCommitsWithBasehead: ["GET /repos/{owner}/{repo}/compare/{basehead}"],
         createCommitComment: ["POST /repos/{owner}/{repo}/commits/{commit_sha}/comments"],
         createCommitSignatureProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures", {
           mediaType: {
@@ -4394,7 +4410,7 @@ var require_dist_node9 = __commonJS({
         updateAuthenticated: ["PATCH /user"]
       }
     };
-    var VERSION = "5.1.1";
+    var VERSION = "5.3.0";
     function endpointsToMethods(octokit, endpointsMap) {
       const newMethods = {};
       for (const [scope, endpoints] of Object.entries(endpointsMap)) {
@@ -4934,10 +4950,23 @@ var require_comment = __commonJS({
   "src/lib/comment.js"(exports2, module2) {
     var regexEscape = require_lib2();
     var { formatValue } = require_units();
-    var createComment2 = ({ baseSha, metrics, job, previousMetrics = {}, title }) => {
-      const metricValues = metrics.reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {});
-      const metadata = `<!--delta:${job}@${JSON.stringify(metricValues)}-->`;
-      const metricsList = metrics.map((metric) => getMetricLine(metric, previousMetrics[metric.name])).join("\n");
+    var PAST_METRICS_COUNT = 30;
+    var createHeadBranchComment2 = ({ commitSha, metrics, job, previousCommit, title }) => {
+      const allMetrics = getMetricsForHeadBranch({ commitSha, job, metrics, previousCommit });
+      const metadata = `<!--delta:${job}@${JSON.stringify(allMetrics)}-->`;
+      const metricsList = metrics.map((metric) => getMetricLine(metric)).join("\n");
+      return `## ${title}
+
+${metricsList}
+${metadata}`;
+    };
+    var createPullRequestComment2 = ({ baseSha, job, metrics, previousMetrics = {}, title }) => {
+      const metadata = `<!--delta:${job}@{}-->`;
+      const metricsList = metrics.map((metric) => {
+        const comparison = Array.isArray(previousMetrics) ? previousMetrics[0] : previousMetrics;
+        const previousValue = comparison[metric.name];
+        return getMetricLine(metric, previousValue);
+      }).join("\n");
       const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}
 
 ` : "";
@@ -4949,6 +4978,16 @@ ${metadata}`;
     var getMetricsComment2 = ({ comments, job }) => {
       const deltaComment = comments.map(({ body }) => parseComment(body, job)).find(Boolean);
       return deltaComment;
+    };
+    var getMetricsForHeadBranch = ({ commitSha, job, metrics, previousCommit }) => {
+      const metricValues = metrics.reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {});
+      const currentCommitMetrics = { __commit: commitSha, ...metricValues };
+      if (previousCommit) {
+        const previousMetrics = getMetricsComment2({ comments: previousCommit.comments, job });
+        const normalizedPreviousMetrics = normalizeMetrics(previousMetrics, previousCommit.baseSha).slice(0, PAST_METRICS_COUNT - 1);
+        return [currentCommitMetrics, ...normalizedPreviousMetrics];
+      }
+      return [currentCommitMetrics];
     };
     var getMetricLine = ({ displayName, name, units, value }, previousValue) => {
       const comparison = getMetricLineComparison(value, previousValue);
@@ -4972,6 +5011,12 @@ ${metadata}`;
       const match = body.match(regex);
       return match;
     };
+    var normalizeMetrics = (metrics, sha) => {
+      if (!metrics || Array.isArray(metrics)) {
+        return metrics;
+      }
+      return [{ __commit: sha, ...metrics }];
+    };
     var parseComment = (body, job) => {
       const match = findDeltaComment2(body, job);
       if (!match) {
@@ -4982,7 +5027,7 @@ ${metadata}`;
       } catch (_) {
       }
     };
-    module2.exports = { createComment: createComment2, findDeltaComment: findDeltaComment2, getMetricsComment: getMetricsComment2 };
+    module2.exports = { createHeadBranchComment: createHeadBranchComment2, createPullRequestComment: createPullRequestComment2, findDeltaComment: findDeltaComment2, getMetricsComment: getMetricsComment2 };
   }
 });
 
@@ -5044,12 +5089,12 @@ var require_github2 = __commonJS({
         return match[1];
       }
     };
-    var getCommentsFromMainBranch2 = async ({ octokit, owner, repo }) => {
+    var getCommentsFromMainBranch2 = async ({ commitIndex = 0, octokit, owner, repo }) => {
       const { data: commits } = await octokit.rest.repos.listCommits({
         owner,
         repo
       });
-      const baseSha = commits[0].sha;
+      const baseSha = commits[commitIndex].sha;
       const { data: comments } = await octokit.rest.repos.listCommentsForCommit({
         owner,
         repo,
@@ -5101,12 +5146,18 @@ var require_inputs = __commonJS({
 // src/index.js
 var core = require_core();
 var github = require_github();
-var { createComment, findDeltaComment, getMetricsComment } = require_comment();
+var {
+  createHeadBranchComment,
+  createPullRequestComment,
+  findDeltaComment,
+  getMetricsComment
+} = require_comment();
 var { readDeltaFiles } = require_delta_file();
 var { getCommentsFromMainBranch } = require_github2();
 var { getInputs } = require_inputs();
 var processHeadBranch = async ({ commitSha, headMetrics, job, octokit, owner, repo, title }) => {
-  const comment = createComment({ job, metrics: headMetrics, title });
+  const previousCommit = await getCommentsFromMainBranch({ commitIndex: 1, octokit, owner, repo });
+  const comment = createHeadBranchComment({ commitSha, job, metrics: headMetrics, previousCommit, title });
   await octokit.rest.repos.createCommitComment({
     owner,
     repo,
@@ -5118,7 +5169,7 @@ var processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, re
   const { baseSha, comments } = await getCommentsFromMainBranch({ octokit, owner, repo });
   const baseMetrics = getMetricsComment({ comments, job });
   core.debug(`Base metrics: ${JSON.stringify(baseMetrics)}`);
-  const comment = createComment({
+  const comment = createPullRequestComment({
     baseSha,
     job,
     metrics: headMetrics,
