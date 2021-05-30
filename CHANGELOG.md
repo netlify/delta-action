@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/netlify/delta-action/compare/v1.1.0...v1.2.0) (2021-05-30)
+
+
+### Features
+
+* add graph for historical data ([#54](https://www.github.com/netlify/delta-action/issues/54)) ([ff1ba70](https://www.github.com/netlify/delta-action/commit/ff1ba70b51984c1e46e6341589b6a6f18a825ad2))
+* add graph for historical data ([#57](https://www.github.com/netlify/delta-action/issues/57)) ([d477357](https://www.github.com/netlify/delta-action/commit/d4773571d884d6aa70aa09322dbaea5ed2dd91c8))
+
 ## [1.1.0](https://www.github.com/netlify/delta-action/compare/v1.0.4...v1.1.0) (2021-05-27)
 
 
