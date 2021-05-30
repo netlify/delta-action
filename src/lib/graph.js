@@ -1,26 +1,21 @@
 const BAR_BODY = '|  |'
 const BAR_BODY_FILLED = '|▒▒|'
-const BAR_GAP = '    '
 const BAR_TOP = '┌──┐'
+const GAP_LENGTH = 4
 const LINE_COUNT = 20
 
 const drawBase = (points) => {
-  const axis = points
-    .map(() => {
-      const padding = '─'.repeat(BAR_GAP.length / 2)
-
-      return `${padding}┴${'─'.repeat(BAR_BODY.length - 2)}┴${padding}`
-    })
-    .join('')
+  const axisPadding = '─'.repeat(GAP_LENGTH / 2)
+  const axis = points.map(() => `${axisPadding}┴${'─'.repeat(BAR_BODY.length - 2)}┴${axisPadding}`).join('')
   const legend = points
     .map(({ label }) => {
-      const text = getPaddedString(label, BAR_BODY.length)
+      const text = getPaddedString(label, BAR_BODY.length + GAP_LENGTH)
 
       return text
     })
-    .join(BAR_GAP)
+    .join('')
 
-  return `└${axis.slice(1)}>\n  ${legend}`
+  return `└─${axis}>\n  ${legend}`
 }
 
 const drawGraph = (values, { fillLast = false } = {}) => {
@@ -45,26 +40,27 @@ const drawGraph = (values, { fillLast = false } = {}) => {
 }
 
 const drawLevel = ({ fillLast, level, values }) => {
+  const padding = ' '.repeat(GAP_LENGTH / 2)
   const bars = values
     // eslint-disable-next-line complexity
     .map(({ displayValue, emptyLevels, value }, index) => {
       const isLastValue = index === values.length - 1
 
       if (emptyLevels < level) {
-        return isLastValue && fillLast ? BAR_BODY_FILLED : BAR_BODY
+        return `${padding}${isLastValue && fillLast ? BAR_BODY_FILLED : BAR_BODY}${padding}`
       }
 
       if (emptyLevels === level) {
-        return BAR_TOP
+        return `${padding}${BAR_TOP}${padding}`
       }
 
       if (emptyLevels - 1 === level) {
-        return getPaddedString((displayValue || value).toString(), BAR_BODY.length)
+        return getPaddedString((displayValue || value).toString(), BAR_BODY.length + GAP_LENGTH)
       }
 
-      return ' '.repeat(BAR_BODY.length)
+      return `${padding}${' '.repeat(BAR_BODY.length)}${padding}`
     })
-    .join(BAR_GAP)
+    .join('')
 
   return `${level === -1 ? '^' : '│'} ${bars}`
 }
