@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/netlify/delta-action/compare/v1.2.0...v1.2.1) (2021-05-30)
+
+
+### Bug Fixes
+
+* improve graph rendering ([#58](https://www.github.com/netlify/delta-action/issues/58)) ([77c1a67](https://www.github.com/netlify/delta-action/commit/77c1a6747d9d9db5694b206fcf80f5004a9ded7c))
+
 ## [1.2.0](https://www.github.com/netlify/delta-action/compare/v1.1.0...v1.2.0) (2021-05-30)
 
 
