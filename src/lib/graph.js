@@ -14,14 +14,13 @@ const drawBase = (points) => {
     .join('')
   const legend = points
     .map(({ label }) => {
-      const padding = ' '.repeat(BAR_GAP.length / 2)
       const text = getPaddedString(label, BAR_BODY.length)
 
-      return `${padding}${text}${padding}`
+      return text
     })
-    .join('')
+    .join(BAR_GAP)
 
-  return `└${axis.slice(1)}>\n${legend}`
+  return `└${axis.slice(1)}>\n  ${legend}`
 }
 
 const drawGraph = (values, { fillLast = false } = {}) => {
