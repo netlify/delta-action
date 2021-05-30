@@ -49,9 +49,7 @@ const getGraph = ({ metrics, metricName, units }) => {
     }
   })
   const graph = drawGraph(points.slice(0, MAX_GRAPH_ITEMS), { fillLast: true })
-  // eslint-disable-next-line fp/no-mutating-methods
-  const legendItems = [...points]
-    .reverse()
+  const legendItems = points
     .map(
       ({ commit, displayValue, label }) =>
         `- ${label === 'T' ? '**' : ''}${label} (${label === 'T' ? 'current commit' : commit}): ${displayValue}${
