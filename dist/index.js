@@ -4716,19 +4716,17 @@ var require_graph = __commonJS({
   "src/lib/graph.js"(exports2, module2) {
     var BAR_BODY = "|  |";
     var BAR_BODY_FILLED = "|\u2592\u2592|";
-    var BAR_GAP = "    ";
     var BAR_TOP = "\u250C\u2500\u2500\u2510";
+    var GAP_LENGTH = 4;
     var LINE_COUNT = 20;
     var drawBase = (points) => {
-      const axis = points.map(() => {
-        const padding = "\u2500".repeat(BAR_GAP.length / 2);
-        return `${padding}\u2534${"\u2500".repeat(BAR_BODY.length - 2)}\u2534${padding}`;
-      }).join("");
+      const axisPadding = "\u2500".repeat(GAP_LENGTH / 2);
+      const axis = points.map(() => `${axisPadding}\u2534${"\u2500".repeat(BAR_BODY.length - 2)}\u2534${axisPadding}`).join("");
       const legend = points.map(({ label }) => {
-        const text = getPaddedString(label, BAR_BODY.length);
+        const text = getPaddedString(label, BAR_BODY.length + GAP_LENGTH);
         return text;
-      }).join(BAR_GAP);
-      return `\u2514${axis.slice(1)}>
+      }).join("");
+      return `\u2514\u2500${axis}>
   ${legend}`;
     };
     var drawGraph = (values, { fillLast = false } = {}) => {
@@ -4748,19 +4746,20 @@ var require_graph = __commonJS({
 ${base}`;
     };
     var drawLevel = ({ fillLast, level, values }) => {
+      const padding = " ".repeat(GAP_LENGTH / 2);
       const bars = values.map(({ displayValue, emptyLevels, value }, index) => {
         const isLastValue = index === values.length - 1;
         if (emptyLevels < level) {
-          return isLastValue && fillLast ? BAR_BODY_FILLED : BAR_BODY;
+          return `${padding}${isLastValue && fillLast ? BAR_BODY_FILLED : BAR_BODY}${padding}`;
         }
         if (emptyLevels === level) {
-          return BAR_TOP;
+          return `${padding}${BAR_TOP}${padding}`;
         }
         if (emptyLevels - 1 === level) {
-          return getPaddedString((displayValue || value).toString(), BAR_BODY.length);
+          return getPaddedString((displayValue || value).toString(), BAR_BODY.length + GAP_LENGTH);
         }
-        return " ".repeat(BAR_BODY.length);
-      }).join(BAR_GAP);
+        return `${padding}${" ".repeat(BAR_BODY.length)}${padding}`;
+      }).join("");
       return `${level === -1 ? "^" : "\u2502"} ${bars}`;
     };
     var getPaddedString = (string, length) => {
