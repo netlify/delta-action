@@ -4711,6 +4711,73 @@ var require_lib2 = __commonJS({
   }
 });
 
+// src/lib/graph.js
+var require_graph = __commonJS({
+  "src/lib/graph.js"(exports2, module2) {
+    var BAR_BODY = "|  |";
+    var BAR_BODY_FILLED = "|\u2592\u2592|";
+    var BAR_GAP = "    ";
+    var BAR_TOP = "\u250C\u2500\u2500\u2510";
+    var LINE_COUNT = 20;
+    var drawBase = (points) => {
+      const axis = points.map(() => {
+        const padding = "\u2500".repeat(BAR_GAP.length / 2);
+        return `${padding}\u2534${"\u2500".repeat(BAR_BODY.length - 2)}\u2534${padding}`;
+      }).join("");
+      const legend = points.map(({ label }) => {
+        const text = getPaddedString(label, BAR_BODY.length);
+        return text;
+      }).join(BAR_GAP);
+      return `\u2514${axis.slice(1)}>
+  ${legend}`;
+    };
+    var drawGraph = (values, { fillLast = false } = {}) => {
+      const maxValue = values.reduce((max, { value }) => value > max ? value : max, 0);
+      const increment = maxValue / LINE_COUNT;
+      const augmentedValues = values.map((dataPoint) => {
+        const filledLevels = Math.round(dataPoint.value / increment);
+        return { ...dataPoint, emptyLevels: LINE_COUNT - filledLevels };
+      });
+      const levels = Array.from({ length: LINE_COUNT }, (_, index) => drawLevel({ fillLast, level: index + 1, values: augmentedValues }));
+      const topLevels = [
+        drawLevel({ level: -1, values: augmentedValues }),
+        drawLevel({ level: 0, values: augmentedValues })
+      ];
+      const base = drawBase(values);
+      return `${[...topLevels, ...levels].join("\n")}
+${base}`;
+    };
+    var drawLevel = ({ fillLast, level, values }) => {
+      const bars = values.map(({ displayValue, emptyLevels, value }, index) => {
+        const isLastValue = index === values.length - 1;
+        if (emptyLevels < level) {
+          return isLastValue && fillLast ? BAR_BODY_FILLED : BAR_BODY;
+        }
+        if (emptyLevels === level) {
+          return BAR_TOP;
+        }
+        if (emptyLevels - 1 === level) {
+          return getPaddedString((displayValue || value).toString(), BAR_BODY.length);
+        }
+        return " ".repeat(BAR_BODY.length);
+      }).join(BAR_GAP);
+      return `${level === -1 ? "^" : "\u2502"} ${bars}`;
+    };
+    var getPaddedString = (string, length) => {
+      const totalPadding = length - string.length;
+      if (totalPadding < 0) {
+        return `${string.slice(0, length - 1)}\u2026`;
+      }
+      const paddingRightLength = Math.max(0, Math.round(totalPadding / 2));
+      const paddingLeftLength = Math.max(0, totalPadding - paddingRightLength);
+      const paddingLeft = " ".repeat(paddingLeftLength);
+      const paddingRight = " ".repeat(paddingRightLength);
+      return `${paddingLeft}${string}${paddingRight}`;
+    };
+    module2.exports = { drawGraph };
+  }
+});
+
 // node_modules/pretty-bytes/index.js
 var require_pretty_bytes = __commonJS({
   "node_modules/pretty-bytes/index.js"(exports2, module2) {
@@ -4949,7 +5016,9 @@ var require_units = __commonJS({
 var require_comment = __commonJS({
   "src/lib/comment.js"(exports2, module2) {
     var regexEscape = require_lib2();
+    var { drawGraph } = require_graph();
     var { formatValue } = require_units();
+    var MAX_GRAPH_ITEMS = 20;
     var PAST_METRICS_COUNT = 30;
     var createHeadBranchComment2 = ({ commitSha, metrics, job, previousCommit, title }) => {
       const allMetrics = getMetricsForHeadBranch({ commitSha, job, metrics, previousCommit });
@@ -4965,15 +5034,38 @@ ${metadata}`;
       const metricsList = metrics.map((metric) => {
         const comparison = Array.isArray(previousMetrics) ? previousMetrics[0] : previousMetrics;
         const previousValue = comparison[metric.name];
-        return getMetricLine(metric, previousValue);
+        const previousSha = comparison["__commit"];
+        const graphMetrics = [...previousMetrics, { __commit: baseSha, [metric.name]: metric.value }];
+        const graph = getGraph({ metrics: graphMetrics, metricName: metric.name, units: metric.units });
+        return getMetricLine(metric, previousValue, previousSha, graph);
       }).join("\n");
-      const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}
+      const baseShaLine = baseSha && previousMetrics.length !== 0 ? `*Comparing with ${baseSha}*
 
 ` : "";
       return `## ${title}
 
 ${baseShaLine}${metricsList}
 ${metadata}`;
+    };
+    var getGraph = ({ metrics, metricName, units }) => {
+      const points = metrics.map((metric, index) => {
+        const offset = metrics.length - 1 - index;
+        const label = offset === 0 ? "T" : `T-${offset}`;
+        return {
+          commit: metric["__commit"],
+          displayValue: formatValue(metric[metricName], units),
+          label,
+          value: metric[metricName]
+        };
+      });
+      const graph = drawGraph(points.slice(0, MAX_GRAPH_ITEMS), { fillLast: true });
+      const legendItems = points.map(({ commit, displayValue, label }) => `- ${label === "T" ? "**" : ""}${label} (${label === "T" ? "current commit" : commit}): ${displayValue}${label === "T" ? "**" : ""}`).join("\n");
+      const legend = `<details>
+<summary>Legend</summary>
+
+${legendItems}</details>`;
+      const lines = ["```", graph, "```", legend];
+      return lines.join("\n");
     };
     var getMetricsComment2 = ({ comments, job }) => {
       const deltaComment = comments.map(({ body }) => parseComment(body, job)).find(Boolean);
@@ -4989,12 +5081,14 @@ ${metadata}`;
       }
       return [currentCommitMetrics];
     };
-    var getMetricLine = ({ displayName, name, units, value }, previousValue) => {
-      const comparison = getMetricLineComparison(value, previousValue);
+    var getMetricLine = ({ displayName, name, units, value }, previousValue, previousSha, graph) => {
+      const comparison = getMetricLineComparison(value, previousValue, previousSha);
       const formattedValue = formatValue(value, units);
-      return `- **${displayName || name}**: ${formattedValue}${comparison ? ` ${comparison}` : ""}`;
+      return `### ${displayName || name}: ${formattedValue}
+${comparison ? ` ${comparison}` : ""}
+${graph}`;
     };
-    var getMetricLineComparison = (value, previousValue) => {
+    var getMetricLineComparison = (value, previousValue, previousSha) => {
       if (previousValue === void 0) {
         return "";
       }
@@ -5004,7 +5098,8 @@ ${metadata}`;
       }
       const percentage = Math.abs(difference / value * 100).toFixed(2);
       const [word, icon] = difference > 0 ? ["increase", "\u2B06\uFE0F"] : ["decrease", "\u2B07\uFE0F"];
-      return `${icon} (${percentage}% ${word})`;
+      const shaText = previousSha ? ` vs. ${previousSha}` : "";
+      return `${icon} **${percentage}% ${word}**${shaText}`;
     };
     var findDeltaComment2 = (body, job) => {
       const regex = new RegExp(`<!--delta:${regexEscape(job)}@(.*)-->`);
