@@ -1,7 +1,9 @@
 const regexEscape = require('regex-escape')
 
+const { drawGraph } = require('./graph')
 const { formatValue } = require('./units')
 
+const MAX_GRAPH_ITEMS = 20
 const PAST_METRICS_COUNT = 30
 
 const createHeadBranchComment = ({ commitSha, metrics, job, previousCommit, title }) => {
@@ -20,13 +22,45 @@ const createPullRequestComment = ({ baseSha, job, metrics, previousMetrics = {},
       // format (array of objects).
       const comparison = Array.isArray(previousMetrics) ? previousMetrics[0] : previousMetrics
       const previousValue = comparison[metric.name]
+      // eslint-disable-next-line dot-notation
+      const previousSha = comparison['__commit']
+      const graphMetrics = [...previousMetrics, { __commit: baseSha, [metric.name]: metric.value }]
+      const graph = getGraph({ metrics: graphMetrics, metricName: metric.name, units: metric.units })
 
-      return getMetricLine(metric, previousValue)
+      return getMetricLine(metric, previousValue, previousSha, graph)
     })
     .join('\n')
-  const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}\n\n` : ''
+  const baseShaLine = baseSha && previousMetrics.length !== 0 ? `*Comparing with ${baseSha}*\n\n` : ''
 
   return `## ${title}\n\n${baseShaLine}${metricsList}\n${metadata}`
+}
+
+const getGraph = ({ metrics, metricName, units }) => {
+  const points = metrics.map((metric, index) => {
+    const offset = metrics.length - 1 - index
+    const label = offset === 0 ? 'T' : `T-${offset}`
+
+    return {
+      // eslint-disable-next-line dot-notation
+      commit: metric['__commit'],
+      displayValue: formatValue(metric[metricName], units),
+      label,
+      value: metric[metricName],
+    }
+  })
+  const graph = drawGraph(points.slice(0, MAX_GRAPH_ITEMS), { fillLast: true })
+  const legendItems = points
+    .map(
+      ({ commit, displayValue, label }) =>
+        `- ${label === 'T' ? '**' : ''}${label} (${label === 'T' ? 'current commit' : commit}): ${displayValue}${
+          label === 'T' ? '**' : ''
+        }`,
+    )
+    .join('\n')
+  const legend = `<details>\n<summary>Legend</summary>\n\n${legendItems}</details>`
+  const lines = ['```', graph, '```', legend]
+
+  return lines.join('\n')
 }
 
 const getMetricsComment = ({ comments, job }) => {
@@ -52,14 +86,14 @@ const getMetricsForHeadBranch = ({ commitSha, job, metrics, previousCommit }) =>
   return [currentCommitMetrics]
 }
 
-const getMetricLine = ({ displayName, name, units, value }, previousValue) => {
-  const comparison = getMetricLineComparison(value, previousValue)
+const getMetricLine = ({ displayName, name, units, value }, previousValue, previousSha, graph) => {
+  const comparison = getMetricLineComparison(value, previousValue, previousSha)
   const formattedValue = formatValue(value, units)
 
-  return `- **${displayName || name}**: ${formattedValue}${comparison ? ` ${comparison}` : ''}`
+  return `### ${displayName || name}: ${formattedValue}\n${comparison ? ` ${comparison}` : ''}\n${graph}`
 }
 
-const getMetricLineComparison = (value, previousValue) => {
+const getMetricLineComparison = (value, previousValue, previousSha) => {
   if (previousValue === undefined) {
     return ''
   }
@@ -73,8 +107,9 @@ const getMetricLineComparison = (value, previousValue) => {
   // eslint-disable-next-line no-magic-numbers
   const percentage = Math.abs((difference / value) * 100).toFixed(2)
   const [word, icon] = difference > 0 ? ['increase', '⬆️'] : ['decrease', '⬇️']
+  const shaText = previousSha ? ` vs. ${previousSha}` : ''
 
-  return `${icon} (${percentage}% ${word})`
+  return `${icon} **${percentage}% ${word}**${shaText}`
 }
 
 const findDeltaComment = (body, job) => {
