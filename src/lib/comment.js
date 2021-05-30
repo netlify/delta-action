@@ -1,7 +1,9 @@
 const regexEscape = require('regex-escape')
 
+const { drawGraph } = require('./graph')
 const { formatValue } = require('./units')
 
+const MAX_GRAPH_ITEMS = 20
 const PAST_METRICS_COUNT = 30
 
 const createHeadBranchComment = ({ commitSha, metrics, job, previousCommit, title }) => {
@@ -20,13 +22,34 @@ const createPullRequestComment = ({ baseSha, job, metrics, previousMetrics = {},
       // format (array of objects).
       const comparison = Array.isArray(previousMetrics) ? previousMetrics[0] : previousMetrics
       const previousValue = comparison[metric.name]
+      const graphMetrics = [...previousMetrics, { __commit: baseSha, [metric.name]: metric.value }]
+      const graph = getGraph({ metrics: graphMetrics, metricName: metric.name, units: metric.units })
 
-      return getMetricLine(metric, previousValue)
+      return getMetricLine(metric, previousValue, graph)
     })
     .join('\n')
-  const baseShaLine = baseSha && previousMetrics.length !== 0 ? `Comparing with ${baseSha}\n\n` : ''
+  const baseShaLine = baseSha && previousMetrics.length !== 0 ? `*Comparing with ${baseSha}*\n\n` : ''
 
   return `## ${title}\n\n${baseShaLine}${metricsList}\n${metadata}`
+}
+
+const getGraph = ({ metrics, metricName, units }) => {
+  const ASCII_A = 65
+  const points = metrics.map((metric, index) => ({
+    // eslint-disable-next-line dot-notation
+    commit: metric['__commit'],
+    displayValue: formatValue(metric[metricName], units),
+    label: String.fromCharCode(ASCII_A + index),
+    value: metric[metricName],
+  }))
+  const graph = drawGraph(points.slice(0, MAX_GRAPH_ITEMS), { fillLast: true })
+  const legendItems = points
+    .map(({ commit, displayValue, label }) => `- ${label}: ${commit} (${displayValue})`)
+    .join('\n')
+  const legend = `<details>\n<summary>Legend</summary>\n\n${legendItems}</details>`
+  const lines = ['```', graph, '```', legend]
+
+  return lines.join('\n')
 }
 
 const getMetricsComment = ({ comments, job }) => {
@@ -52,11 +75,11 @@ const getMetricsForHeadBranch = ({ commitSha, job, metrics, previousCommit }) =>
   return [currentCommitMetrics]
 }
 
-const getMetricLine = ({ displayName, name, units, value }, previousValue) => {
+const getMetricLine = ({ displayName, name, units, value }, previousValue, graph) => {
   const comparison = getMetricLineComparison(value, previousValue)
   const formattedValue = formatValue(value, units)
 
-  return `- **${displayName || name}**: ${formattedValue}${comparison ? ` ${comparison}` : ''}`
+  return `### ${displayName || name}: ${formattedValue}\n${comparison ? ` ${comparison}` : ''}\n${graph}`
 }
 
 const getMetricLineComparison = (value, previousValue) => {
