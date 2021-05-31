@@ -3,7 +3,7 @@ const regexEscape = require('regex-escape')
 const { drawGraph } = require('./graph')
 const { formatValue } = require('./units')
 
-const MAX_GRAPH_ITEMS = 20
+const MAX_GRAPH_ITEMS = 16
 const PAST_METRICS_COUNT = 30
 
 const createHeadBranchComment = ({ commitSha, metrics, job, previousCommit, title }) => {
