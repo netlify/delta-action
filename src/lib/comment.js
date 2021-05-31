@@ -3,7 +3,7 @@ const regexEscape = require('regex-escape')
 const { drawGraph } = require('./graph')
 const { formatValue } = require('./units')
 
-const MAX_GRAPH_ITEMS = 16
+const MAX_GRAPH_ITEMS = 13
 const PAST_METRICS_COUNT = 30
 
 const createHeadBranchComment = ({ commitSha, metrics, job, previousCommit, title }) => {
@@ -48,7 +48,7 @@ const getGraph = ({ metrics, metricName, units }) => {
       value: metric[metricName],
     }
   })
-  const graph = drawGraph(points.slice(0, MAX_GRAPH_ITEMS), { fillLast: true })
+  const graph = drawGraph(points.slice(MAX_GRAPH_ITEMS * -1), { fillLast: true })
   const legendItems = points
     .map(
       ({ commit, displayValue, label }) =>
