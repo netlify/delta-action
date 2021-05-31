@@ -5017,7 +5017,7 @@ var require_comment = __commonJS({
     var regexEscape = require_lib2();
     var { drawGraph } = require_graph();
     var { formatValue } = require_units();
-    var MAX_GRAPH_ITEMS = 16;
+    var MAX_GRAPH_ITEMS = 13;
     var PAST_METRICS_COUNT = 30;
     var createHeadBranchComment2 = ({ commitSha, metrics, job, previousCommit, title }) => {
       const allMetrics = getMetricsForHeadBranch({ commitSha, job, metrics, previousCommit });
@@ -5057,7 +5057,7 @@ ${metadata}`;
           value: metric[metricName]
         };
       });
-      const graph = drawGraph(points.slice(0, MAX_GRAPH_ITEMS), { fillLast: true });
+      const graph = drawGraph(points.slice(MAX_GRAPH_ITEMS * -1), { fillLast: true });
       const legendItems = points.map(({ commit, displayValue, label }) => `- ${label === "T" ? "**" : ""}${label} (${label === "T" ? "current commit" : commit}): ${displayValue}${label === "T" ? "**" : ""}`).join("\n");
       const legend = `<details>
 <summary>Legend</summary>

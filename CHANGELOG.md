@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.3](https://www.github.com/netlify/delta-action/compare/v1.2.2...v1.2.3) (2021-05-31)
+
+
+### Bug Fixes
+
+* show most recent items in graph ([#66](https://www.github.com/netlify/delta-action/issues/66)) ([233b983](https://www.github.com/netlify/delta-action/commit/233b9830c97fbe43f5eae0e519093a2f8ba2cd2d))
+
 ### [1.2.2](https://www.github.com/netlify/delta-action/compare/v1.2.1...v1.2.2) (2021-05-31)
 
 
