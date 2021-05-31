@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/netlify/delta-action/compare/v1.2.1...v1.2.2) (2021-05-31)
+
+
+### Bug Fixes
+
+* reduce max graph items ([#64](https://www.github.com/netlify/delta-action/issues/64)) ([8b11ffa](https://www.github.com/netlify/delta-action/commit/8b11ffa14b67766d64a337264846148bcb3fd356))
+
 ### [1.2.1](https://www.github.com/netlify/delta-action/compare/v1.2.0...v1.2.1) (2021-05-30)
 
 

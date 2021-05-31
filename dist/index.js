@@ -4410,7 +4410,7 @@ var require_dist_node9 = __commonJS({
         updateAuthenticated: ["PATCH /user"]
       }
     };
-    var VERSION = "5.3.0";
+    var VERSION = "5.3.1";
     function endpointsToMethods(octokit, endpointsMap) {
       const newMethods = {};
       for (const [scope, endpoints] of Object.entries(endpointsMap)) {
@@ -5017,7 +5017,7 @@ var require_comment = __commonJS({
     var regexEscape = require_lib2();
     var { drawGraph } = require_graph();
     var { formatValue } = require_units();
-    var MAX_GRAPH_ITEMS = 20;
+    var MAX_GRAPH_ITEMS = 16;
     var PAST_METRICS_COUNT = 30;
     var createHeadBranchComment2 = ({ commitSha, metrics, job, previousCommit, title }) => {
       const allMetrics = getMetricsForHeadBranch({ commitSha, job, metrics, previousCommit });
