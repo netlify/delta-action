@@ -104,7 +104,6 @@ const getMetricLineComparison = (value, previousValue, previousSha) => {
     return '(no change)'
   }
 
-  // eslint-disable-next-line no-magic-numbers
   const percentage = Math.abs((difference / value) * 100).toFixed(2)
   const [word, icon] = difference > 0 ? ['increase', '⬆️'] : ['decrease', '⬇️']
   const shaText = previousSha ? ` vs. ${previousSha}` : ''
