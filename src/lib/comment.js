@@ -87,7 +87,7 @@ const getMetricsForHeadBranch = ({ commitSha, job, metrics, previousCommit }) =>
   return [currentCommitMetrics]
 }
 
-const getMetricLine = ({ displayName, name, units, value }, previousValue, previousSha, graph) => {
+const getMetricLine = ({ displayName, name, units, value }, previousValue, previousSha, graph = '') => {
   const comparison = getMetricLineComparison(value, previousValue, previousSha)
   const formattedValue = formatValue(value, units)
 
@@ -120,7 +120,11 @@ const findDeltaComment = (body, job) => {
 }
 
 const normalizeMetrics = (metrics, sha) => {
-  if (!metrics || Array.isArray(metrics)) {
+  if (!metrics) {
+    return []
+  }
+
+  if (Array.isArray(metrics)) {
     return metrics
   }
 

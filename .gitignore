@@ -10,5 +10,3 @@ node_modules
 /coverage
 /build
 .vscode
-local-test.sh
-.delta*
