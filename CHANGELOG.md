@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.4](https://www.github.com/netlify/delta-action/compare/v1.2.3...v1.2.4) (2021-06-22)
+
+
+### Bug Fixes
+
+* account for missing metrics in the base branch ([#80](https://www.github.com/netlify/delta-action/issues/80)) ([54a4530](https://www.github.com/netlify/delta-action/commit/54a45304746b67afe54e429011eda5a64823aa4b))
+
 ### [1.2.3](https://www.github.com/netlify/delta-action/compare/v1.2.2...v1.2.3) (2021-05-31)
 
 
