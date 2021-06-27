@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/netlify/delta-action/compare/v1.2.4...v1.3.0) (2021-06-27)
+
+
+### Features
+
+* draw mean in graph ([#86](https://www.github.com/netlify/delta-action/issues/86)) ([5209da8](https://www.github.com/netlify/delta-action/commit/5209da859cd9d795920b591885555e88cc22bf0b))
+
 ### [1.2.4](https://www.github.com/netlify/delta-action/compare/v1.2.3...v1.2.4) (2021-06-22)
 
 
