@@ -49,7 +49,7 @@ const getGraph = ({ metrics, metricName, units }) => {
       value: metric[metricName],
     }
   })
-  const graph = drawGraph(points.slice(MAX_GRAPH_ITEMS * -1), { fillLast: true })
+  const graph = drawGraph(points.slice(MAX_GRAPH_ITEMS * -1), { drawMean: true, fillLast: true })
   const legendItems = points
     .map(
       ({ commit, displayValue, label }) =>
