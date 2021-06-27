@@ -4822,7 +4822,10 @@ var require_graph = __commonJS({
   "src/lib/graph.js"(exports2, module2) {
     var BAR_BODY = "|  |";
     var BAR_BODY_FILLED = "|\u2592\u2592|";
+    var BAR_BODY_MEAN = "\u253C\u2500\u2500\u253C";
     var BAR_TOP = "\u250C\u2500\u2500\u2510";
+    var GAP = " ";
+    var GAP_MEAN = "\u2500";
     var GAP_LENGTH = 4;
     var LINE_COUNT = 20;
     var drawBase = (points) => {
@@ -4835,14 +4838,17 @@ var require_graph = __commonJS({
       return `\u2514\u2500${axis}>
   ${legend}`;
     };
-    var drawGraph = (values, { fillLast = false } = {}) => {
+    var drawGraph = (values, { drawMean = false, fillLast = false } = {}) => {
       const maxValue = values.reduce((max, { value }) => value > max ? value : max, 0);
+      const sum = values.reduce((acc, { value }) => acc + value, 0);
+      const mean = sum / values.length;
       const increment = maxValue / LINE_COUNT;
+      const meanLevel = drawMean ? LINE_COUNT - Math.round(mean / increment) : null;
       const augmentedValues = values.map((dataPoint) => {
         const filledLevels = Math.round(dataPoint.value / increment);
         return { ...dataPoint, emptyLevels: LINE_COUNT - filledLevels };
       });
-      const levels = Array.from({ length: LINE_COUNT }, (_, index) => drawLevel({ fillLast, level: index + 1, values: augmentedValues }));
+      const levels = Array.from({ length: LINE_COUNT }, (_, index) => drawLevel({ fillLast, isMean: meanLevel === index + 1, level: index + 1, values: augmentedValues }));
       const topLevels = [
         drawLevel({ level: -1, values: augmentedValues }),
         drawLevel({ level: 0, values: augmentedValues })
@@ -4851,32 +4857,34 @@ var require_graph = __commonJS({
       return `${[...topLevels, ...levels].join("\n")}
 ${base}`;
     };
-    var drawLevel = ({ fillLast, level, values }) => {
-      const padding = " ".repeat(GAP_LENGTH / 2);
+    var drawLevel = ({ fillLast, isMean, level, values }) => {
+      const gapCharacter = isMean ? GAP_MEAN : GAP;
+      const padding = gapCharacter.repeat(GAP_LENGTH / 2);
       const bars = values.map(({ displayValue, emptyLevels, value }, index) => {
         const isLastValue = index === values.length - 1;
         if (emptyLevels < level) {
-          return `${padding}${isLastValue && fillLast ? BAR_BODY_FILLED : BAR_BODY}${padding}`;
+          const unfilledBody = isMean ? BAR_BODY_MEAN : BAR_BODY;
+          return `${padding}${isLastValue && fillLast ? BAR_BODY_FILLED : unfilledBody}${padding}`;
         }
         if (emptyLevels === level) {
           return `${padding}${BAR_TOP}${padding}`;
         }
         if (emptyLevels - 1 === level) {
-          return getPaddedString((displayValue || value).toString(), BAR_BODY.length + GAP_LENGTH);
+          return getPaddedString((displayValue || value).toString(), BAR_BODY.length + GAP_LENGTH, gapCharacter);
         }
-        return `${padding}${" ".repeat(BAR_BODY.length)}${padding}`;
+        return `${padding}${gapCharacter.repeat(BAR_BODY.length)}${padding}`;
       }).join("");
       return `${level === -1 ? "^" : "\u2502"} ${bars}`;
     };
-    var getPaddedString = (string, length) => {
+    var getPaddedString = (string, length, paddingCharacter = " ") => {
       const totalPadding = length - string.length;
       if (totalPadding < 0) {
         return `${string.slice(0, length - 1)}\u2026`;
       }
       const paddingRightLength = Math.max(0, Math.round(totalPadding / 2));
       const paddingLeftLength = Math.max(0, totalPadding - paddingRightLength);
-      const paddingLeft = " ".repeat(paddingLeftLength);
-      const paddingRight = " ".repeat(paddingRightLength);
+      const paddingLeft = paddingCharacter.repeat(paddingLeftLength);
+      const paddingRight = paddingCharacter.repeat(paddingRightLength);
       return `${paddingLeft}${string}${paddingRight}`;
     };
     module2.exports = { drawGraph };
@@ -5164,7 +5172,7 @@ ${metadata}`;
           value: metric[metricName]
         };
       });
-      const graph = drawGraph(points.slice(MAX_GRAPH_ITEMS * -1), { fillLast: true });
+      const graph = drawGraph(points.slice(MAX_GRAPH_ITEMS * -1), { drawMean: true, fillLast: true });
       const legendItems = points.map(({ commit, displayValue, label }) => `- ${label === "T" ? "**" : ""}${label} (${label === "T" ? "current commit" : commit}): ${displayValue}${label === "T" ? "**" : ""}`).join("\n");
       const legend = `<details>
 <summary>Legend</summary>
