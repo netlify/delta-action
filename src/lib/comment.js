@@ -105,12 +105,14 @@ const getMetricLineComparison = (value, previousValue, previousSha) => {
     return '(no change)'
   }
 
-  const percentage = Math.abs((difference / value) * 100).toFixed(2)
+  const percentage = Math.abs((difference / value) * FLOAT_TO_PERCENT).toFixed(2)
   const [word, icon] = difference > 0 ? ['increase', '⬆️'] : ['decrease', '⬇️']
   const shaText = previousSha ? ` vs. ${previousSha}` : ''
 
   return `${icon} **${percentage}% ${word}**${shaText}`
 }
+
+const FLOAT_TO_PERCENT = 100
 
 const findDeltaComment = (body, job) => {
   const regex = new RegExp(`<!--delta:${regexEscape(job)}@(.*)-->`)
