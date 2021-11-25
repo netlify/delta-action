@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://www.github.com/netlify/delta-action/compare/v1.3.0...v2.0.0) (2021-11-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Node 8 and 10 (#159)
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v1.6.0 ([#145](https://www.github.com/netlify/delta-action/issues/145)) ([44e422a](https://www.github.com/netlify/delta-action/commit/44e422a27d3f9319ac2b04e326147da9fd189626))
+
+
+### Miscellaneous Chores
+
+* drop support for Node 8 and 10 ([#159](https://www.github.com/netlify/delta-action/issues/159)) ([5cb7e98](https://www.github.com/netlify/delta-action/commit/5cb7e981de742c1338679b8ba4bd384df25dbc77))
+
 ## [1.3.0](https://www.github.com/netlify/delta-action/compare/v1.2.4...v1.3.0) (2021-06-27)
 
 
