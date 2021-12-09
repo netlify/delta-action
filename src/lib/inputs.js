@@ -1,8 +1,8 @@
-const process = require('process')
+import process from 'process'
 
-const core = require('@actions/core')
+import core from '@actions/core'
 
-const getInputs = () => {
+export const getInputs = () => {
   const {
     GITHUB_DEV_BASE_BRANCH: envBaseBranch,
     GITHUB_JOB: job,
@@ -31,5 +31,3 @@ const getInputs = () => {
     token,
   }
 }
-
-module.exports = { getInputs }

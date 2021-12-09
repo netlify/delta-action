@@ -3,6 +3,9 @@
   "private": true,
   "version": "2.0.0",
   "description": "A GitHub Action for capturing benchmark data and tracking its variation against a baseline",
+  "type": "module",
+  "exports": "./src/index.js",
+  "main": "./src/index.js",
   "files": [
     "src/**/*.js",
     "!src/**/*.test.js"
@@ -24,8 +27,8 @@
     "test:ci:ava": "nyc -r lcovonly -r text -r json ava"
   },
   "config": {
-    "eslint": "--ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{js,md,html}\" \"*.{js,md,html}\" \".*.{js,md,html}\"",
-    "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{js,md,yml,json,html}\" \"*.{js,yml,json,html}\" \".*.{js,yml,json,html}\" \"!**/package-lock.json\" \"!package-lock.json\""
+    "eslint": "--ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{cjs,mjs,js,md,html}\" \"*.{cjs,mjs,js,md,html}\" \".*.{cjs,mjs,js,md,html}\"",
+    "prettier": "--ignore-path .gitignore --loglevel=warn \"{src,scripts,.github}/**/*.{cjs,mjs,js,md,yml,json,html}\" \"*.{cjs,mjs,js,yml,json,html}\" \".*.{cjs,mjs,js,yml,json,html}\" \"!**/package-lock.json\" \"!package-lock.json\""
   },
   "eslintIgnore": [
     "dist/*"
@@ -60,7 +63,7 @@
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
     "@netlify/eslint-config-node": "^4.0.0",
-    "ava": "^2.4.0",
+    "ava": "^3.0.0",
     "esbuild": "^0.14.0",
     "husky": "^4.3.8",
     "nyc": "^15.0.0"

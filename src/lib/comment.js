@@ -1,12 +1,12 @@
-const regexEscape = require('regex-escape')
+import regexEscape from 'regex-escape'
 
-const { drawGraph } = require('./graph')
-const { formatValue } = require('./units')
+import { drawGraph } from './graph.js'
+import { formatValue } from './units.js'
 
 const MAX_GRAPH_ITEMS = 13
 const PAST_METRICS_COUNT = 30
 
-const createHeadBranchComment = ({ commitSha, metrics, job, previousCommit, title }) => {
+export const createHeadBranchComment = ({ commitSha, metrics, job, previousCommit, title }) => {
   const allMetrics = getMetricsForHeadBranch({ commitSha, job, metrics, previousCommit })
   const metadata = `<!--delta:${job}@${JSON.stringify(allMetrics)}-->`
   const metricsList = metrics.map((metric) => getMetricLine(metric)).join('\n')
@@ -14,7 +14,7 @@ const createHeadBranchComment = ({ commitSha, metrics, job, previousCommit, titl
   return `## ${title}\n\n${metricsList}\n${metadata}`
 }
 
-const createPullRequestComment = ({ baseSha, job, metrics, previousMetrics, title }) => {
+export const createPullRequestComment = ({ baseSha, job, metrics, previousMetrics, title }) => {
   // Accounting for both the legacy metadata format (object) and the new
   // format (array of objects).
   const previousMetricsArray = (Array.isArray(previousMetrics) ? previousMetrics : [previousMetrics]).filter(Boolean)
@@ -64,7 +64,7 @@ const getGraph = ({ metrics, metricName, units }) => {
   return lines.join('\n')
 }
 
-const getMetricsComment = ({ comments, job }) => {
+export const getMetricsComment = ({ comments, job }) => {
   const deltaComment = comments.map(({ body }) => parseComment(body, job)).find(Boolean)
 
   return deltaComment
@@ -114,7 +114,7 @@ const getMetricLineComparison = (value, previousValue, previousSha) => {
 
 const FLOAT_TO_PERCENT = 100
 
-const findDeltaComment = (body, job) => {
+export const findDeltaComment = (body, job) => {
   const regex = new RegExp(`<!--delta:${regexEscape(job)}@(.*)-->`)
   const match = body.match(regex)
 
@@ -146,5 +146,3 @@ const parseComment = (body, job) => {
     // no-op
   }
 }
-
-module.exports = { createHeadBranchComment, createPullRequestComment, findDeltaComment, getMetricsComment }

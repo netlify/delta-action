@@ -1,10 +1,10 @@
-const prettyBytes = require('pretty-bytes')
-const prettyMilliseconds = require('pretty-ms')
+import prettyBytes from 'pretty-bytes'
+import prettyMilliseconds from 'pretty-ms'
 
 const KILO = 1e3
 
 // eslint-disable-next-line complexity
-const formatValue = (value, unit) => {
+export const formatValue = (value, unit) => {
   const normalizedUnit = unit && unit.toLowerCase()
 
   switch (normalizedUnit) {
@@ -31,5 +31,3 @@ const formatValue = (value, unit) => {
       return value.toLocaleString()
   }
 }
-
-module.exports = { formatValue }
