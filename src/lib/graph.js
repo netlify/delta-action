@@ -21,7 +21,7 @@ const drawBase = (points) => {
   return `└─${axis}>\n  ${legend}`
 }
 
-const drawGraph = (values, { drawMean = false, fillLast = false } = {}) => {
+export const drawGraph = (values, { drawMean = false, fillLast = false } = {}) => {
   const maxValue = values.reduce((max, { value }) => (value > max ? value : max), 0)
   const sum = values.reduce((acc, { value }) => acc + value, 0)
   const mean = sum / values.length
@@ -88,5 +88,3 @@ const getPaddedString = (string, length, paddingCharacter = ' ') => {
 
   return `${paddingLeft}${string}${paddingRight}`
 }
-
-module.exports = { drawGraph }

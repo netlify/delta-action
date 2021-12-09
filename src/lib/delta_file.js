@@ -1,7 +1,7 @@
-const { readdir, readFile } = require('fs')
-const { promisify } = require('util')
+import { readdir, readFile } from 'fs'
+import { promisify } from 'util'
 
-const core = require('@actions/core')
+import core from '@actions/core'
 
 const pReadDir = promisify(readdir)
 const pReadFile = promisify(readFile)
@@ -25,7 +25,7 @@ const readDeltaFile = async (filePath) => {
   }
 }
 
-const readDeltaFiles = async (rootPath) => {
+export const readDeltaFiles = async (rootPath) => {
   try {
     const items = await pReadDir(rootPath)
     const metricFiles = items
@@ -53,5 +53,3 @@ const readDeltaFiles = async (rootPath) => {
     return []
   }
 }
-
-module.exports = { readDeltaFiles }

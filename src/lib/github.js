@@ -1,4 +1,4 @@
-const getBranchNameFromRef = (ref) => {
+export const getBranchNameFromRef = (ref) => {
   const match = ref.match(/^refs\/heads\/(.*)$/)
 
   if (match) {
@@ -6,7 +6,7 @@ const getBranchNameFromRef = (ref) => {
   }
 }
 
-const getCommentsFromMainBranch = async ({ commitIndex = 0, octokit, owner, repo }) => {
+export const getCommentsFromMainBranch = async ({ commitIndex = 0, octokit, owner, repo }) => {
   const { data: commits } = await octokit.rest.repos.listCommits({
     owner,
     repo,
@@ -20,5 +20,3 @@ const getCommentsFromMainBranch = async ({ commitIndex = 0, octokit, owner, repo
 
   return { baseSha, comments }
 }
-
-module.exports = { getBranchNameFromRef, getCommentsFromMainBranch }

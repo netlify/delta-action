@@ -1,15 +1,15 @@
-const core = require('@actions/core')
-const github = require('@actions/github')
+import core from '@actions/core'
+import github from '@actions/github'
 
-const {
+import {
   createHeadBranchComment,
   createPullRequestComment,
   findDeltaComment,
   getMetricsComment,
-} = require('./lib/comment')
-const { readDeltaFiles } = require('./lib/delta_file')
-const { getCommentsFromMainBranch } = require('./lib/github')
-const { getInputs } = require('./lib/inputs')
+} from './lib/comment.js'
+import { readDeltaFiles } from './lib/delta_file.js'
+import { getCommentsFromMainBranch } from './lib/github.js'
+import { getInputs } from './lib/inputs.js'
 
 const processHeadBranch = async ({ commitSha, headMetrics, job, octokit, owner, repo, title }) => {
   const previousCommit = await getCommentsFromMainBranch({ commitIndex: 1, octokit, owner, repo })
