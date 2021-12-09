@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://www.github.com/netlify/delta-action/compare/v2.0.0...v3.0.0) (2021-12-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* use pure ES modules (#177)
+
+### Miscellaneous Chores
+
+* use pure ES modules ([#177](https://www.github.com/netlify/delta-action/issues/177)) ([2ead9e6](https://www.github.com/netlify/delta-action/commit/2ead9e68a08ad380c06c82754fd86ff12c5d41a7))
+
 ## [2.0.0](https://www.github.com/netlify/delta-action/compare/v1.3.0...v2.0.0) (2021-11-25)
 
 
