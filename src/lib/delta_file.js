@@ -20,7 +20,7 @@ const readDeltaFile = async (filePath) => {
       units: match[2],
       displayName: match[3],
     }
-  } catch (_) {
+  } catch {
     return null
   }
 }

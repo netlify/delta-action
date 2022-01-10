@@ -142,7 +142,7 @@ const parseComment = (body, job) => {
 
   try {
     return JSON.parse(match[1])
-  } catch (_) {
+  } catch {
     // no-op
   }
 }
