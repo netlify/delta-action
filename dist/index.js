@@ -6,18 +6,18 @@ var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __reExport = (target, module2, desc) => {
+var __reExport = (target, module2, copyDefault, desc) => {
   if (module2 && typeof module2 === "object" || typeof module2 === "function") {
     for (let key of __getOwnPropNames(module2))
-      if (!__hasOwnProp.call(target, key) && key !== "default")
+      if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
         __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
   }
   return target;
 };
-var __toModule = (module2) => {
-  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", module2 && module2.__esModule && "default" in module2 ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
+var __toESM = (module2, isNodeMode) => {
+  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", !isNodeMode && module2 && module2.__esModule ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
 };
 
 // node_modules/@actions/core/lib/utils.js
@@ -4103,7 +4103,7 @@ var require_lib2 = __commonJS({
     var Headers = class {
       constructor() {
         let init = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : void 0;
-        this[MAP] = Object.create(null);
+        this[MAP] = /* @__PURE__ */ Object.create(null);
         if (init instanceof Headers) {
           const rawHeaders = init.raw();
           const headerNames = Object.keys(rawHeaders);
@@ -6771,11 +6771,11 @@ var require_pretty_ms = __commonJS({
 });
 
 // src/index.js
-var import_core3 = __toModule(require_core());
-var import_github = __toModule(require_github());
+var import_core3 = __toESM(require_core(), 1);
+var import_github = __toESM(require_github(), 1);
 
 // src/lib/comment.js
-var import_regex_escape = __toModule(require_lib3());
+var import_regex_escape = __toESM(require_lib3(), 1);
 
 // src/lib/graph.js
 var BAR_BODY = "|  |";
@@ -6847,8 +6847,8 @@ var getPaddedString = (string, length, paddingCharacter = " ") => {
 };
 
 // src/lib/units.js
-var import_pretty_bytes = __toModule(require_pretty_bytes());
-var import_pretty_ms = __toModule(require_pretty_ms());
+var import_pretty_bytes = __toESM(require_pretty_bytes(), 1);
+var import_pretty_ms = __toESM(require_pretty_ms(), 1);
 var KILO = 1e3;
 var formatValue = (value, unit) => {
   const normalizedUnit = unit && unit.toLowerCase();
@@ -6980,14 +6980,14 @@ var parseComment = (body, job) => {
   }
   try {
     return JSON.parse(match[1]);
-  } catch (_) {
+  } catch {
   }
 };
 
 // src/lib/delta_file.js
-var import_fs = __toModule(require("fs"));
-var import_util = __toModule(require("util"));
-var import_core = __toModule(require_core());
+var import_fs = require("fs");
+var import_util = require("util");
+var import_core = __toESM(require_core(), 1);
 var pReadDir = (0, import_util.promisify)(import_fs.readdir);
 var pReadFile = (0, import_util.promisify)(import_fs.readFile);
 var readDeltaFile = async (filePath) => {
@@ -7002,7 +7002,7 @@ var readDeltaFile = async (filePath) => {
       units: match[2],
       displayName: match[3]
     };
-  } catch (_) {
+  } catch {
     return null;
   }
 };
@@ -7044,8 +7044,8 @@ var getCommentsFromMainBranch = async ({ commitIndex = 0, octokit, owner, repo }
 };
 
 // src/lib/inputs.js
-var import_process = __toModule(require("process"));
-var import_core2 = __toModule(require_core());
+var import_process = __toESM(require("process"), 1);
+var import_core2 = __toESM(require_core(), 1);
 var getInputs = () => {
   const {
     GITHUB_DEV_BASE_BRANCH: envBaseBranch,
