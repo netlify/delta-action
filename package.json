@@ -11,7 +11,7 @@
     "!src/**/*.test.js"
   ],
   "scripts": {
-    "prepare": "esbuild src/index.js --bundle --outdir=dist --platform=node --sourcemap",
+    "prepare": "husky install node_modules/@netlify/eslint-config-node/.husky/ && esbuild src/index.js --bundle --outdir=dist --platform=node --sourcemap",
     "test": "run-s format test:dev",
     "format": "run-s format:check-fix:*",
     "format:ci": "run-s format:check:*",
@@ -36,12 +36,6 @@
   "ava": {
     "verbose": true
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "npm run format"
-    }
-  },
   "keywords": [],
   "license": "MIT",
   "repository": "netlify/delta-action",
@@ -65,7 +59,7 @@
     "@netlify/eslint-config-node": "^4.1.3",
     "ava": "^3.0.0",
     "esbuild": "^0.14.0",
-    "husky": "^4.3.8",
+    "husky": "^7.0.4",
     "nyc": "^15.0.0"
   },
   "engines": {
