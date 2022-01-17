@@ -1,32 +1,24 @@
-🎉 Thanks for sending this pull request! 🎉
+🎉 Thanks for submitting a pull request! 🎉
 
-Please make sure the title is clear and descriptive.
+#### Summary
 
-If you are fixing a typo or documentation, please skip these instructions.
+Fixes #<replace_with_issue_number>
 
-Otherwise please fill in the sections below.
+<!--
+Explain the **motivation** for making this change. What existing problem does the pull request solve and how?
+-->
 
-**Which problem is this pull request solving?**
+---
 
-Example: I'm always frustrated when [...]
+For us to review and ship your PR efficiently, please perform the following steps:
 
-**List other issues or pull requests related to this problem**
+- [ ] Open a [bug/issue](https://github.com/netlify/delta-action/issues/new/choose) before writing your code 🧑‍💻. This
+      ensures we can discuss the changes and get feedback from everyone that should be involved. If you\`re fixing a
+      typo or something that\`s on fire 🔥 (e.g. incident related), you can skip this step.
+- [ ] Read the [contribution guidelines](../CONTRIBUTING.md) 📖. This ensures your code follows our style guide and
+      passes our tests.
+- [ ] Update or add tests (if any source code was changed or added) 🧪
+- [ ] Update or add documentation (if features were changed or added) 📝
+- [ ] Make sure the status checks below are successful ✅
 
-Example: This fixes #5012
-
-**Describe the solution you've chosen**
-
-Example: I've fixed this by [...]
-
-**Describe alternatives you've considered**
-
-Example: Another solution would be [...]
-
-**Checklist**
-
-Please add a `x` inside each checkbox:
-
-- [ ] I have read the [contribution guidelines](../blob/main/CONTRIBUTING.md).
-- [ ] The status checks are successful (continuous integration). Those can be seen below.
-
-**A picture of a cute animal (not mandatory but encouraged)**
+**A picture of a cute animal (not mandatory, but encouraged)**
