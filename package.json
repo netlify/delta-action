@@ -24,7 +24,7 @@
     "test:dev": "run-s test:dev:*",
     "test:ci": "run-s test:ci:*",
     "test:dev:ava": "ava",
-    "test:ci:ava": "nyc -r lcovonly -r text -r json ava"
+    "test:ci:ava": "c8 -r lcovonly -r text -r json ava"
   },
   "config": {
     "eslint": "--ignore-path .gitignore --cache --format=codeframe --max-warnings=0 \"{src,scripts,.github}/**/*.{cjs,mjs,js,md,html}\" \"*.{cjs,mjs,js,md,html}\" \".*.{cjs,mjs,js,md,html}\"",
@@ -54,13 +54,11 @@
     "regex-escape": "^3.4.10"
   },
   "devDependencies": {
-    "@commitlint/cli": "^16.0.0",
-    "@commitlint/config-conventional": "^16.0.0",
     "@netlify/eslint-config-node": "^4.1.5",
     "ava": "^3.0.0",
+    "c8": "^7.11.0",
     "esbuild": "^0.14.0",
-    "husky": "^7.0.4",
-    "nyc": "^15.0.0"
+    "husky": "^7.0.4"
   },
   "engines": {
     "node": "^12.20.0 || ^14.14.0 || >=16.0.0"
