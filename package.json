@@ -54,7 +54,7 @@
     "regex-escape": "^3.4.10"
   },
   "devDependencies": {
-    "@netlify/eslint-config-node": "^5.1.0",
+    "@netlify/eslint-config-node": "^5.1.1",
     "ava": "^3.0.0",
     "c8": "^7.11.0",
     "esbuild": "^0.14.0",
