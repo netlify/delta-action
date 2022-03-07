@@ -15,6 +15,7 @@ buildSync({
   },
   bundle: true,
   entryPoints: ['src/index.js'],
+  format: 'esm',
   platform: 'node',
   outdir: 'dist',
   sourcemap: true,
