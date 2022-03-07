@@ -1,3 +1,11 @@
+
+import { createRequire as ___internalCreateRequire } from 'module';
+import { fileURLToPath as ___internalFileURLToPath } from "url";
+import { dirname as ___internalPathDirname} from "path";
+let __filename =___internalFileURLToPath(import.meta.url);
+let __dirname = ___internalPathDirname(___internalFileURLToPath(import.meta.url));
+let require = ___internalCreateRequire(import.meta.url);
+
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
