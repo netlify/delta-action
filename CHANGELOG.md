@@ -1,5 +1,12 @@
 # Changelog
 
+### [3.0.1](https://github.com/netlify/delta-action/compare/v3.0.0...v3.0.1) (2022-03-07)
+
+
+### Bug Fixes
+
+* output ESM ([#266](https://github.com/netlify/delta-action/issues/266)) ([77b4183](https://github.com/netlify/delta-action/commit/77b41839f7eb8486282ba762bf4f0a1bd801e39e))
+
 ## [3.0.0](https://www.github.com/netlify/delta-action/compare/v2.0.0...v3.0.0) (2021-12-09)
 
 
