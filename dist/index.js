@@ -12,7 +12,6 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
   get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
 }) : x)(function(x) {
@@ -23,17 +22,15 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
 var __commonJS = (cb, mod) => function __require2() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __reExport = (target, module, copyDefault, desc) => {
-  if (module && typeof module === "object" || typeof module === "function") {
-    for (let key of __getOwnPropNames(module))
-      if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
-        __defProp(target, key, { get: () => module[key], enumerable: !(desc = __getOwnPropDesc(module, key)) || desc.enumerable });
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
-  return target;
+  return to;
 };
-var __toESM = (module, isNodeMode) => {
-  return __reExport(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", !isNodeMode && module && module.__esModule ? { get: () => module.default, enumerable: true } : { value: module, enumerable: true })), module);
-};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
 
 // node_modules/@actions/core/lib/utils.js
 var require_utils = __commonJS({
@@ -4550,8 +4547,13 @@ var require_lib2 = __commonJS({
     AbortError.prototype = Object.create(Error.prototype);
     AbortError.prototype.constructor = AbortError;
     AbortError.prototype.name = "AbortError";
+    var URL$1 = Url.URL || whatwgUrl.URL;
     var PassThrough$1 = Stream.PassThrough;
-    var resolve_url = Url.resolve;
+    var isDomainOrSubdomain = function isDomainOrSubdomain2(destination, original) {
+      const orig = new URL$1(original).hostname;
+      const dest = new URL$1(destination).hostname;
+      return orig === dest || orig[orig.length - dest.length - 1] === "." && orig.endsWith(dest);
+    };
     function fetch(url, opts) {
       if (!fetch.Promise) {
         throw new Error("native promise missing, set fetch.Promise to your favorite alternative");
@@ -4609,7 +4611,16 @@ var require_lib2 = __commonJS({
           const headers = createHeadersLenient(res.headers);
           if (fetch.isRedirect(res.statusCode)) {
             const location = headers.get("Location");
-            const locationURL = location === null ? null : resolve_url(request.url, location);
+            let locationURL = null;
+            try {
+              locationURL = location === null ? null : new URL$1(location, request.url).toString();
+            } catch (err) {
+              if (request.redirect !== "manual") {
+                reject(new FetchError(`uri requested responds with an invalid redirect URL: ${location}`, "invalid-redirect"));
+                finalize();
+                return;
+              }
+            }
             switch (request.redirect) {
               case "error":
                 reject(new FetchError(`uri requested responds with a redirect, redirect mode is set to error: ${request.url}`, "no-redirect"));
@@ -4645,6 +4656,11 @@ var require_lib2 = __commonJS({
                   timeout: request.timeout,
                   size: request.size
                 };
+                if (!isDomainOrSubdomain(request.url, locationURL)) {
+                  for (const name of ["authorization", "www-authenticate", "cookie", "cookie2"]) {
+                    requestOpts.headers.delete(name);
+                  }
+                }
                 if (res.statusCode !== 303 && request.body && getTotalBytes(request) === null) {
                   reject(new FetchError("Cannot follow redirect with body being a readable stream", "unsupported-redirect"));
                   finalize();
@@ -4890,7 +4906,7 @@ var require_dist_node5 = __commonJS({
     var isPlainObject = require_is_plain_object();
     var nodeFetch = _interopDefault(require_lib2());
     var requestError = require_dist_node4();
-    var VERSION = "5.6.2";
+    var VERSION = "5.6.3";
     function getBufferResponse(response) {
       return response.arrayBuffer();
     }
@@ -5213,7 +5229,7 @@ var require_dist_node8 = __commonJS({
       }
       return target;
     }
-    var VERSION = "3.5.1";
+    var VERSION = "3.6.0";
     var _excluded = ["authStrategy"];
     var Octokit = class {
       constructor(options = {}) {
