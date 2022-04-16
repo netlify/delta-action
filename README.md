@@ -54,7 +54,7 @@ The action supports the following inputs:
 
    ```yaml
    - name: Delta
-     uses: netlify/delta-action@v1
+     uses: netlify/delta-action@v3
      with:
        token: ${{ secrets.GITHUB_TOKEN }}
    ```
