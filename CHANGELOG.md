@@ -1,5 +1,13 @@
 # Changelog
 
+### [3.0.2](https://github.com/netlify/delta-action/compare/v3.0.1...v3.0.2) (2022-05-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v1.7.0 ([#280](https://github.com/netlify/delta-action/issues/280)) ([5b22d94](https://github.com/netlify/delta-action/commit/5b22d94da0ea94c30fe3b65ed1457fa7e2df6677))
+* **deps:** update dependency @actions/core to v1.8.0 ([#282](https://github.com/netlify/delta-action/issues/282)) ([52943b1](https://github.com/netlify/delta-action/commit/52943b1287871c272b8ce4be985d66dd39f2e757))
+
 ### [3.0.1](https://github.com/netlify/delta-action/compare/v3.0.0...v3.0.1) (2022-03-07)
 
 
