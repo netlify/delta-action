@@ -44,9 +44,9 @@ const getGraph = ({ metrics, metricName, units }) => {
     return {
       // eslint-disable-next-line dot-notation
       commit: metric['__commit'],
-      displayValue: formatValue(metric[metricName], units),
+      displayValue: metric[metricName] == null ? 'n/a' : formatValue(metric[metricName], units),
       label,
-      value: metric[metricName],
+      value: metric[metricName] == null ? Number.NEGATIVE_INFINITY : metric[metricName],
     }
   })
   const graph = drawGraph(points.slice(MAX_GRAPH_ITEMS * -1), { drawMean: true, fillLast: true })
