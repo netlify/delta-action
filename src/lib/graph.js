@@ -9,7 +9,13 @@ const LINE_COUNT = 20
 
 const drawBase = (points) => {
   const axisPadding = '─'.repeat(GAP_LENGTH / 2)
-  const axis = points.map(() => `${axisPadding}┴${'─'.repeat(BAR_BODY.length - 2)}┴${axisPadding}`).join('')
+  const axis = points
+    .map(({ value }) => {
+      const barChar = value === 0 ? '─' : '┴'
+
+      return `${axisPadding}${barChar}${'─'.repeat(BAR_BODY.length - 2)}${barChar}${axisPadding}`
+    })
+    .join('')
   const legend = points
     .map(({ label }) => {
       const text = getPaddedString(label, BAR_BODY.length + GAP_LENGTH)
@@ -23,14 +29,16 @@ const drawBase = (points) => {
 
 export const drawGraph = (values, { drawMean = false, fillLast = false } = {}) => {
   const maxValue = values.reduce((max, { value }) => (value > max ? value : max), 0)
-  const sum = values.reduce((acc, { value }) => acc + value, 0)
-  const mean = sum / values.length
+  const usableValues = values.filter(({ value }) => value !== Number.NEGATIVE_INFINITY)
+  const sum = usableValues.reduce((acc, { value }) => acc + value, 0)
+  const mean = sum / usableValues.length
   const increment = maxValue / LINE_COUNT
   const meanLevel = drawMean ? LINE_COUNT - Math.round(mean / increment) : null
   const augmentedValues = values.map((dataPoint) => {
-    const filledLevels = Math.round(dataPoint.value / increment)
+    const filledLevels = dataPoint.value === Number.NEGATIVE_INFINITY ? 0 : Math.round(dataPoint.value / increment)
+    const filterValue = dataPoint.value === Number.NEGATIVE_INFINITY ? 0 : dataPoint.value
 
-    return { ...dataPoint, emptyLevels: LINE_COUNT - filledLevels }
+    return { ...dataPoint, value: filterValue, emptyLevels: LINE_COUNT - filledLevels }
   })
 
   const levels = Array.from({ length: LINE_COUNT }, (_, index) =>
@@ -40,7 +48,7 @@ export const drawGraph = (values, { drawMean = false, fillLast = false } = {}) =
     drawLevel({ level: -1, values: augmentedValues }),
     drawLevel({ level: 0, values: augmentedValues }),
   ]
-  const base = drawBase(values)
+  const base = drawBase(augmentedValues)
 
   return `${[...topLevels, ...levels].join('\n')}\n${base}`
 }
@@ -59,11 +67,11 @@ const drawLevel = ({ fillLast, isMean, level, values }) => {
         return `${padding}${isLastValue && fillLast ? BAR_BODY_FILLED : unfilledBody}${padding}`
       }
 
-      if (emptyLevels === level) {
+      if (emptyLevels === level && value !== 0) {
         return `${padding}${BAR_TOP}${padding}`
       }
 
-      if (emptyLevels - 1 === level) {
+      if ((emptyLevels - 1 === level && value !== 0) || (emptyLevels === level && value === 0)) {
         return getPaddedString((displayValue || value).toString(), BAR_BODY.length + GAP_LENGTH, gapCharacter)
       }
 
