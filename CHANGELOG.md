@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.2](https://github.com/netlify/delta-action/compare/v3.0.1...v3.0.2) (2022-06-02)
+
+
+### Bug Fixes
+
+* correctly draw missing metrics from previous commits ([#290](https://github.com/netlify/delta-action/issues/290)) ([305594b](https://github.com/netlify/delta-action/commit/305594ba187ccb9ea224f6cad99df2ca7f9a3992))
+* **deps:** update dependency @actions/core to v1.7.0 ([#280](https://github.com/netlify/delta-action/issues/280)) ([5b22d94](https://github.com/netlify/delta-action/commit/5b22d94da0ea94c30fe3b65ed1457fa7e2df6677))
+* **deps:** update dependency @actions/core to v1.8.0 ([#282](https://github.com/netlify/delta-action/issues/282)) ([52943b1](https://github.com/netlify/delta-action/commit/52943b1287871c272b8ce4be985d66dd39f2e757))
+* **deps:** update dependency @actions/core to v1.8.2 ([#287](https://github.com/netlify/delta-action/issues/287)) ([9230ecf](https://github.com/netlify/delta-action/commit/9230ecfb310a7c0b0d8f3bd845f5f54e3e6218f0))
+* **deps:** update dependency @actions/github to v5.0.3 ([#288](https://github.com/netlify/delta-action/issues/288)) ([9023f48](https://github.com/netlify/delta-action/commit/9023f482c816a05b2e6f21b4136680d1b86a04ba))
+
 ### [3.0.1](https://github.com/netlify/delta-action/compare/v3.0.0...v3.0.1) (2022-03-07)
 
 
