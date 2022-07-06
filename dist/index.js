@@ -7132,114 +7132,6 @@ var require_pretty_bytes = __commonJS({
   }
 });
 
-// node_modules/parse-ms/index.js
-var require_parse_ms = __commonJS({
-  "node_modules/parse-ms/index.js"(exports, module) {
-    "use strict";
-    module.exports = (milliseconds) => {
-      if (typeof milliseconds !== "number") {
-        throw new TypeError("Expected a number");
-      }
-      const roundTowardsZero = milliseconds > 0 ? Math.floor : Math.ceil;
-      return {
-        days: roundTowardsZero(milliseconds / 864e5),
-        hours: roundTowardsZero(milliseconds / 36e5) % 24,
-        minutes: roundTowardsZero(milliseconds / 6e4) % 60,
-        seconds: roundTowardsZero(milliseconds / 1e3) % 60,
-        milliseconds: roundTowardsZero(milliseconds) % 1e3,
-        microseconds: roundTowardsZero(milliseconds * 1e3) % 1e3,
-        nanoseconds: roundTowardsZero(milliseconds * 1e6) % 1e3
-      };
-    };
-  }
-});
-
-// node_modules/pretty-ms/index.js
-var require_pretty_ms = __commonJS({
-  "node_modules/pretty-ms/index.js"(exports, module) {
-    "use strict";
-    var parseMilliseconds = require_parse_ms();
-    var pluralize = (word, count) => count === 1 ? word : `${word}s`;
-    var SECOND_ROUNDING_EPSILON = 1e-7;
-    module.exports = (milliseconds, options = {}) => {
-      if (!Number.isFinite(milliseconds)) {
-        throw new TypeError("Expected a finite number");
-      }
-      if (options.colonNotation) {
-        options.compact = false;
-        options.formatSubMilliseconds = false;
-        options.separateMilliseconds = false;
-        options.verbose = false;
-      }
-      if (options.compact) {
-        options.secondsDecimalDigits = 0;
-        options.millisecondsDecimalDigits = 0;
-      }
-      const result = [];
-      const floorDecimals = (value, decimalDigits) => {
-        const flooredInterimValue = Math.floor(value * 10 ** decimalDigits + SECOND_ROUNDING_EPSILON);
-        const flooredValue = Math.round(flooredInterimValue) / 10 ** decimalDigits;
-        return flooredValue.toFixed(decimalDigits);
-      };
-      const add = (value, long, short, valueString) => {
-        if ((result.length === 0 || !options.colonNotation) && value === 0 && !(options.colonNotation && short === "m")) {
-          return;
-        }
-        valueString = (valueString || value || "0").toString();
-        let prefix;
-        let suffix;
-        if (options.colonNotation) {
-          prefix = result.length > 0 ? ":" : "";
-          suffix = "";
-          const wholeDigits = valueString.includes(".") ? valueString.split(".")[0].length : valueString.length;
-          const minLength = result.length > 0 ? 2 : 1;
-          valueString = "0".repeat(Math.max(0, minLength - wholeDigits)) + valueString;
-        } else {
-          prefix = "";
-          suffix = options.verbose ? " " + pluralize(long, value) : short;
-        }
-        result.push(prefix + valueString + suffix);
-      };
-      const parsed = parseMilliseconds(milliseconds);
-      add(Math.trunc(parsed.days / 365), "year", "y");
-      add(parsed.days % 365, "day", "d");
-      add(parsed.hours, "hour", "h");
-      add(parsed.minutes, "minute", "m");
-      if (options.separateMilliseconds || options.formatSubMilliseconds || !options.colonNotation && milliseconds < 1e3) {
-        add(parsed.seconds, "second", "s");
-        if (options.formatSubMilliseconds) {
-          add(parsed.milliseconds, "millisecond", "ms");
-          add(parsed.microseconds, "microsecond", "\xB5s");
-          add(parsed.nanoseconds, "nanosecond", "ns");
-        } else {
-          const millisecondsAndBelow = parsed.milliseconds + parsed.microseconds / 1e3 + parsed.nanoseconds / 1e6;
-          const millisecondsDecimalDigits = typeof options.millisecondsDecimalDigits === "number" ? options.millisecondsDecimalDigits : 0;
-          const roundedMiliseconds = millisecondsAndBelow >= 1 ? Math.round(millisecondsAndBelow) : Math.ceil(millisecondsAndBelow);
-          const millisecondsString = millisecondsDecimalDigits ? millisecondsAndBelow.toFixed(millisecondsDecimalDigits) : roundedMiliseconds;
-          add(Number.parseFloat(millisecondsString, 10), "millisecond", "ms", millisecondsString);
-        }
-      } else {
-        const seconds = milliseconds / 1e3 % 60;
-        const secondsDecimalDigits = typeof options.secondsDecimalDigits === "number" ? options.secondsDecimalDigits : 1;
-        const secondsFixed = floorDecimals(seconds, secondsDecimalDigits);
-        const secondsString = options.keepDecimalsOnWholeSeconds ? secondsFixed : secondsFixed.replace(/\.0+$/, "");
-        add(Number.parseFloat(secondsString, 10), "second", "s", secondsString);
-      }
-      if (result.length === 0) {
-        return "0" + (options.verbose ? " milliseconds" : "ms");
-      }
-      if (options.compact) {
-        return result[0];
-      }
-      if (typeof options.unitCount === "number") {
-        const separator = options.colonNotation ? "" : " ";
-        return result.slice(0, Math.max(options.unitCount, 1)).join(separator);
-      }
-      return options.colonNotation ? result.join("") : result.join(" ");
-    };
-  }
-});
-
 // src/index.js
 var import_core3 = __toESM(require_core(), 1);
 var import_github2 = __toESM(require_github(), 1);
@@ -7323,7 +7215,105 @@ var getPaddedString = (string, length, paddingCharacter = " ") => {
 
 // src/lib/units.js
 var import_pretty_bytes = __toESM(require_pretty_bytes(), 1);
-var import_pretty_ms = __toESM(require_pretty_ms(), 1);
+
+// node_modules/pretty-ms/node_modules/parse-ms/index.js
+function parseMilliseconds(milliseconds) {
+  if (typeof milliseconds !== "number") {
+    throw new TypeError("Expected a number");
+  }
+  const roundTowardsZero = milliseconds > 0 ? Math.floor : Math.ceil;
+  return {
+    days: roundTowardsZero(milliseconds / 864e5),
+    hours: roundTowardsZero(milliseconds / 36e5) % 24,
+    minutes: roundTowardsZero(milliseconds / 6e4) % 60,
+    seconds: roundTowardsZero(milliseconds / 1e3) % 60,
+    milliseconds: roundTowardsZero(milliseconds) % 1e3,
+    microseconds: roundTowardsZero(milliseconds * 1e3) % 1e3,
+    nanoseconds: roundTowardsZero(milliseconds * 1e6) % 1e3
+  };
+}
+
+// node_modules/pretty-ms/index.js
+var pluralize = (word, count) => count === 1 ? word : `${word}s`;
+var SECOND_ROUNDING_EPSILON = 1e-7;
+function prettyMilliseconds(milliseconds, options = {}) {
+  if (!Number.isFinite(milliseconds)) {
+    throw new TypeError("Expected a finite number");
+  }
+  if (options.colonNotation) {
+    options.compact = false;
+    options.formatSubMilliseconds = false;
+    options.separateMilliseconds = false;
+    options.verbose = false;
+  }
+  if (options.compact) {
+    options.secondsDecimalDigits = 0;
+    options.millisecondsDecimalDigits = 0;
+  }
+  const result = [];
+  const floorDecimals = (value, decimalDigits) => {
+    const flooredInterimValue = Math.floor(value * 10 ** decimalDigits + SECOND_ROUNDING_EPSILON);
+    const flooredValue = Math.round(flooredInterimValue) / 10 ** decimalDigits;
+    return flooredValue.toFixed(decimalDigits);
+  };
+  const add = (value, long, short, valueString) => {
+    if ((result.length === 0 || !options.colonNotation) && value === 0 && !(options.colonNotation && short === "m")) {
+      return;
+    }
+    valueString = (valueString || value || "0").toString();
+    let prefix;
+    let suffix;
+    if (options.colonNotation) {
+      prefix = result.length > 0 ? ":" : "";
+      suffix = "";
+      const wholeDigits = valueString.includes(".") ? valueString.split(".")[0].length : valueString.length;
+      const minLength = result.length > 0 ? 2 : 1;
+      valueString = "0".repeat(Math.max(0, minLength - wholeDigits)) + valueString;
+    } else {
+      prefix = "";
+      suffix = options.verbose ? " " + pluralize(long, value) : short;
+    }
+    result.push(prefix + valueString + suffix);
+  };
+  const parsed = parseMilliseconds(milliseconds);
+  add(Math.trunc(parsed.days / 365), "year", "y");
+  add(parsed.days % 365, "day", "d");
+  add(parsed.hours, "hour", "h");
+  add(parsed.minutes, "minute", "m");
+  if (options.separateMilliseconds || options.formatSubMilliseconds || !options.colonNotation && milliseconds < 1e3) {
+    add(parsed.seconds, "second", "s");
+    if (options.formatSubMilliseconds) {
+      add(parsed.milliseconds, "millisecond", "ms");
+      add(parsed.microseconds, "microsecond", "\xB5s");
+      add(parsed.nanoseconds, "nanosecond", "ns");
+    } else {
+      const millisecondsAndBelow = parsed.milliseconds + parsed.microseconds / 1e3 + parsed.nanoseconds / 1e6;
+      const millisecondsDecimalDigits = typeof options.millisecondsDecimalDigits === "number" ? options.millisecondsDecimalDigits : 0;
+      const roundedMiliseconds = millisecondsAndBelow >= 1 ? Math.round(millisecondsAndBelow) : Math.ceil(millisecondsAndBelow);
+      const millisecondsString = millisecondsDecimalDigits ? millisecondsAndBelow.toFixed(millisecondsDecimalDigits) : roundedMiliseconds;
+      add(Number.parseFloat(millisecondsString), "millisecond", "ms", millisecondsString);
+    }
+  } else {
+    const seconds = milliseconds / 1e3 % 60;
+    const secondsDecimalDigits = typeof options.secondsDecimalDigits === "number" ? options.secondsDecimalDigits : 1;
+    const secondsFixed = floorDecimals(seconds, secondsDecimalDigits);
+    const secondsString = options.keepDecimalsOnWholeSeconds ? secondsFixed : secondsFixed.replace(/\.0+$/, "");
+    add(Number.parseFloat(secondsString), "second", "s", secondsString);
+  }
+  if (result.length === 0) {
+    return "0" + (options.verbose ? " milliseconds" : "ms");
+  }
+  if (options.compact) {
+    return result[0];
+  }
+  if (typeof options.unitCount === "number") {
+    const separator = options.colonNotation ? "" : " ";
+    return result.slice(0, Math.max(options.unitCount, 1)).join(separator);
+  }
+  return options.colonNotation ? result.join("") : result.join(" ");
+}
+
+// src/lib/units.js
 var KILO = 1e3;
 var formatValue = (value, unit) => {
   const normalizedUnit = unit && unit.toLowerCase();
@@ -7339,10 +7329,10 @@ var formatValue = (value, unit) => {
     case "ms":
     case "millisecond":
     case "milliseconds":
-      return (0, import_pretty_ms.default)(value);
+      return prettyMilliseconds(value);
     case "s":
     case "seconds":
-      return (0, import_pretty_ms.default)(value * KILO);
+      return prettyMilliseconds(value * KILO);
     default:
       return value.toLocaleString();
   }
@@ -7361,10 +7351,10 @@ ${metricsList}
 ${metadata}`;
 };
 var createPullRequestComment = ({ baseSha, job, metrics, previousMetrics, title }) => {
-  const previousMetricsArray = (Array.isArray(previousMetrics) ? previousMetrics : [previousMetrics]).filter(Boolean);
+  const previousMetricsArray = (Array.isArray(previousMetrics) ? previousMetrics : [previousMetrics]).filter(Boolean).reverse();
   const metadata = `<!--delta:${job}@{}-->`;
   const metricsList = metrics.map((metric) => {
-    const [comparison = {}] = previousMetricsArray;
+    const comparison = previousMetricsArray.at(-1) ?? {};
     const previousValue = comparison[metric.name];
     const previousSha = comparison["__commit"];
     const graphMetrics = [...previousMetricsArray, { __commit: baseSha, [metric.name]: metric.value }];
@@ -7607,8 +7597,6 @@ var processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, re
 var run = async function() {
   const { baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token } = getInputs();
   const headMetrics = await readDeltaFiles(rootPath);
-  const isHeadBranch = ref === `refs/heads/${baseBranch}`;
-  const isPR = Boolean(prNumber);
   import_core3.default.debug(`Running job ${job} on ref ${ref}`);
   if (headMetrics.length === 0) {
     import_core3.default.debug(`No metrics found`);
@@ -7616,12 +7604,15 @@ var run = async function() {
   }
   import_core3.default.debug(`Found metrics: ${JSON.stringify(headMetrics)}`);
   const octokit = import_github2.default.getOctokit(token);
-  if (isHeadBranch && !isPR) {
+  const isPR = Boolean(prNumber);
+  if (!isPR && ref === `refs/heads/${baseBranch}`) {
     import_core3.default.debug(`This run is related to the ${baseBranch} branch`);
     await processHeadBranch({ commitSha, headMetrics, job, octokit, owner, repo, title });
   } else if (isPR) {
     import_core3.default.debug(`This run is related to PR #${prNumber}`);
     await processPullRequest({ headMetrics, job, octokit, owner, prNumber, repo, title });
+  } else {
+    import_core3.default.debug(`This run is not related to a PR or the default branch`);
   }
 };
 try {
