@@ -7513,11 +7513,11 @@ var import_core2 = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 import process2 from "process";
 var getPrNumber = () => {
-  const { eventName, payload } = import_github.context;
+  const { eventName, payload, workflow_run: workflowRun } = import_github.context;
   if (eventName === "pull_request") {
     return payload.number;
   }
-  if (eventName === "workflow_run" && payload?.workflow_run?.pull_requests?.length === 1) {
+  if (eventName === "workflow_run" && workflowRun?.event === "pull_request" && payload?.workflow_run?.pull_requests?.length === 1) {
     return payload.workflow_run.pull_requests[0].number;
   }
 };
