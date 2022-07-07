@@ -4,13 +4,17 @@ import core from '@actions/core'
 import { context } from '@actions/github'
 
 const getPrNumber = () => {
-  const { eventName, payload } = context
+  const { eventName, payload, workflow_run: workflowRun } = context
 
   if (eventName === 'pull_request') {
     return payload.number
   }
 
-  if (eventName === 'workflow_run' && payload?.workflow_run?.pull_requests?.length === 1) {
+  if (
+    eventName === 'workflow_run' &&
+    workflowRun?.event === 'pull_request' &&
+    payload?.workflow_run?.pull_requests?.length === 1
+  ) {
     return payload.workflow_run.pull_requests[0].number
   }
 }
