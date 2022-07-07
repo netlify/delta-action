@@ -17,11 +17,13 @@ export const createHeadBranchComment = ({ commitSha, metrics, job, previousCommi
 export const createPullRequestComment = ({ baseSha, job, metrics, previousMetrics, title }) => {
   // Accounting for both the legacy metadata format (object) and the new
   // format (array of objects).
-  const previousMetricsArray = (Array.isArray(previousMetrics) ? previousMetrics : [previousMetrics]).filter(Boolean)
+  const previousMetricsArray = (Array.isArray(previousMetrics) ? previousMetrics : [previousMetrics])
+    .filter(Boolean)
+    .reverse()
   const metadata = `<!--delta:${job}@{}-->`
   const metricsList = metrics
     .map((metric) => {
-      const [comparison = {}] = previousMetricsArray
+      const comparison = previousMetricsArray.at(-1) ?? {}
       const previousValue = comparison[metric.name]
       // eslint-disable-next-line dot-notation
       const previousSha = comparison['__commit']
