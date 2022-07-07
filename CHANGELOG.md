@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/netlify/delta-action/compare/v4.0.0...v4.0.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* detect pull-requests correctly ([#302](https://github.com/netlify/delta-action/issues/302)) ([7edd063](https://github.com/netlify/delta-action/commit/7edd063f7b29991ea0fccb93c165ebfe7d44d450))
+
 ## [4.0.0](https://github.com/netlify/delta-action/compare/v3.0.2...v4.0.0) (2022-07-07)
 
 
