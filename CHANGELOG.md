@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.0.0](https://github.com/netlify/delta-action/compare/v3.0.2...v4.0.0) (2022-07-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* The runner now uses node 16
+
+### Features
+
+* support workflow_run event and use node 16 ([#300](https://github.com/netlify/delta-action/issues/300)) ([5f20f0c](https://github.com/netlify/delta-action/commit/5f20f0c7486ade3a35f5b302e93ba02b1b2ce381))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v1.9.0 ([#295](https://github.com/netlify/delta-action/issues/295)) ([55e940b](https://github.com/netlify/delta-action/commit/55e940b31ab9b903a9d32cd334511b9bab151856))
+* **deps:** update dependency pretty-ms to v8 ([#293](https://github.com/netlify/delta-action/issues/293)) ([8007bf5](https://github.com/netlify/delta-action/commit/8007bf59f3c29ab8cb328854191ae07900db35b9))
+* order of commits in PR comment ([#301](https://github.com/netlify/delta-action/issues/301)) ([d2210d2](https://github.com/netlify/delta-action/commit/d2210d2497c2a240b38aa2ae51585883d390309b))
+
 ## [3.0.2](https://github.com/netlify/delta-action/compare/v3.0.1...v3.0.2) (2022-06-02)
 
 
