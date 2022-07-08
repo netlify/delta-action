@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/netlify/delta-action/compare/v4.0.1...v4.0.2) (2022-07-08)
+
+
+### Bug Fixes
+
+* read eventName from correct payload ([#304](https://github.com/netlify/delta-action/issues/304)) ([1d4d398](https://github.com/netlify/delta-action/commit/1d4d39837147c6921105f75fa63f9c1efdd392f0))
+
 ## [4.0.1](https://github.com/netlify/delta-action/compare/v4.0.0...v4.0.1) (2022-07-07)
 
 
