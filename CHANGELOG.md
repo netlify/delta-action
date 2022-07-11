@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.3](https://github.com/netlify/delta-action/compare/v4.0.2...v4.0.3) (2022-07-11)
+
+
+### Bug Fixes
+
+* support custom PR numbers for workflow_run ([#308](https://github.com/netlify/delta-action/issues/308)) ([213d85b](https://github.com/netlify/delta-action/commit/213d85b01c9d810d66bd87214409ba870a715f26))
+
 ## [4.0.2](https://github.com/netlify/delta-action/compare/v4.0.1...v4.0.2) (2022-07-08)
 
 
