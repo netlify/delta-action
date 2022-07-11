@@ -6781,7 +6781,7 @@ var require_dist_node10 = __commonJS({
     }
     function _objectSpread2(target) {
       for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i] != null ? arguments[i] : {};
+        var source = null != arguments[i] ? arguments[i] : {};
         i % 2 ? ownKeys(Object(source), true).forEach(function(key) {
           _defineProperty(target, key, source[key]);
         }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
@@ -7517,22 +7517,22 @@ var getPrNumber = () => {
   if (eventName === "pull_request") {
     return payload.number;
   }
-  if (eventName === "workflow_run" && payload?.workflow_run?.event === "pull_request" && payload?.workflow_run?.pull_requests?.length === 1) {
-    return payload.workflow_run.pull_requests[0].number;
+  const prNumberInput = Number.parseInt(import_core2.default.getInput("pr_number"));
+  if (Number.isInteger(prNumberInput)) {
+    return prNumberInput;
   }
 };
 var getInputs = () => {
   const {
     GITHUB_DEV_BASE_BRANCH: envBaseBranch,
     GITHUB_REPOSITORY: repository,
-    GITHUB_TOKEN: envToken,
     GITHUB_WORKSPACE: rootPath = process2.cwd()
   } = process2.env;
   const { job, ref, sha: commitSha } = import_github.context;
   const baseBranch = envBaseBranch || import_core2.default.getInput("base_branch");
-  const title = import_core2.default.getInput("title");
+  const title = import_core2.default.getInput("title", { required: true });
   const [owner, repo] = repository.split("/");
-  const token = envToken || import_core2.default.getInput("token");
+  const token = import_core2.default.getInput("token", { required: true });
   const prNumber = getPrNumber();
   return {
     baseBranch,
