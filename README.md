@@ -39,12 +39,13 @@ The units will determine how the values will be formatted in the benchmark repor
 
 The action supports the following optional inputs:
 
-| Name          | Description                                             | Default       |
-| ------------- | ------------------------------------------------------- | ------------- |
-| `base_branch` | Name of the base branch, if not auto detected           | autodetect    |
-| `title`       | Title/heading to include in the comments                | Delta results |
-| `token`       | GitHub access token                                     | GITHUB_TOKEN  |
-| `pr_number`   | The PR this run is associated with (for `workflow_run`) | autodetect    |
+| Name          | Description                                                               | Default       |
+| ------------- | ------------------------------------------------------------------------- | ------------- |
+| `base_branch` | Name of the base branch, if not auto detected                             | autodetect    |
+| `title`       | Title/heading to include in the comments                                  | Delta results |
+| `token`       | GitHub access token                                                       | GITHUB_TOKEN  |
+| `pr_number`   | The PR this run is associated with (for `workflow_run`)                   | autodetect    |
+| `style`       | The rendering style to use when commenting on PRs (options: text, graph)  | graph         |
 
 ## Usage
 

@@ -14,7 +14,7 @@ export const createHeadBranchComment = ({ commitSha, metrics, job, previousCommi
   return `## ${title}\n\n${metricsList}\n${metadata}`
 }
 
-export const createPullRequestComment = ({ baseSha, job, metrics, previousMetrics, title }) => {
+export const createPullRequestComment = ({ baseSha, job, metrics, previousMetrics, title, style }) => {
   // Accounting for both the legacy metadata format (object) and the new
   // format (array of objects).
   const previousMetricsArray = (Array.isArray(previousMetrics) ? previousMetrics : [previousMetrics])
@@ -27,10 +27,12 @@ export const createPullRequestComment = ({ baseSha, job, metrics, previousMetric
       const previousValue = comparison[metric.name]
       // eslint-disable-next-line dot-notation
       const previousSha = comparison['__commit']
-      const graphMetrics = [...previousMetricsArray, { __commit: baseSha, [metric.name]: metric.value }]
-      const graph = getGraph({ metrics: graphMetrics, metricName: metric.name, units: metric.units })
-
-      return getMetricLine(metric, previousValue, previousSha, graph)
+      if (style === 'graph') {
+        const graphMetrics = [...previousMetricsArray, { __commit: baseSha, [metric.name]: metric.value }]
+        const graph = getGraph({ metrics: graphMetrics, metricName: metric.name, units: metric.units })
+        return getMetricLineWithGraph(metric, previousValue, previousSha, graph)
+      }
+      return getMetricLine(metric, previousValue, previousSha)
     })
     .join('\n')
   const baseShaLine = baseSha && previousMetricsArray.length !== 0 ? `*Comparing with ${baseSha}*\n\n` : ''
@@ -89,10 +91,15 @@ const getMetricsForHeadBranch = ({ commitSha, job, metrics, previousCommit }) =>
   return [currentCommitMetrics]
 }
 
-const getMetricLine = ({ displayName, name, units, value }, previousValue, previousSha, graph = '') => {
+const getMetricLine = ({ displayName, name, units, value }, previousValue, previousSha) => {
   const comparison = getMetricLineComparison(value, previousValue, previousSha)
   const formattedValue = formatValue(value, units)
+  return `- **${displayName || name}**: ${formattedValue}${comparison ? ` ${comparison}` : ''}`
+}
 
+const getMetricLineWithGraph = ({ displayName, name, units, value }, previousValue, previousSha, graph = '') => {
+  const comparison = getMetricLineComparison(value, previousValue, previousSha)
+  const formattedValue = formatValue(value, units)
   return `### ${displayName || name}: ${formattedValue}\n${comparison ? ` ${comparison}` : ''}\n${graph}`
 }
 
