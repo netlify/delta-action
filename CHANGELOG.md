@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.1.0](https://github.com/netlify/delta-action/compare/v4.0.3...v4.1.0) (2022-11-24)
+
+
+### Features
+
+* make graphs optional ([#331](https://github.com/netlify/delta-action/issues/331)) ([38e4750](https://github.com/netlify/delta-action/commit/38e47500db147312c4e9bc24233afae6fcea1a66))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v1.10.0 ([#323](https://github.com/netlify/delta-action/issues/323)) ([148539a](https://github.com/netlify/delta-action/commit/148539a3cf0aebdd69fbdbaa4f8af870e358c676))
+* **deps:** update dependency @actions/core to v1.9.1 ([#315](https://github.com/netlify/delta-action/issues/315)) ([a4a093b](https://github.com/netlify/delta-action/commit/a4a093b7b0ad1b06760b11a791751838223cce36))
+* **deps:** update dependency @actions/github to v5.1.1 ([#324](https://github.com/netlify/delta-action/issues/324)) ([31f8709](https://github.com/netlify/delta-action/commit/31f870981bbe8d4cafe487ab75070a9ec6fca94e))
+
 ## [4.0.3](https://github.com/netlify/delta-action/compare/v4.0.2...v4.0.3) (2022-07-11)
 
 
