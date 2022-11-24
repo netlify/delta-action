@@ -25,6 +25,7 @@ export const getInputs = () => {
   const { job, ref, sha: commitSha } = context
   const baseBranch = envBaseBranch || core.getInput('base_branch')
   const title = core.getInput('title', { required: true })
+  const style = core.getInput('style', { required: false }) || 'graph'
   const [owner, repo] = repository.split('/')
   const token = core.getInput('token', { required: true })
   const prNumber = getPrNumber()
@@ -39,6 +40,7 @@ export const getInputs = () => {
     repo,
     rootPath,
     title,
+    style,
     token,
   }
 }

@@ -17,6 +17,10 @@ inputs:
     description: 'The PR this run is associated with (for `workflow_run`)'
     required: false
     default: ''
+  style:
+    description: 'The rendering style to use when commenting on PRs (options: text, graph)'
+    required: false
+    default: 'graph'
 runs:
   using: 'node16'
   main: 'dist/index.js'

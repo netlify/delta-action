@@ -23,7 +23,7 @@ const processHeadBranch = async ({ commitSha, headMetrics, job, octokit, owner, 
   })
 }
 
-const processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, repo, title }) => {
+const processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, repo, title, style }) => {
   const { baseSha, comments } = await getCommentsFromMainBranch({ octokit, owner, repo })
   const baseMetrics = getMetricsComment({ comments, job })
 
@@ -35,6 +35,7 @@ const processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, 
     metrics: headMetrics,
     previousMetrics: baseMetrics,
     title,
+    style,
   })
   const existingComments = await octokit.paginate(octokit.rest.issues.listComments, {
     owner,
@@ -65,7 +66,7 @@ const processPullRequest = async ({ headMetrics, job, octokit, owner, prNumber, 
 }
 
 const run = async function () {
-  const { baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, token } = getInputs()
+  const { baseBranch, commitSha, job, owner, prNumber, ref, repo, rootPath, title, style, token } = getInputs()
   const headMetrics = await readDeltaFiles(rootPath)
 
   core.debug(`Running job ${job} on ref ${ref}`)
@@ -88,7 +89,7 @@ const run = async function () {
   } else if (isPR) {
     core.debug(`This run is related to PR #${prNumber}`)
 
-    await processPullRequest({ headMetrics, job, octokit, owner, prNumber, repo, title })
+    await processPullRequest({ headMetrics, job, octokit, owner, prNumber, repo, title, style })
   } else {
     core.debug(`This run is not related to a PR or the default branch`)
   }
