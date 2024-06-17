@@ -35,7 +35,7 @@ jobs:
           os=${{ matrix.os }}
           echo "::set-output name=os::${os/-latest/}"
         shell: bash
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
         with:
           file: coverage/coverage-final.json
           flags: ${{ steps.test-coverage-flags.outputs.os }}
