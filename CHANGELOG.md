@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.1](https://github.com/netlify/delta-action/compare/v4.1.0...v4.1.1) (2024-11-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v1.10.1 ([#375](https://github.com/netlify/delta-action/issues/375)) ([778f8fd](https://github.com/netlify/delta-action/commit/778f8fd265f0bbd3052cb1bbded600b375522380))
+* **deps:** update dependency @actions/core to v1.11.1 ([#398](https://github.com/netlify/delta-action/issues/398)) ([4bb88f7](https://github.com/netlify/delta-action/commit/4bb88f7ffa9cf7f3c5c6e3271c3659431427806c))
+
 ## [4.1.0](https://github.com/netlify/delta-action/compare/v4.0.3...v4.1.0) (2022-11-24)
 
 
