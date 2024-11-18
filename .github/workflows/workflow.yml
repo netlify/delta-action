@@ -33,7 +33,7 @@ jobs:
         id: test-coverage-flags
         run: |-
           os=${{ matrix.os }}
-          echo "::set-output name=os::${os/-latest/}"
+          echo "os=${os/-latest/}" >> "$GITHUB_OUTPUT"
         shell: bash
       - uses: codecov/codecov-action@v3
         with:
