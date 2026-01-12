@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.1.1](https://github.com/netlify/delta-action/compare/v4.1.0...v4.1.1) (2026-01-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v1.10.1 ([#375](https://github.com/netlify/delta-action/issues/375)) ([778f8fd](https://github.com/netlify/delta-action/commit/778f8fd265f0bbd3052cb1bbded600b375522380))
+* **deps:** update dependency @actions/core to v1.11.1 ([#398](https://github.com/netlify/delta-action/issues/398)) ([4bb88f7](https://github.com/netlify/delta-action/commit/4bb88f7ffa9cf7f3c5c6e3271c3659431427806c))
+* **deps:** update dependency regex-escape to v3.4.11 ([#401](https://github.com/netlify/delta-action/issues/401)) ([da58351](https://github.com/netlify/delta-action/commit/da58351e7b70c750b0307b3363f152fedb7a67c2))
+
 ## [4.1.0](https://github.com/netlify/delta-action/compare/v4.0.3...v4.1.0) (2022-11-24)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "@netlify/delta-action",
   "private": true,
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "A GitHub Action for capturing benchmark data and tracking its variation against a baseline",
   "type": "module",
   "exports": "./src/index.js",
